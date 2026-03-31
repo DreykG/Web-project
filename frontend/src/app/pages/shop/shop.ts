@@ -1,13 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { ShopService } from '../../services/shop';
+import { FormsModule } from '@angular/forms';
 @Component({
   selector: 'app-shop',
-  imports: [],
+  imports: [FormsModule],
   templateUrl: './shop.html',
   styleUrl: './shop.css',
 })
 export class Shop implements OnInit{
   skins: any[] = [];
+  filteredSkins: any[] = [];
+  searchText = '';
 
   constructor(private shopService: ShopService) {}
 
@@ -15,6 +18,7 @@ export class Shop implements OnInit{
     this.shopService.getSkins().subscribe({
       next: (data:any) => {
         this.skins = data;
+        this.filteredSkins = data;
       },
       error: () => {
         console.log('Skins loading error');
@@ -32,4 +36,8 @@ export class Shop implements OnInit{
       }
     });
   }
+
+  filterSkins() {
+    this.filteredSkins = this.skins.filter(skin => skin.name.toLowerCase().includes(this.searchText.toLocaleLowerCase()))
+  };
 }

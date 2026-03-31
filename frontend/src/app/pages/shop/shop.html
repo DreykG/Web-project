@@ -1,6 +1,6 @@
 <h2>Shop</h2>
-
-@for (skin of skins; track skin.id) {
+<input class="search-bar" type="text" placeholder="Search..." [(ngModel)]="searchText" (input)="filterSkins()">
+@for (skin of filteredSkins; track skin.id) {
     <div class="skin-card">
         {{skin.name}}
         {{skin.price}}
