@@ -1,1 +1,11 @@
-<p>shop works!</p>
+<h2>Shop</h2>
+
+@for (skin of skins; track skin.id) {
+    <div class="skin-card">
+        {{skin.name}}
+        {{skin.price}}
+        <button class="addBtn" (click)="addToCart(skin.id)">Add to Cart</button>
+    </div>
+} @empty {
+    <p>Skins not found</p>
+}
