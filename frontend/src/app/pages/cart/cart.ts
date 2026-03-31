@@ -17,7 +17,7 @@ export class Cart implements OnInit{
         this.cartItems = data;
       },
       error: () => {
-        console.log("Cart Items loading error");
+        console.log('Cart Items loading error');
       }
     });
   }
@@ -28,7 +28,7 @@ export class Cart implements OnInit{
         this.cartItems = this.cartItems.filter(item => item.id !== itemId);
       },
       error: () => {
-        console.log("Item remove error");
+        console.log('Item remove error');
         
       }
     });
@@ -37,10 +37,10 @@ export class Cart implements OnInit{
   buyCart() {
     this.shopService.buyCart().subscribe({
       next: () => {
-        console.log("Items have been successfully purchased");
+        console.log('Items have been successfully purchased');
       },
       error: () => {
-        console.log("Purchase error");
+        console.log('Purchase error');
       }
     });
   }
