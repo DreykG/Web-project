@@ -1,5 +1,14 @@
 <h2>Shop</h2>
+
 <input class="search-bar" type="text" placeholder="Search..." [(ngModel)]="searchText" (input)="filterSkins()">
+
+<select [(ngModel)]="sortBy" (change)="filterSkins()">
+  <option value="default">Default</option>
+  <option value="price">Price</option>
+  <option value="name">Name</option>
+  <option value="quality">Quality</option>
+</select>
+
 @for (skin of filteredSkins; track skin.id) {
     <div class="skin-card">
         {{skin.name}}

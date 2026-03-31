@@ -11,6 +11,7 @@ export class Shop implements OnInit{
   skins: any[] = [];
   filteredSkins: any[] = [];
   searchText = '';
+  sortBy = 'default';
 
   constructor(private shopService: ShopService) {}
 
@@ -38,6 +39,18 @@ export class Shop implements OnInit{
   }
 
   filterSkins() {
-    this.filteredSkins = this.skins.filter(skin => skin.name.toLowerCase().includes(this.searchText.toLocaleLowerCase()))
+
+    let result = this.skins.filter(skin => skin.name.toLowerCase().includes(this.searchText.toLocaleLowerCase()));
+
+    if(this.sortBy === 'price') {
+      result = result.sort((a, b) => a.price - b.price);
+    }else if(this.sortBy === 'quality') {
+      result = result.sort((a, b) => a.quality.localCompare(b.quality));
+    }else if(this.sortBy === 'name') {
+      result = result.sort((a, b) => a.name.localCompare(b.name));
+    }
+
+    this.filteredSkins = result;
+
   };
 }
