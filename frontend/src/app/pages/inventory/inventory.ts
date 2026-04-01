@@ -8,6 +8,7 @@ import { ShopService } from '../../services/shop';
 })
 export class Inventory implements OnInit {
   inventoryItems: any[] = [];
+  errorMessage = '';
 
   constructor(private shopService: ShopService) {}
 
@@ -17,7 +18,7 @@ export class Inventory implements OnInit {
         this.inventoryItems = data;
       },
       error: () => {
-        console.log('Inventory loading error');
+        this.errorMessage = 'Inventory loading error';
       }
     })
   }

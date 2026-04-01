@@ -12,6 +12,7 @@ export class Shop implements OnInit{
   filteredSkins: any[] = [];
   searchText = '';
   sortBy = 'default';
+  errorMessage = '';
 
   constructor(private shopService: ShopService) {}
 
@@ -22,7 +23,7 @@ export class Shop implements OnInit{
         this.filteredSkins = data;
       },
       error: () => {
-        console.log('Skins loading error');
+        this.errorMessage = 'Failed to load skins';
       }
     });
   }
@@ -33,7 +34,7 @@ export class Shop implements OnInit{
         alert('Skin has been added to the cart!');
       },
       error: () => {
-        console.log('The error of adding to the cart');
+        this.errorMessage = 'Failed to load cart';
       }
     });
   }
@@ -45,9 +46,9 @@ export class Shop implements OnInit{
     if(this.sortBy === 'price') {
       result = result.sort((a, b) => a.price - b.price);
     }else if(this.sortBy === 'quality') {
-      result = result.sort((a, b) => a.quality.localCompare(b.quality));
+      result = result.sort((a, b) => a.quality.localeCompare(b.quality));
     }else if(this.sortBy === 'name') {
-      result = result.sort((a, b) => a.name.localCompare(b.name));
+      result = result.sort((a, b) => a.name.localeCompare(b.name));
     }
 
     this.filteredSkins = result;

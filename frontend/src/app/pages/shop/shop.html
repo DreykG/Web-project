@@ -18,3 +18,7 @@
 } @empty {
     <p>Skins not found</p>
 }
+
+@if (errorMessage) {
+    <p class="error">{{errorMessage}}</p>
+}

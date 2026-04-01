@@ -10,4 +10,8 @@
     <p>Cart items not found</p>
 }
 
+@if (errorMessage) {
+    <p class="error">{{errorMessage}}</p>
+}
+
 <button class="buyBtn" (click)="buyCart()">Buy all Cart Items</button>

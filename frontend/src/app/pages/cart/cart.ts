@@ -8,6 +8,7 @@ import { ShopService } from '../../services/shop';
 })
 export class Cart implements OnInit{
   cartItems: any[] = [];
+  errorMessage = '';
 
   constructor(private shopService: ShopService) {}
 
@@ -17,7 +18,7 @@ export class Cart implements OnInit{
         this.cartItems = data;
       },
       error: () => {
-        console.log('Cart Items loading error');
+        this.errorMessage ='Cart Items loading error';
       }
     });
   }
@@ -28,7 +29,7 @@ export class Cart implements OnInit{
         this.cartItems = this.cartItems.filter(item => item.id !== itemId);
       },
       error: () => {
-        console.log('Item remove error');
+        this.errorMessage = 'Item remove error';
         
       }
     });
@@ -40,7 +41,7 @@ export class Cart implements OnInit{
         console.log('Items have been successfully purchased');
       },
       error: () => {
-        console.log('Purchase error');
+        this.errorMessage = 'Purchase error';
       }
     });
   }
