@@ -1,0 +1,17 @@
+<p>Cart</p>
+
+@for (item of cartItems; track item.id) {
+    <div class="item-card">
+        {{item.name}}
+        {{item.price}}
+        <button class="removeBtn" (click)="removeFromCart(item.id)">Remove from Cart</button>
+    </div>     
+} @empty {
+    <p>Cart items not found</p>
+}
+
+@if (errorMessage) {
+    <p class="error">{{errorMessage}}</p>
+}
+
+<button class="buyBtn" (click)="buyCart()">Buy all Cart Items</button>

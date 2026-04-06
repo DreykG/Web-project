@@ -1,0 +1,14 @@
+<p>Inventory</p>
+
+@for (item of inventoryItems; track item.id) {
+    <div class="item-card">
+        {{item.name}}
+        {{item.price}}
+    </div>
+} @empty {
+    <p>Inventory is empty</p>
+}
+
+@if (errorMessage) {
+    <p class="error">{{errorMessage}}</p>
+}
