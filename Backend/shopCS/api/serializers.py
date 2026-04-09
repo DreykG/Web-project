@@ -1,97 +1,285 @@
 from rest_framework import serializers
-from .models import Category, WeaponType, Skin, UserProfile, Inventory, Cart
 
+from .models import (
+    Category,
+    Weapon,
+    Rarity,
+    Wear,
+    Skin,
+    InventoryItem,
+    Cart,
+    CartItem,
+    Case,
+    CaseItem,
+    CaseOpening,
+    TradeOffer,
+    TradeOfferItem,
+    TradeResponse,
+    TradeResponseItem,
+    TradeTransaction,
+)
+
+
+# -----------------------------
+# BASIC MODEL SERIALIZERS
+# -----------------------------
 
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
-        fields = ['id', 'name']
+        fields = "__all__"
 
-
-class WeaponTypeSerializer(serializers.ModelSerializer):
-    category = CategorySerializer(read_only=True)
-    category_id = serializers.IntegerField(write_only=True)
-
+class WeaponSerializer(serializers.ModelSerializer):
     class Meta:
-        model = WeaponType
-        fields = ['id', 'name', 'category', 'category_id']
+        model = Weapon
+        fields = "__all__"
 
-    def create(self, validated_data):
-        category_id = validated_data.pop('category_id')
-        category = Category.objects.get(id=category_id)
-        weapon_type = WeaponType.objects.create(category=category, **validated_data)
-        return weapon_type
 
-    def update(self, instance, validated_data):
-        if 'category_id' in validated_data:
-            category_id = validated_data.pop('category_id')
-            instance.category = Category.objects.get(id=category_id)
+class RaritySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Rarity
+        fields = "__all__"
 
-        instance.name = validated_data.get('name', instance.name)
-        instance.save()
-        return instance
+
+class WearSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Wear
+        fields = "__all__"
 
 
 class SkinSerializer(serializers.ModelSerializer):
-    weapon_type = WeaponTypeSerializer(read_only=True)
-    weapon_type_id = serializers.IntegerField(write_only=True)
+    weapon_name = serializers.CharField(source="weapon.name", read_only=True)
+    rarity_name = serializers.CharField(source="rarity.name", read_only=True)
 
     class Meta:
         model = Skin
-        fields = ['id', 'name', 'weapon_type', 'weapon_type_id', 'price', 'rarity', 'image_url']
-
-    def create(self, validated_data):
-        weapon_type_id = validated_data.pop('weapon_type_id')
-        weapon_type = WeaponType.objects.get(id=weapon_type_id)
-        skin = Skin.objects.create(weapon_type=weapon_type, **validated_data)
-        return skin
-
-    def update(self, instance, validated_data):
-        if 'weapon_type_id' in validated_data:
-            weapon_type_id = validated_data.pop('weapon_type_id')
-            instance.weapon_type = WeaponType.objects.get(id=weapon_type_id)
-
-        instance.name = validated_data.get('name', instance.name)
-        instance.price = validated_data.get('price', instance.price)
-        instance.rarity = validated_data.get('rarity', instance.rarity)
-        instance.image_url = validated_data.get('image_url', instance.image_url)
-        instance.save()
-        return instance
+        fileds = [
+            "id",
+            "name"
+            "weapon"
+            "weapon_name"
+            "rarity"
+            "rarity_name"
+            "url"
+        ]
 
 
-class UserProfileSerializer(serializers.Serializer):
-    id = serializers.IntegerField(read_only=True)
-    username = serializers.CharField(source='user.username', read_only=True)
-    balance = serializers.DecimalField(max_digits=10, decimal_places=2)
+class InventoryItemSerializer(serializers.ModelSerializer):
+    skin_name = serializers.CharField(source="skin.name", read_only=True)
+    user_username = serializers.CharField(source="user.username", read_only=True)
+    wear_name = serializers.CharField(source="wear.name", read_only=True)
 
-    def update(self, instance, validated_data):
-        instance.balance = validated_data.get('balance', instance.balance)
-        instance.save()
-        return instance
+    class Meta:
+        model = InventoryItem
+        fields = [
+            "id",
+            "user",
+            "user_username",
+            "skin",
+            "skin_name",
+            "price",
+            "status",
+            "obtained_type",
+            "wear",
+            "wear_name",
+            "purchase_price",
+            "sale_price",
+            "created_at",
+        ]
 
 
-class InventorySerializer(serializers.Serializer):
-    id = serializers.IntegerField(read_only=True)
-    user_id = serializers.IntegerField(source='user.id', read_only=True)
-    username = serializers.CharField(source='user.user.username', read_only=True)
-    skin_id = serializers.IntegerField(source='skin.id', read_only=True)
-    skin_name = serializers.CharField(source='skin.name', read_only=True)
-    acquired_at = serializers.DateTimeField(read_only=True)
+class CartItemSerializer(serializers.ModelSerializer):
+    inventory_item_detail = InventoryItemSerializer(sorce="inventory_item", read_only=True)
+
+    class Meta:
+        model = CartItem
+        fields = [
+            "id",
+            "cart",
+            "inventory_item",
+            "inventory_item_detail",
+            "added_at"
+        ]
 
 
 class CartSerializer(serializers.ModelSerializer):
-    user_id = serializers.IntegerField(source='user.id', read_only=True)
-    skin_id = serializers.IntegerField(write_only=True)
-    skin_name = serializers.CharField(source='skin.name', read_only=True)
-    price = serializers.DecimalField(source='skin.price', max_digits=10, decimal_places=2, read_only=True)
+    items = CartItemSerializer(many=True, read_only=True)
 
     class Meta:
         model = Cart
-        fields = ['id', 'user_id', 'skin_id', 'skin_name', 'price', 'added_at']
+        fields = [
+            "id",
+            "user",
+            "created_at",
+            "updated_at",
+            "items",
+        ]
 
-    def create(self, validated_data):
-        skin_data = validated_data.pop('skin')
-        skin = Skin.objects.get(id=skin_data['id'])
-        user_profile = self.context['user_profile']
-        cart_item = Cart.objects.create(user=user_profile, skin=skin, **validated_data)
-        return cart_item
+
+class CaseSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Case
+        fields = "__all__"
+
+
+class CaseItemSerializer(serializers.ModelSerializer):
+    skin_name = serializers.CharField(source="skin.name", read_only=True)
+    wear_name = serializers.CharField(source="wear.name", read_only=True)
+
+    class Meta:
+        model = CaseItem
+        fields = [
+            "id",
+            "case",
+            "skin",
+            "skin_name",
+            "wear",
+            "wear_name",
+            "drop_chance",
+            "created_at",
+        ]
+
+
+class CaseOpeningSerializer(serializers.ModelSerializer):
+    case_name = serializers.CharField(source="case.name", read_only=True)
+    user_username = serializers.CharField(source="user.username", read_only=True)
+
+    class Meta:
+        model = CaseOpening
+        fields = [
+            "id",
+            "user",
+            "user_username",
+            "case",
+            "case_name",
+            "case_item",
+            "inventory_item",
+            "spent_balance",
+            "opened_at",
+        ]
+
+
+# -----------------------------
+# TRADE MODEL SERIALIZERS
+# -----------------------------
+
+class TradeOfferItemSerializer(serializers.ModelSerializer):
+    inventory_item_detail = InventoryItemSerializer(source="inventory_item", read_only=True)
+
+    class Meta:
+        model = TradeOfferItem
+        fields = [
+            "id",
+            "trade_offer",
+            "inventory_item",
+            "inventory_item_detail",
+            "created_at",
+        ]
+
+
+class TradeOfferSerializer(serializers.ModelSerializer):
+    creator_username = serializers.CharField(source="creator.username", read_only=True)
+    offer_items = TradeOfferItemSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = TradeOffer
+        fields = [
+            "id",
+            "creator",
+            "creator_username",
+            "title",
+            "message",
+            "status",
+            "created_at",
+            "updated_at",
+            "expires_at",
+            "offer_items",
+        ]
+
+
+class TradeResponseItemSerializer(serializers.ModelSerializer):
+    inventory_item_detail = InventoryItemSerializer(source="inventory_item", read_only=True)
+
+    class Meta:
+        model = TradeResponseItem
+        fields = [
+            "id",
+            "trade_response",
+            "inventory_item",
+            "inventory_item_detail",
+            "created_at",
+        ]
+
+
+class TradeResponseSerializer(serializers.ModelSerializer):
+    responder_username = serializers.CharField(source="responder.username", read_only=True)
+    response_items = TradeResponseItemSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = TradeResponse
+        fields = [
+            "id",
+            "trade_offer",
+            "responder",
+            "responder_username",
+            "message",
+            "status",
+            "creator_approved",
+            "responder_approved",
+            "responded_at",
+            "updated_at",
+            "response_items",
+        ]
+
+
+class TradeTransactionSerializer(serializers.ModelSerializer):
+    user1_username = serializers.CharField(source="user1.username", read_only=True)
+    user2_username = serializers.CharField(source="user2.username", read_only=True)
+
+    class Meta:
+        model = TradeTransaction
+        fields = [
+            "id",
+            "trade_offer",
+            "trade_response",
+            "user1",
+            "user1_username",
+            "user2",
+            "user2_username",
+            "status",
+            "completed_at",
+            "created_at",
+        ]
+
+
+# -----------------------------
+# ORDINARY SERIALIZERS
+# minimum 2 from serializers.Serializer
+# -----------------------------
+
+class TradeOfferCreateSerializer(serializers.Serializer):
+    title = serializers.CharField(max_length=255)
+    message = serializers.CharField(required=False, allow_blank=True)
+    expires_at = serializers.DateTimeField(required=False, allow_null=True)
+    inventory_item_ids = serializers.ListField(
+        child=serializers.IntegerField(),
+        allow_empty=False
+    )
+
+
+class TradeResponseCreateSerializer(serializers.Serializer):
+    trade_offer_id = serializers.IntegerField()
+    message = serializers.CharField(required=False, allow_blank=True)
+    inventory_item_ids = serializers.ListField(
+        child=serializers.IntegerField(),
+        allow_empty=False
+    )
+
+
+class TradeApproveSerializer(serializers.Serializer):
+    creator_approved = serializers.BooleanField(required=False)
+    responder_approved = serializers.BooleanField(required=False)
+
+
+class CaseOpenSerializer(serializers.Serializer):
+    case_id = serializers.IntegerField()

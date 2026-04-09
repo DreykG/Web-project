@@ -249,6 +249,10 @@ class CaseOpening(models.Model):
     def __str__(self):
         return f"{self.user.username} opened {self.case.name}"
     
+
+
+
+    
 class TradeOffer(models.Model):
     class StatusChoices(models.TextChoices):
         OPEN = "open", "Open"
