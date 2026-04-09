@@ -1,13 +1,17 @@
+from decimal import Decimal
+
 from django.shortcuts import render
 
 from rest_framework.decorators import api_view, permission_classes, action
 # from rest_framework.permissions import IsAuthenticated
+from rest_framework import viewsets, permissions
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
 from rest_framework import status,viewsets
 from .models import Category, Weapon, Skin, Cart, CartItem, InventoryItem
-from .serializers import CategorySerializer, CartItemSerializer, WeaponSerializer
+from .serializers import CategorySerializer, CartItemSerializer, WeaponSerializer, InventoryItemSerializer
+from django.db import transaction
 
 class CategoryListAPIView(APIView):
     def get(self, request):
@@ -82,6 +86,37 @@ class WeaponDetailAPIView(APIView):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
+class InventoryItemViewSet(viewsets.ReadOnlyModelViewSet):
+    serializer_class = InventoryItemSerializer
+
+    def get_queryset(self):
+        queryset = InventoryItem.objects.filter(status='on_sale')
+        
+        weapon_pk = self.kwargs.get('weapon_pk')
+        if weapon_pk:
+            queryset = queryset.filter(skin__weapon_id=weapon_pk)
+            
+        return queryset
+
+    @action(detail=False, methods=['get'], permission_classes=[permissions.IsAuthenticated])
+    def my_items(self, request):
+        user_items = InventoryItem.objects.filter(
+            user=request.user, 
+            status=InventoryItem.StatusChoices.IN_INVENTORY
+        )
+        
+        serializer = self.get_serializer(user_items, many=True)
+        return Response(serializer.data)
+
+    @action(detail=False, methods=['get'], permission_classes=[permissions.IsAuthenticated])
+    def my_sales(self, request):
+        user_items = InventoryItem.objects.filter(
+            user=request.user, 
+            status=InventoryItem.StatusChoices.ON_SALE
+        )
+        
+        serializer = self.get_serializer(user_items, many=True)
+        return Response(serializer.data)
 
 
 
@@ -89,44 +124,145 @@ class WeaponDetailAPIView(APIView):
 
 
 
+@api_view(['GET'])
+# @permission_classes([IsAuthenticated])
+def view_cart(request):
+    cart, _ = Cart.objects.get_or_create(user=request.user)
+    items = InventoryItem.objects.filter(cart_items__cart=cart)
+    serializer = InventoryItemSerializer(items, many=True)
+    total_price = sum(item.price for item in items)
+    
+    return Response({
+        "cart_id": cart.id,
+        "items": serializer.data,
+        "total_items_count": items.count(),
+        "total_price": total_price
+    })
+
+
+@api_view(['POST'])
+# @permission_classes([IsAuthenticated])
+def add_to_cart(request, item_id):
+
+    item = get_object_or_404(InventoryItem, id=item_id, status='on_sale')
+
+    if item.user == request.user:
+        return Response(
+            {"detail": "You can add own item!"}, 
+            status=status.HTTP_400_BAD_REQUEST
+        )
+    
+    cart, _ = Cart.objects.get_or_create(user=request.user)
+    cart_item, created = CartItem.objects.get_or_create(cart=cart, inventory_item=item)
+    
+    if not created:
+        return Response({"detail": "Item already in the cart"}, status=status.HTTP_400_BAD_REQUEST)
+        
+    return Response({"detail": "Item was added to cart"}, status=status.HTTP_201_CREATED)
+
+
+@api_view(['DELETE'])
+# @permission_classes([IsAuthenticated])
+def remove_from_cart(request, item_id):
+    cart_item = CartItem.objects.filter(
+        cart__user=request.user, 
+        inventory_item_id=item_id
+    ).first()
+
+    if not cart_item:
+        return Response(
+            {"detail": "Item not found in your cart!"}, 
+            status=status.HTTP_404_NOT_FOUND
+        )
+
+    cart_item.delete()
+    
+    return Response(
+        {"detail": "The item was deleted from cart!"}, 
+        status=status.HTTP_204_NO_CONTENT
+    )
 
 
 
 @api_view(['POST'])
 # @permission_classes([IsAuthenticated])
-def add_to_cart(request, inventory_item_id):
-    try:
-        inventory_item = InventoryItem.objects.get(id=inventory_item_id)
-    except InventoryItem.DoesNotExist:
-        return Response(
-            {"error": "Item not found."},
-            status=status.HTTP_404_NOT_FOUND
-        )
+def checkout_selected(request):
 
-    if inventory_item.user == request.user:
-        return Response(
-            {"error": "You cannot add your own item to cart."},
-            status=status.HTTP_400_BAD_REQUEST
-        )
+    buyer = request.user
+    selected_ids = request.data.get('ids', [])
+    if not selected_ids:
+        return Response({"detail": "Nothing not!"}, status=status.HTTP_400_BAD_REQUEST)
+    
+    items_to_buy = InventoryItem.objects.filter(
+        id__in = selected_ids,
+        cart_items__cart__user = buyer,
+        status = 'on_sale'
+    ).select_related('user')
 
-    if inventory_item.status != "in_inventory":
-        return Response(
-            {"error": "This item is not available."},
-            status=status.HTTP_400_BAD_REQUEST
-        )
+    if not items_to_buy.exists():
+        return Response({"detail": "Items not found in the cart!"}, status=status.HTTP_404_NOT_FOUND)
+    
+    total_price = sum(item.price for item in items_to_buy)
 
-    cart, created = Cart.objects.get_or_create(user=request.user)
+    if buyer.balance < total_price:
+        return Response({"detail" : "Not enough balance!"}, status=status.HTTP_400_BAD_REQUEST)
+    
+    with transaction.atomic():
+        buyer.balance -= total_price
+        buyer.save()
 
-    if CartItem.objects.filter(cart=cart, inventory_item=inventory_item).exists():
-        return Response(
-            {"error": "Item already in cart."},
-            status=status.HTTP_400_BAD_REQUEST
-        )
+        for item in items_to_buy:
+            seller = item.user
 
-    cart_item = CartItem.objects.create(
-        cart=cart,
-        inventory_item=inventory_item
+            if seller:
+
+                commission = item.price * Decimal('0.05')
+                seller.balance += (item.price - commission)
+                seller.save()
+
+            item.user = buyer
+            item.status = InventoryItem.StatusChoices.IN_INVENTORY
+            item.save()
+
+        CartItem.objects.filter(cart__user=buyer, inventory_item__in=items_to_buy).delete()
+
+
+    return Response({
+        "detail": "Purchase",
+        "spent": total_price,
+        "new_balance": buyer.balance
+    }, status=status.HTTP_200_OK)
+
+@api_view(['POST'])
+# @permission_classes([IsAuthenticated])
+def for_sale(request):
+    seller = request.user
+    #{"items": [{"id": 1, "price": 1500.5}, ...]}
+    items_data = request.data.get('items', [])
+    
+    if not items_data:
+        return Response({"detail": "Nothing choosen!"}, status=status.HTTP_400_BAD_REQUEST)
+    
+    selected_ids = [item['id'] for item in items_data]
+    
+    prices_map = {item['id']: item['price'] for item in items_data}
+
+    items_qs = InventoryItem.objects.filter(
+        id__in=selected_ids,
+        user=seller,
+        status='in_inventory'
     )
 
-    serializer = CartItemSerializer(cart_item)
-    return Response(serializer.data, status=status.HTTP_201_CREATED)
+    if not items_qs.exists():
+        return Response({"detail": "No items found!"}, status=status.HTTP_404_NOT_FOUND)
+
+    with transaction.atomic():
+        for item in items_qs:
+            new_price = prices_map.get(item.id)
+            if new_price:
+                item.price = new_price
+                item.status = 'on_sale'
+                item.save()
+
+    return Response({"detail": f"Items for sale: {items_qs.count()}"})
+

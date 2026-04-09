@@ -70,6 +70,7 @@ class Skin(models.Model):
 class InventoryItem(models.Model):
     class StatusChoices(models.TextChoices):
         IN_INVENTORY = "in_inventory", "In inventory"
+        ON_SALE = "on_sale", "On sale"
         IN_CART = "in_cart", "In cart"
         IN_TRADE = "in_trade", "In trade"
         SOLD = "sold", "Sold"
@@ -81,6 +82,11 @@ class InventoryItem(models.Model):
         RECEIVED = "received", "Received"
         BONUS = "bonus", "Bonus"
 
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="inventory_items"
+    )
     
     skin = models.ForeignKey(
         Skin,
@@ -126,11 +132,16 @@ class InventoryItem(models.Model):
 
 
 class Cart(models.Model):
+    user = models.OneToOneField(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="cart"
+    )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f"Cart #{self.id} - {self.user.username}"
+        return f"Cart of {self.user.username}"
 
 
 class CartItem(models.Model):

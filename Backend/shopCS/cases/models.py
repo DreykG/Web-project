@@ -55,7 +55,7 @@ class CaseOpening(models.Model):
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
-        related_name="inventory_items"
+        related_name="case_openings"
     )
 
     case = models.ForeignKey(
