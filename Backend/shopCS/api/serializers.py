@@ -254,7 +254,6 @@ class TradeTransactionSerializer(serializers.ModelSerializer):
 
 # -----------------------------
 # ORDINARY SERIALIZERS
-# minimum 2 from serializers.Serializer
 # -----------------------------
 
 class TradeOfferCreateSerializer(serializers.Serializer):
