@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from Backend.shopCS.shop.models import Cart, CartItem, Category, InventoryItem, Rarity, Skin, Weapon, Wear
+from .models import Cart, CartItem, Category, InventoryItem, Rarity, Skin, Weapon, Wear
 
 
 class CategorySerializer(serializers.ModelSerializer):
@@ -67,7 +67,7 @@ class InventoryItemSerializer(serializers.ModelSerializer):
 
 
 class CartItemSerializer(serializers.ModelSerializer):
-    inventory_item_detail = InventoryItemSerializer(sorce="inventory_item", read_only=True)
+    inventory_item_detail = InventoryItemSerializer(source="inventory_item", read_only=True)
 
     class Meta:
         model = CartItem
