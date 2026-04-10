@@ -33,7 +33,7 @@ urlpatterns = [
 
     path('cart/', view_cart, name='view_cart'),
     path('cart/add/<int:item_id>', add_to_cart, name='add_to_cart'),
-    path('cart/remove/<int:item_id>/', remove_from_cart, name='remove_from_cart'),
+    path('cart/remove', remove_from_cart, name='remove_from_cart'),
     path('cart/checkout', checkout_selected, name='checkout'),
 
     path('items/sale', for_sale, name='for_sale'),

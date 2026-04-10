@@ -1,0 +1,423 @@
+{
+  "info": {
+    "_postman_id": "2e8f1a04-c0d8-44cd-8d77-09505a3ef500",
+    "name": "SHOP",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "53571336",
+    "_collection_link": "https://go.postman.co/collection/53571336-2e8f1a04-c0d8-44cd-8d77-09505a3ef500?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Shop",
+      "item": [
+        {
+          "name": "GetCartOfUser",
+          "request": {
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "password",
+                  "value": "Qwerty123Q",
+                  "type": "string"
+                },
+                {
+                  "key": "username",
+                  "value": "vlad",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://127.0.0.1:8000/api/shop/cart/",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "8000",
+              "path": [
+                "api",
+                "shop",
+                "cart",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "AddItemToCart",
+          "request": {
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "password",
+                  "value": "Qwerty123Q",
+                  "type": "string"
+                },
+                {
+                  "key": "username",
+                  "value": "vlad",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://127.0.0.1:8000/api/shop/cart/add/1",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "8000",
+              "path": [
+                "api",
+                "shop",
+                "cart",
+                "add",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "RemoveItemFromCart",
+          "request": {
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "password",
+                  "value": "Qwerty123Q",
+                  "type": "string"
+                },
+                {
+                  "key": "username",
+                  "value": "vlad",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"ids\": [1]\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://127.0.0.1:8000/api/shop/cart/remove",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "8000",
+              "path": [
+                "api",
+                "shop",
+                "cart",
+                "remove"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "BuyItemsInCart",
+          "request": {
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "password",
+                  "value": "Qwerty123Q",
+                  "type": "string"
+                },
+                {
+                  "key": "username",
+                  "value": "vlad",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"ids\" : [1]\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://127.0.0.1:8000/api/shop/cart/checkout",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "8000",
+              "path": [
+                "api",
+                "shop",
+                "cart",
+                "checkout"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "SaleItem",
+          "request": {
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "password",
+                  "value": "Qwerty123Q",
+                  "type": "string"
+                },
+                {
+                  "key": "username",
+                  "value": "vlad",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"items\": [\r\n        {\r\n            \"id\": 1, \r\n            \"price\": 1500.50\r\n        }\r\n    ]\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://127.0.0.1:8000/api/shop/items/sale",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "8000",
+              "path": [
+                "api",
+                "shop",
+                "items",
+                "sale"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "MyItems(MyInventory)",
+          "request": {
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "password",
+                  "value": "Qwerty123Q",
+                  "type": "string"
+                },
+                {
+                  "key": "username",
+                  "value": "vlad",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://127.0.0.1:8000/api/shop/items/my_items/",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "8000",
+              "path": [
+                "api",
+                "shop",
+                "items",
+                "my_items",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "MySales",
+          "request": {
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "password",
+                  "value": "Qwerty123Q",
+                  "type": "string"
+                },
+                {
+                  "key": "username",
+                  "value": "vlad",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://127.0.0.1:8000/api/shop/items/my_sales/",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "8000",
+              "path": [
+                "api",
+                "shop",
+                "items",
+                "my_sales",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "CancelSale",
+          "request": {
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "password",
+                  "value": "Qwerty123Q",
+                  "type": "string"
+                },
+                {
+                  "key": "username",
+                  "value": "vlad",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"ids\": [1]\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://127.0.0.1:8000/api/shop/items/cancel_sale",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "8000",
+              "path": [
+                "api",
+                "shop",
+                "items",
+                "cancel_sale"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "AllItemsForSale",
+          "request": {
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "password",
+                  "value": "Qwerty123Q",
+                  "type": "string"
+                },
+                {
+                  "key": "username",
+                  "value": "vlad",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://127.0.0.1:8000/api/shop/items",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "8000",
+              "path": [
+                "api",
+                "shop",
+                "items"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}

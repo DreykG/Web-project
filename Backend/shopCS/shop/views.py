@@ -148,7 +148,7 @@ def add_to_cart(request, item_id):
 
     if item.user == request.user:
         return Response(
-            {"detail": "You can add own item!"}, 
+            {"detail": "You can't add own item!"}, 
             status=status.HTTP_400_BAD_REQUEST
         )
     
@@ -161,25 +161,36 @@ def add_to_cart(request, item_id):
     return Response({"detail": "Item was added to cart"}, status=status.HTTP_201_CREATED)
 
 
-@api_view(['DELETE'])
+@api_view(['POST']) # Используем POST для передачи тела запроса
 # @permission_classes([IsAuthenticated])
-def remove_from_cart(request, item_id):
-    cart_item = CartItem.objects.filter(
-        cart__user=request.user, 
-        inventory_item_id=item_id
-    ).first()
+def remove_from_cart(request):
+    user = request.user
+    # Ожидаем структуру: {"ids": [1, 3, 5]}
+    item_ids = request.data.get('ids', [])
 
-    if not cart_item:
+    if not item_ids:
         return Response(
-            {"detail": "Item not found in your cart!"}, 
+            {"detail": "No IDs provided!"}, 
+            status=status.HTTP_400_BAD_REQUEST
+        )
+
+    cart_items = CartItem.objects.filter(
+        cart__user=user, 
+        inventory_item_id__in=item_ids
+    )
+
+    if not cart_items.exists():
+        return Response(
+            {"detail": "No matching items found in your cart!"}, 
             status=status.HTTP_404_NOT_FOUND
         )
 
-    cart_item.delete()
+    count = cart_items.count()
+    cart_items.delete()
     
     return Response(
-        {"detail": "The item was deleted from cart!"}, 
-        status=status.HTTP_204_NO_CONTENT
+        {"detail": f"Successfully removed {count} items from cart!"}, 
+        status=status.HTTP_200_OK
     )
 
 

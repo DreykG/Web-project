@@ -1,0 +1,14 @@
+Views Of Shop:
+
+(POST)
+Add item to cart,
+Remove item(s) from cart,
+Buy item(s) in cart,
+Sale item,
+Cancel sale item,
+
+(GET)
+Get cart of user,
+Get sales of user,
+Get user's items
+Get all sale items
