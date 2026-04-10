@@ -57,6 +57,11 @@ class Skin(models.Model):
         on_delete=models.PROTECT,
         related_name="skins"
     )
+    base_price = models.DecimalField(
+        max_digits=12, 
+        decimal_places=2, 
+        default=0.00
+    )
     name = models.CharField(max_length=150)
     url = models.URLField(blank=True, null=True)
 

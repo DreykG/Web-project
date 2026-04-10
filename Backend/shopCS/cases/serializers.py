@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from Backend.shopCS.cases.models import Case, CaseItem, CaseOpening
+from .models import Case, CaseItem, CaseOpening
 
 
 class CaseSerializer(serializers.ModelSerializer):
