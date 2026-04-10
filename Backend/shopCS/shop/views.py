@@ -233,6 +233,8 @@ def checkout_selected(request):
         "new_balance": buyer.balance
     }, status=status.HTTP_200_OK)
 
+
+
 @api_view(['POST'])
 # @permission_classes([IsAuthenticated])
 def for_sale(request):
@@ -266,3 +268,35 @@ def for_sale(request):
 
     return Response({"detail": f"Items for sale: {items_qs.count()}"})
 
+@api_view(['POST'])
+# @permission_classes([IsAuthenticated])
+def cancel_sale(request):
+    user = request.user
+    #{"items": [{"id": 1}, ...]}
+    selected_ids = request.data.get('ids', [])
+    
+    if not selected_ids:
+        return Response({"detail": "No items to be withdrawn from sale"}, status=status.HTTP_400_BAD_REQUEST)
+
+    items_to_cancel = InventoryItem.objects.filter(
+        id__in=selected_ids,
+        user=user,
+        status='on_sale'
+    )
+
+    if not items_to_cancel.exists():
+        return Response({"detail": "The products have not been found or are no longer on sale!"}, status=status.HTTP_404_NOT_FOUND)
+
+    count = items_to_cancel.count()
+
+    with transaction.atomic():
+        for item in items_to_cancel:
+            item.price = 0
+            item.status = 'in_inventory'
+            item.save()
+        CartItem.objects.filter(inventory_item=item).delete()
+
+    return Response({
+        "detail": f"Successfully withdrawn from sale of items: {count}",
+        "removed_ids": selected_ids
+    }, status=status.HTTP_200_OK)

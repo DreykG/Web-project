@@ -13,6 +13,7 @@ from ..views import (
     remove_from_cart,
     view_cart,
     for_sale,
+    cancel_sale,
 )
 
 router = DefaultRouter()
@@ -36,6 +37,9 @@ urlpatterns = [
     path('cart/checkout', checkout_selected, name='checkout'),
 
     path('items/sale', for_sale, name='for_sale'),
+    path('items/cancel_sale', cancel_sale, name='cancel_sale'),
+    
+    
 
     path('', include(router.urls)),
 ]
