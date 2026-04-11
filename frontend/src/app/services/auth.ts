@@ -9,7 +9,7 @@ export class Auth {
   constructor(private http: HttpClient) {}
 
   login(username: string, password: string) {
-    return this.http.post(`${this.apiUrl}/login/`, { username, password});
+    return this.http.post(`${this.apiUrl}/users/login/`, { username, password});
   }
 
   logout() {
@@ -21,7 +21,7 @@ export class Auth {
   }
 
   register(username: string, password: string) {
-    return this.http.post(`${this.apiUrl}/register/`, { username, password });
+    return this.http.post(`${this.apiUrl}/users/register/`, { username, password });
   }
 
   getToken() {
