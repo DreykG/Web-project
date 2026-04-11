@@ -10,7 +10,7 @@ from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
 from rest_framework import status,viewsets
 from .models import Category, Weapon, Skin, Cart, CartItem, InventoryItem
-from .serializers import CategorySerializer, CartItemSerializer, WeaponSerializer, InventoryItemSerializer
+from .serializers import CategorySerializer, InventoryItemSelectionSerializer, WeaponSerializer, InventoryItemSerializer
 from django.db import transaction
 
 class CategoryListAPIView(APIView):
@@ -105,7 +105,7 @@ class InventoryItemViewSet(viewsets.ReadOnlyModelViewSet):
             status=InventoryItem.StatusChoices.IN_INVENTORY
         )
         
-        serializer = self.get_serializer(user_items, many=True)
+        serializer = InventoryItemSelectionSerializer(user_items, many=True)
         return Response(serializer.data)
 
     @action(detail=False, methods=['get'], permission_classes=[permissions.IsAuthenticated])
