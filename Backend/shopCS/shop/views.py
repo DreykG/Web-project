@@ -250,6 +250,8 @@ def checkout_selected(request):
 # @permission_classes([IsAuthenticated])
 def for_sale(request):
     seller = request.user
+    profile = seller.profile
+
     #{"items": [{"id": 1, "price": 1500.5}, ...]}
     items_data = request.data.get('items', [])
     
@@ -273,9 +275,15 @@ def for_sale(request):
         for item in items_qs:
             new_price = prices_map.get(item.id)
             if new_price:
+                profile.inventory_value -= item.price
+                profile.save()
+
                 item.price = new_price
                 item.status = 'on_sale'
                 item.save()
+
+
+                
 
     return Response({"detail": f"Items for sale: {items_qs.count()}"})
 

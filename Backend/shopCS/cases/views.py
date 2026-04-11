@@ -1,7 +1,8 @@
+
 from django.shortcuts import render
 import random
 from decimal import Decimal
-
+from django.db.models import Sum
 from django.shortcuts import render
 from rest_framework import generics
 from rest_framework.decorators import api_view, permission_classes, action
@@ -14,7 +15,7 @@ from rest_framework import status,viewsets
 from .models import Case, CaseItem, CaseOpening
 from shop.models import InventoryItem
 from shop.serializers import InventoryItemSerializer
-from .serializers import CaseItemSerializer, CaseOpeningSerializer, CaseSerializer
+from .serializers import CaseItemSerializer, CaseSerializer, LiveDropSerializer
 from django.db import transaction
 
 
@@ -23,13 +24,15 @@ class CaseViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = CaseSerializer
     # permission_classes = []
 
+
     @action(detail=True, methods=['get'])
     def case_items(self, request, pk=None):
         case = self.get_object()
         items = case.case_items.all()
         serializer = CaseItemSerializer(items, many=True)
         return Response(serializer.data)
-    
+
+
     @action(detail=True, methods=['post'])
     def open_case(self, request, pk=None):
         user = request.user
@@ -69,6 +72,11 @@ class CaseViewSet(viewsets.ReadOnlyModelViewSet):
                 obtained_type='case'
             )
 
+            profile = user.profile
+            profile.cases_opened_count += 1
+            profile.total_drop_value += new_item.price
+            profile.save()
+
             CaseOpening.objects.create(
                 user=user,
                 case=case,
@@ -82,14 +90,16 @@ class CaseViewSet(viewsets.ReadOnlyModelViewSet):
             "sell_price": new_item.price,
             "drop": InventoryItemSerializer(new_item).data
         })
-    
+
+
     @action(detail=False, methods=['get'])
     def pending_items(self, request):
         user = request.user
         items = InventoryItem.objects.filter(user=user, status='pending').order_by('-created_at')
         serializer = InventoryItemSerializer(items, many=True)
         return Response(serializer.data)
-    
+
+   
     @action(detail=False, methods=['post'])
     def sell_dropped_item(self, request):
         item_id = request.data.get('item_id')
@@ -104,6 +114,40 @@ class CaseViewSet(viewsets.ReadOnlyModelViewSet):
             item.delete()
         return Response({"detail": f"Sold for {item.price}"})
     
+
+    @action(detail=False, methods=['post'])
+    def sell_all_pending(self, request):
+        item_ids = request.data.get('item_ids')
+        user = request.user
+
+        pending_items = InventoryItem.objects.filter(user=user, status='pending')
+        
+        if not pending_items.exists():
+            return Response(
+                {"detail": "You don't have any items for sale!"}, 
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        
+        total_data = pending_items.aggregate(total=Sum('price'))
+        total_sum = total_data['total'] or 0
+        count = pending_items.count()
+
+
+        with transaction.atomic():
+            user.balance += total_sum
+            user.save()
+
+
+            
+
+            pending_items.delete()
+        return Response({
+            "message": f"Items sold: {count}",
+            "earned": total_sum,
+            "new_balance": user.balance
+        }, status=status.HTTP_200_OK)
+    
+
     @action(detail=False, methods=['post'])
     def access_dropped_item(self, request):
         item_id = request.data.get('item_id')
@@ -115,3 +159,18 @@ class CaseViewSet(viewsets.ReadOnlyModelViewSet):
 
         return Response({"detail" : "Item added to inventory!"})
 
+
+    @action(detail=False, methods=['get'])
+    def live_drops(self, request):
+
+        min_price = 0
+
+        drops = CaseOpening.objects.select_related(
+            # 'user_id',
+            'user',
+            'case',
+            'case_item__skin'
+        ).filter(case_item__skin__base_price__gte=min_price).order_by('-opened_at')[:10]
+
+        serializer = LiveDropSerializer(drops, many=True)
+        return Response(serializer.data)
