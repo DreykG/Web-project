@@ -15,7 +15,7 @@ export class Cart implements OnInit{
   ngOnInit() {
     this.shopService.getCartItems().subscribe({
       next: (data:any) => {
-        this.cartItems = data;
+        this.cartItems = data.items;
       },
       error: () => {
         this.errorMessage ='Cart Items loading error';
@@ -36,9 +36,11 @@ export class Cart implements OnInit{
   }
 
   buyCart() {
-    this.shopService.buyCart().subscribe({
+    const ids = this.cartItems.map(item => item.id);
+    this.shopService.buyCart(ids).subscribe({
       next: () => {
-        console.log('Items have been successfully purchased');
+        this.cartItems = [];
+        alert('Purchase successeful!');
       },
       error: () => {
         this.errorMessage = 'Purchase error';

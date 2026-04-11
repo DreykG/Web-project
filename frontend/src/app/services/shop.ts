@@ -10,26 +10,26 @@ export class ShopService {
   constructor(private http: HttpClient) {}
 
   getSkins() {
-    return this.http.get(`${this.apiUrl}/skins/`);
+    return this.http.get(`${this.apiUrl}/shop/items/`);
   }
 
   getCartItems() {
-    return this.http.get(`${this.apiUrl}/cart-items/`);
+    return this.http.get(`${this.apiUrl}/shop/cart/`);
   }
 
   getInventory(){
-    return this.http.get(`${this.apiUrl}/inventory/`);
+    return this.http.get(`${this.apiUrl}/shop/items/my_items/`);
   }
 
   addToCart(skinId: number){
-    return this.http.post(`${this.apiUrl}/cart/`, {skin_id: skinId});
+    return this.http.post(`${this.apiUrl}/shop/cart/add/${skinId}/`, {});
   }
 
-  buyCart(){
-    return this.http.post(`${this.apiUrl}/cart/buy/`, {});
+  buyCart(ids: number[]){
+    return this.http.post(`${this.apiUrl}/shop/cart/checkout/`, {ids: ids});
   }
 
   removeFromCart(itemId: number){
-    return this.http.delete(`${this.apiUrl}/cart-items/${itemId}/`);
+    return this.http.post(`${this.apiUrl}/shop/cart/remove/`, {ids: [itemId]});
   }
 }
