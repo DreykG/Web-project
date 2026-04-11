@@ -1,0 +1,14 @@
+Views Of Shop:
+
+(POST)
+Open case
+Access dropped item
+Sale dropped item 
+Sale all pending item
+
+
+(GET)
+Get list of all cases
+Get detail and items of case
+Get list of pending items
+Get live drops list

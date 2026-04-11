@@ -1,0 +1,326 @@
+{
+  "info": {
+    "_postman_id": "09f1e213-28fd-4dc2-8b14-eaf311b76a3f",
+    "name": "CASES",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "53571336",
+    "_collection_link": "https://go.postman.co/collection/53571336-09f1e213-28fd-4dc2-8b14-eaf311b76a3f?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "GetAllCases",
+      "request": {
+        "auth": {
+          "type": "basic",
+          "basic": [
+            {
+              "key": "password",
+              "value": "Qwerty123Q",
+              "type": "string"
+            },
+            {
+              "key": "username",
+              "value": "vlad",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://127.0.0.1:8000/api/cases/list",
+          "protocol": "http",
+          "host": [
+            "127",
+            "0",
+            "0",
+            "1"
+          ],
+          "port": "8000",
+          "path": [
+            "api",
+            "cases",
+            "list"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GetItemsOfCase",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://127.0.0.1:8000/api/cases/list/1/case_items/",
+          "protocol": "http",
+          "host": [
+            "127",
+            "0",
+            "0",
+            "1"
+          ],
+          "port": "8000",
+          "path": [
+            "api",
+            "cases",
+            "list",
+            "1",
+            "case_items",
+            ""
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "OpenCase",
+      "request": {
+        "auth": {
+          "type": "basic",
+          "basic": [
+            {
+              "key": "password",
+              "value": "Qwerty123Q",
+              "type": "string"
+            },
+            {
+              "key": "username",
+              "value": "vlad",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "url": {
+          "raw": "http://127.0.0.1:8000/api/cases/list/1/open_case/",
+          "protocol": "http",
+          "host": [
+            "127",
+            "0",
+            "0",
+            "1"
+          ],
+          "port": "8000",
+          "path": [
+            "api",
+            "cases",
+            "list",
+            "1",
+            "open_case",
+            ""
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "AccessDropedItem",
+      "request": {
+        "auth": {
+          "type": "basic",
+          "basic": [
+            {
+              "key": "password",
+              "value": "Qwerty123Q",
+              "type": "string"
+            },
+            {
+              "key": "username",
+              "value": "vlad",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"item_id\" : 43\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://127.0.0.1:8000/api/cases/list/access_dropped_item/",
+          "protocol": "http",
+          "host": [
+            "127",
+            "0",
+            "0",
+            "1"
+          ],
+          "port": "8000",
+          "path": [
+            "api",
+            "cases",
+            "list",
+            "access_dropped_item",
+            ""
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "SaleDroppedItem",
+      "request": {
+        "auth": {
+          "type": "basic",
+          "basic": [
+            {
+              "key": "password",
+              "value": "Qwerty123Q",
+              "type": "string"
+            },
+            {
+              "key": "username",
+              "value": "vlad",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"item_id\" : 41\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://127.0.0.1:8000/api/cases/list/sell_dropped_item/",
+          "protocol": "http",
+          "host": [
+            "127",
+            "0",
+            "0",
+            "1"
+          ],
+          "port": "8000",
+          "path": [
+            "api",
+            "cases",
+            "list",
+            "sell_dropped_item",
+            ""
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "PendingItems",
+      "request": {
+        "auth": {
+          "type": "basic",
+          "basic": [
+            {
+              "key": "password",
+              "value": "Qwerty123Q",
+              "type": "string"
+            },
+            {
+              "key": "username",
+              "value": "vlad",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://127.0.0.1:8000/api/cases/list/pending_items",
+          "protocol": "http",
+          "host": [
+            "127",
+            "0",
+            "0",
+            "1"
+          ],
+          "port": "8000",
+          "path": [
+            "api",
+            "cases",
+            "list",
+            "pending_items"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "SaleAllPendings",
+      "request": {
+        "auth": {
+          "type": "basic",
+          "basic": [
+            {
+              "key": "password",
+              "value": "Qwerty123Q",
+              "type": "string"
+            },
+            {
+              "key": "username",
+              "value": "vlad",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "url": {
+          "raw": "http://127.0.0.1:8000/api/cases/list/sell_all_pending/",
+          "protocol": "http",
+          "host": [
+            "127",
+            "0",
+            "0",
+            "1"
+          ],
+          "port": "8000",
+          "path": [
+            "api",
+            "cases",
+            "list",
+            "sell_all_pending",
+            ""
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "LiveDrops",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://127.0.0.1:8000/api/cases/list/live_drops/",
+          "protocol": "http",
+          "host": [
+            "127",
+            "0",
+            "0",
+            "1"
+          ],
+          "port": "8000",
+          "path": [
+            "api",
+            "cases",
+            "list",
+            "live_drops",
+            ""
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}
