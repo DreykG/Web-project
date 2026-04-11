@@ -34,6 +34,13 @@ export interface CartItem {
     added_at: string;
 }
 
+export interface CartResponse {
+    cart_id: number;
+    items: InventoryItem[];
+    total_items_count: number;
+    total_price: number;
+}
+
 export interface Weapon {
     id: number;
     category: number;

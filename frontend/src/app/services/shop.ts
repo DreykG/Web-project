@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { InventoryItem, Cart, CartResponse } from '../interfaces/models';
 
 @Injectable({
   providedIn: 'root',
@@ -10,15 +11,15 @@ export class ShopService {
   constructor(private http: HttpClient) {}
 
   getSkins() {
-    return this.http.get(`${this.apiUrl}/shop/items/`);
+    return this.http.get<InventoryItem[]>(`${this.apiUrl}/shop/items/`);
   }
 
   getCartItems() {
-    return this.http.get(`${this.apiUrl}/shop/cart/`);
+    return this.http.get<CartResponse>(`${this.apiUrl}/shop/cart/`);
   }
 
   getInventory(){
-    return this.http.get(`${this.apiUrl}/shop/items/my_items/`);
+    return this.http.get<InventoryItem[]>(`${this.apiUrl}/shop/items/my_items/`);
   }
 
   addToCart(skinId: number){
