@@ -1,49 +1,6 @@
-export interface Skin {
-    id: number;
-    name: string;
-    weapon: string;
-    rarity: string;
-    base_price: number;
-    url: string;
-}
-
-export interface InventoryItem {
-    id: number;
-    user: number;
-    skin: string;
-    price: number;
-    status: string;
-    obtained_type: string;
-    wear: string;
-    purchase_price: number;
-    sale_price: number;
-    created_at: string;
-}
-
-export interface Cart {
-    id: number;
-    user: number;
-    created_at: string;
-    updated_at: string;
-}
-
-export interface CartItem {
-    id: number;
-    cart: number;
-    inventory_item: number;
-    added_at: string;
-}
-
-export interface CartResponse {
-    cart_id: number;
-    items: InventoryItem[];
-    total_items_count: number;
-    total_price: number;
-}
-
 export interface Weapon {
     id: number;
-    category: number;
+    category: Category;
     name: string;
 }
 
@@ -60,4 +17,47 @@ export interface Rarity {
 export interface Wear {
     id: number;
     name: string;
+}
+
+export interface Skin {
+    id: number;
+    name: string;
+    weapon: Weapon;
+    rarity: Rarity;
+    base_price: number;
+    url: string;
+}
+
+export interface InventoryItem {
+    id: number;
+    user: number;
+    skin: Skin;
+    price: number;
+    status: string;
+    obtained_type: string;
+    wear: Wear;
+    purchase_price: number;
+    sale_price: number;
+    created_at: string;
+}
+
+export interface Cart {
+    id: number;
+    user: number;
+    created_at: string;
+    updated_at: string;
+}
+
+export interface CartItem {
+    id: number;
+    cart: number;
+    inventory_item: InventoryItem;
+    added_at: string;
+}
+
+export interface CartResponse {
+    cart_id: number;
+    items: InventoryItem[];
+    total_items_count: number;
+    total_price: number;
 }

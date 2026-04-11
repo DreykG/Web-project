@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ShopService } from '../../services/shop';
 import { FormsModule } from '@angular/forms';
+import { InventoryItem } from '../../interfaces/models';
 @Component({
   selector: 'app-shop',
   imports: [FormsModule],
@@ -8,8 +9,8 @@ import { FormsModule } from '@angular/forms';
   styleUrl: './shop.css',
 })
 export class Shop implements OnInit{
-  skins: any[] = [];
-  filteredSkins: any[] = [];
+  skins: InventoryItem[] = [];
+  sortedSkins: InventoryItem[] = [];
   searchText = '';
   sortBy = 'default';
   errorMessage = '';
@@ -18,9 +19,9 @@ export class Shop implements OnInit{
 
   ngOnInit() {
     this.shopService.getSkins().subscribe({
-      next: (data:any) => {
+      next: (data:InventoryItem[]) => {
         this.skins = data;
-        this.filteredSkins = data;
+        this.sortedSkins = data;
       },
       error: () => {
         this.errorMessage = 'Failed to load skins';
@@ -39,19 +40,19 @@ export class Shop implements OnInit{
     });
   }
 
-  filterSkins() {
+  sortSkins() {
+    let result = this.skins.filter(skin => skin.skin.name.toLowerCase().includes(this.searchText.toLowerCase()));
 
-    let result = this.skins.filter(skin => skin.name.toLowerCase().includes(this.searchText.toLocaleLowerCase()));
-
-    if(this.sortBy === 'price') {
-      result = result.sort((a, b) => a.price - b.price);
-    }else if(this.sortBy === 'quality') {
-      result = result.sort((a, b) => a.quality.localeCompare(b.quality));
-    }else if(this.sortBy === 'name') {
-      result = result.sort((a, b) => a.name.localeCompare(b.name));
+    if(this.sortBy === 'price_asc') {
+      result.sort((a, b) => a.price - b.price);
+    } else if(this.sortBy === 'price_desc') {
+      result.sort((a, b) => b.price - a.price);
+    } else if(this.sortBy === 'date_asc') {
+      result.sort((a, b) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime());
+    } else if(this.sortBy === 'date_desc') {
+      result.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
     }
 
-    this.filteredSkins = result;
-
+  this.sortedSkins = result;
   };
 }

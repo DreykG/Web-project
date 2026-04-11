@@ -2,7 +2,7 @@
 
 @for (item of cartItems; track item.id) {
     <div class="item-card">
-        {{item.name}}
+        {{item.skin.name}}
         {{item.price}}
         <button class="removeBtn" (click)="removeFromCart(item.id)">Remove from Cart</button>
     </div>     

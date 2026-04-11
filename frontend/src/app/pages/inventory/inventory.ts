@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ShopService } from '../../services/shop';
+import { InventoryItem } from '../../interfaces/models';
 @Component({
   selector: 'app-inventory',
   imports: [],
@@ -7,14 +8,14 @@ import { ShopService } from '../../services/shop';
   styleUrl: './inventory.css',
 })
 export class Inventory implements OnInit {
-  inventoryItems: any[] = [];
+  inventoryItems: InventoryItem[] = [];
   errorMessage = '';
 
   constructor(private shopService: ShopService) {}
 
   ngOnInit(){
     this.shopService.getInventory().subscribe({
-      next: (data:any) => {
+      next: (data:InventoryItem[]) => {
         this.inventoryItems = data;
       },
       error: () => {
