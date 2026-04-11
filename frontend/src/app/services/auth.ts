@@ -20,6 +20,10 @@ export class Auth {
     localStorage.setItem('token', token);
   }
 
+  register(username: string, password: string) {
+    return this.http.post(`${this.apiUrl}/register/`, { username, password });
+  }
+
   getToken() {
     return localStorage.getItem('token');
   }
