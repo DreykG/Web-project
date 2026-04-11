@@ -12,4 +12,8 @@ export class Navbar {
     localStorage.removeItem('token');
     window.location.href = '/login';
   }
+
+  isLoggedIn() {
+    return !!localStorage.getItem('token');
+  }
 }

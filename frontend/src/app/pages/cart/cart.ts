@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ShopService } from '../../services/shop';
+import { CartResponse, InventoryItem } from '../../interfaces/models';
 @Component({
   selector: 'app-cart',
   imports: [],
@@ -7,15 +8,15 @@ import { ShopService } from '../../services/shop';
   styleUrl: './cart.css',
 })
 export class Cart implements OnInit{
-  cartItems: any[] = [];
+  cartItems: InventoryItem[] = [];
   errorMessage = '';
 
   constructor(private shopService: ShopService) {}
 
   ngOnInit() {
     this.shopService.getCartItems().subscribe({
-      next: (data:any) => {
-        this.cartItems = data;
+      next: (data:CartResponse) => {
+        this.cartItems = data.items;
       },
       error: () => {
         this.errorMessage ='Cart Items loading error';
@@ -25,7 +26,7 @@ export class Cart implements OnInit{
 
   removeFromCart(itemId: number) {
     this.shopService.removeFromCart(itemId).subscribe({
-      next: (data:any) => {
+      next: () => {
         this.cartItems = this.cartItems.filter(item => item.id !== itemId);
       },
       error: () => {
@@ -36,9 +37,11 @@ export class Cart implements OnInit{
   }
 
   buyCart() {
-    this.shopService.buyCart().subscribe({
+    const ids = this.cartItems.map(item => item.id);
+    this.shopService.buyCart(ids).subscribe({
       next: () => {
-        console.log('Items have been successfully purchased');
+        this.cartItems = [];
+        alert('Purchase successeful!');
       },
       error: () => {
         this.errorMessage = 'Purchase error';

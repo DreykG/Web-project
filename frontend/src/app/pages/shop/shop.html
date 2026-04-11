@@ -1,17 +1,18 @@
 <h2>Shop</h2>
 
-<input class="search-bar" type="text" placeholder="Search..." [(ngModel)]="searchText" (input)="filterSkins()">
+<input class="search-bar" type="text" placeholder="Search..." [(ngModel)]="searchText" (input)="sortSkins()">
 
-<select [(ngModel)]="sortBy" (change)="filterSkins()">
+<select [(ngModel)]="sortBy" (change)="sortSkins()">
   <option value="default">Default</option>
-  <option value="price">Price</option>
-  <option value="name">Name</option>
-  <option value="quality">Quality</option>
+  <option value="price_asc">Price ↑</option>
+  <option value="price_desc">Price ↓</option>
+  <option value="date_asc">Date ↑</option>
+  <option value="date_desc">Date ↓</option>
 </select>
 
-@for (skin of filteredSkins; track skin.id) {
+@for (skin of sortedSkins; track skin.id) {
     <div class="skin-card">
-        {{skin.name}}
+        {{skin.skin.name}}
         {{skin.price}}
         <button class="addBtn" (click)="addToCart(skin.id)">Add to Cart</button>
     </div>

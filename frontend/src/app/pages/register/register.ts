@@ -4,27 +4,26 @@ import { Router, RouterLink } from '@angular/router';
 import { Auth } from '../../services/auth';
 
 @Component({
-  selector: 'app-login',
+  selector: 'app-register',
   imports: [FormsModule, RouterLink],
-  templateUrl: './login.html',
-  styleUrl: './login.css',
+  templateUrl: './register.html',
+  styleUrl: './register.css',
 })
-export class Login {
+export class Register {
   username = '';
   password = '';
-  errorMessage = '';
 
   constructor(private authService: Auth, private router: Router) {}
 
-  onLogin() {
-    this.authService.login(this.username, this.password).subscribe({
-      next: (response: any) => {
-        this.authService.saveToken(response.token);
-        this.router.navigate(['/shop']);
+  onRegister() {
+    this.authService.register(this.username, this.password).subscribe({
+      next: () => {
+        this.router.navigate(['/login']);
       },
       error: () => {
-        this.errorMessage = 'Invalid username or password';
+        alert('Registration failed. Please try again.');
       }
+
     });
   }
 }

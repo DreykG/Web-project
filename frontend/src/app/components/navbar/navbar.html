@@ -1,6 +1,8 @@
-<nav>
-  <a routerLink="/shop">Shop</a>
-  <a routerLink="/cart">Cart</a>
-  <a routerLink="/inventory">Inventory</a>
-  <button (click)="logout()">Logout</button>
-</nav>
+@if (isLoggedIn()) {
+  <nav>
+    <a routerLink="/shop">Shop</a>
+    <a routerLink="/cart">Cart</a>
+    <a routerLink="/inventory">Inventory</a>
+    <button (click)="logout()">Logout</button>
+  </nav>
+}
