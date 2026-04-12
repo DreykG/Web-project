@@ -17,8 +17,7 @@ class TradeViewSet(viewsets.ModelViewSet):
     # permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
-        from django.contrib.auth import get_user_model
-        user = get_user_model().objects.first()
+        user = self.request.user
         
 
         if self.action == 'list':
@@ -72,8 +71,8 @@ class TradeViewSet(viewsets.ModelViewSet):
         if user == offer.creator:
             return Response({"detail": "You can't respond to your trade!"}, status=400)
 
-        if not (1 <= len(item_ids) <= 3):
-            return Response({"detail": "1 to 3 items need to be added!"}, status=400)
+        if not (1 <= len(item_ids) <= 5):
+            return Response({"detail": "1 to 5 items need to be added!"}, status=400)
 
         items = InventoryItem.objects.filter(id__in=item_ids, user=user, status='in_inventory')
         if items.count() != len(item_ids):
