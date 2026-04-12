@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'cases',
     'trades',
     'users',
+    'gangs',
     'rest_framework',
     'corsheaders',
     'rest_framework.authtoken',

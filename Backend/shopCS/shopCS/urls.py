@@ -7,4 +7,5 @@ urlpatterns = [
     path('api/cases/', include('cases.api.urls')),
     path('api/users/', include('users.api.urls')),
     path('api/trades/', include('trades.api.urls')),
+    path('api/gangs/', include('gangs.api.urls')),
 ]

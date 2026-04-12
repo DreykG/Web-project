@@ -78,8 +78,10 @@ class InventoryItem(models.Model):
         ON_SALE = "on_sale", "On sale"
         IN_CART = "in_cart", "In cart"
         IN_TRADE = "in_trade", "In trade"
-        SOLD = "sold", "Sold"
-        WITHDRAWN = "withdrawn", "Withdrawn"
+        # SOLD = "sold", "Sold"
+        IN_GANG = "in_gang", "In gang"
+        RENTED_FROM_GANG = "rented_from_gang", "Rented from gang"
+        
 
     class ObtainedTypeChoices(models.TextChoices):
         PURCHASED = "purchased", "Purchased"
