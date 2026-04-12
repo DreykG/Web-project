@@ -1,2 +1,3 @@
-Backend/shopCS/db.sqlite3
-Backend/shopCs/venv/
+**/__pycache__/
+*.pyc
+db.sqlite3
