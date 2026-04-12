@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { ShopService } from '../../services/shop';
 import { FormsModule } from '@angular/forms';
 import { InventoryItem } from '../../interfaces/models';
@@ -15,19 +15,21 @@ export class Shop implements OnInit{
   sortBy = 'default';
   errorMessage = '';
 
-  constructor(private shopService: ShopService) {}
+  constructor(private shopService: ShopService, private cdr: ChangeDetectorRef) {}
 
-  ngOnInit() {
-    this.shopService.getSkins().subscribe({
-      next: (data:InventoryItem[]) => {
-        this.skins = data;
-        this.sortedSkins = data;
-      },
-      error: () => {
-        this.errorMessage = 'Failed to load skins';
-      }
-    });
-  }
+ngOnInit() {
+  this.shopService.getSkins().subscribe({
+    next: (data: InventoryItem[]) => {
+      this.skins = data;
+      this.sortedSkins = [...data]; 
+      this.cdr.detectChanges();
+    },
+    error: (err) => {
+      this.errorMessage = 'Failed to load skins';
+      this.cdr.detectChanges();
+    }
+  });
+}
 
   addToCart(skinId: number) {
     this.shopService.addToCart(skinId).subscribe({
@@ -41,7 +43,15 @@ export class Shop implements OnInit{
   }
 
   sortSkins() {
-    let result = this.skins.filter(skin => skin.skin.name.toLowerCase().includes(this.searchText.toLowerCase()));
+
+    let result = [...this.skins];
+
+    if (this.searchText.trim()) {
+      const search = this.searchText.toLowerCase();
+      result = result.filter(skin => 
+        skin.skin_name?.toLowerCase().includes(search)
+      );
+    }
 
     if(this.sortBy === 'price_asc') {
       result.sort((a, b) => a.price - b.price);
