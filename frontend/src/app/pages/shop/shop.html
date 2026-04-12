@@ -1,5 +1,4 @@
 <h2>Shop</h2>
-
 <input class="search-bar" type="text" placeholder="Search..." [(ngModel)]="searchText" (input)="sortSkins()">
 
 <select [(ngModel)]="sortBy" (change)="sortSkins()">
@@ -12,7 +11,8 @@
 
 @for (skin of sortedSkins; track skin.id) {
     <div class="skin-card">
-        {{skin.skin.name}}
+        {{skin.user_username}}
+        {{skin.skin_name}}
         {{skin.price}}
         <button class="addBtn" (click)="addToCart(skin.id)">Add to Cart</button>
     </div>

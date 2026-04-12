@@ -31,13 +31,15 @@ export interface Skin {
 export interface InventoryItem {
     id: number;
     user: number;
-    skin: Skin;
+    user_username: string;
+    skin: number;
+    skin_name: string;
     price: number;
+    rarity: string;
+    wear: number;
+    wear_name: string;
+    url: string;
     status: string;
-    obtained_type: string;
-    wear: Wear;
-    purchase_price: number;
-    sale_price: number;
     created_at: string;
 }
 
