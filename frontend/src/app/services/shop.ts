@@ -23,7 +23,7 @@ export class ShopService {
   }
 
   addToCart(skinId: number){
-    return this.http.post(`${this.apiUrl}/shop/cart/add/${skinId}/`, {});
+    return this.http.post(`${this.apiUrl}/shop/cart/add/${skinId}`, {});
   }
 
   buyCart(ids: number[]){
@@ -31,6 +31,6 @@ export class ShopService {
   }
 
   removeFromCart(itemId: number){
-    return this.http.post(`${this.apiUrl}/shop/cart/remove/`, {ids: [itemId]});
+    return this.http.post(`${this.apiUrl}/shop/cart/remove`, {ids: [itemId]});
   }
 }

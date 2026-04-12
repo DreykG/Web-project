@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { ShopService } from '../../services/shop';
 import { CartResponse, InventoryItem } from '../../interfaces/models';
 @Component({
@@ -11,12 +11,13 @@ export class Cart implements OnInit{
   cartItems: InventoryItem[] = [];
   errorMessage = '';
 
-  constructor(private shopService: ShopService) {}
+  constructor(private shopService: ShopService, private cdr: ChangeDetectorRef) {}
 
   ngOnInit() {
     this.shopService.getCartItems().subscribe({
       next: (data:CartResponse) => {
         this.cartItems = data.items;
+        this.cdr.detectChanges();
       },
       error: () => {
         this.errorMessage ='Cart Items loading error';
@@ -28,6 +29,7 @@ export class Cart implements OnInit{
     this.shopService.removeFromCart(itemId).subscribe({
       next: () => {
         this.cartItems = this.cartItems.filter(item => item.id !== itemId);
+        this.cdr.detectChanges();
       },
       error: () => {
         this.errorMessage = 'Item remove error';
