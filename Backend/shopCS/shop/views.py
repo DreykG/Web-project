@@ -12,6 +12,7 @@ from rest_framework import status,viewsets
 from .models import Category, Weapon, Skin, Cart, CartItem, InventoryItem
 from .serializers import CategorySerializer, InventoryItemSelectionSerializer, WeaponSerializer, InventoryItemSerializer
 from django.db import transaction
+from rest_framework.permissions import IsAuthenticated
 
 class CategoryListAPIView(APIView):
     def get(self, request):
@@ -125,7 +126,7 @@ class InventoryItemViewSet(viewsets.ReadOnlyModelViewSet):
 
 
 @api_view(['GET'])
-# @permission_classes([IsAuthenticated])
+@permission_classes([IsAuthenticated])
 def view_cart(request):
     cart, _ = Cart.objects.get_or_create(user=request.user)
     items = InventoryItem.objects.filter(cart_items__cart=cart)
@@ -141,7 +142,7 @@ def view_cart(request):
 
 
 @api_view(['POST'])
-# @permission_classes([IsAuthenticated])
+@permission_classes([IsAuthenticated])
 def add_to_cart(request, item_id):
 
     item = get_object_or_404(InventoryItem, id=item_id, status='on_sale')
@@ -153,16 +154,16 @@ def add_to_cart(request, item_id):
         )
     
     cart, _ = Cart.objects.get_or_create(user=request.user)
-    cart_item, created = CartItem.objects.get_or_create(cart=cart, inventory_item=item)
     
-    if not created:
-        return Response({"detail": "Item already in the cart"}, status=status.HTTP_400_BAD_REQUEST)
+    if CartItem.objects.filter(cart=cart, inventory_item=item).exists():
+        return Response({"detail": "Item already in your cart"}, status=status.HTTP_400_BAD_REQUEST)
         
+    CartItem.objects.create(cart=cart, inventory_item=item)
     return Response({"detail": "Item was added to cart"}, status=status.HTTP_201_CREATED)
 
 
 @api_view(['POST']) # Используем POST для передачи тела запроса
-# @permission_classes([IsAuthenticated])
+@permission_classes([IsAuthenticated])
 def remove_from_cart(request):
     user = request.user
     # Ожидаем структуру: {"ids": [1, 3, 5]}
@@ -196,7 +197,7 @@ def remove_from_cart(request):
 
 
 @api_view(['POST'])
-# @permission_classes([IsAuthenticated])
+@permission_classes([IsAuthenticated])
 def checkout_selected(request):
 
     buyer = request.user
@@ -247,7 +248,7 @@ def checkout_selected(request):
 
 
 @api_view(['POST'])
-# @permission_classes([IsAuthenticated])
+@permission_classes([IsAuthenticated])
 def for_sale(request):
     seller = request.user
     profile = seller.profile
@@ -288,7 +289,7 @@ def for_sale(request):
     return Response({"detail": f"Items for sale: {items_qs.count()}"})
 
 @api_view(['POST'])
-# @permission_classes([IsAuthenticated])
+@permission_classes([IsAuthenticated])
 def cancel_sale(request):
     user = request.user
     #{"items": [{"id": 1}, ...]}

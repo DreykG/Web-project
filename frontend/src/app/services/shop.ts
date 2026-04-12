@@ -27,7 +27,7 @@ export class ShopService {
   }
 
   buyCart(ids: number[]){
-    return this.http.post(`${this.apiUrl}/shop/cart/checkout/`, {ids: ids});
+    return this.http.post(`${this.apiUrl}/shop/cart/checkout`, {ids: ids});
   }
 
   removeFromCart(itemId: number){
