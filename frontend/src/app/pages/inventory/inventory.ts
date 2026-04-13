@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { ShopService } from '../../services/shop';
 import { InventoryItem } from '../../interfaces/models';
 @Component({
@@ -11,12 +11,13 @@ export class Inventory implements OnInit {
   inventoryItems: InventoryItem[] = [];
   errorMessage = '';
 
-  constructor(private shopService: ShopService) {}
+  constructor(private shopService: ShopService, private cdr: ChangeDetectorRef) {}
 
   ngOnInit(){
     this.shopService.getInventory().subscribe({
       next: (data:InventoryItem[]) => {
         this.inventoryItems = data;
+        this.cdr.detectChanges();
       },
       error: () => {
         this.errorMessage = 'Inventory loading error';
