@@ -11,15 +11,15 @@ export class TradeService {
   constructor(private http: HttpClient) {}
 
   getTradeOffers() {
-    return this.http.get<TradeOffer[]>(`${this.apiUrl}/api/trades/`);
+    return this.http.get<TradeOffer[]>(`${this.apiUrl}/trades/`);
   }
 
   getMyTradeOffers() {
-    return this.http.get<TradeOffer[]>(`${this.apiUrl}/api/trades/my_offers/`);
+    return this.http.get<TradeOffer[]>(`${this.apiUrl}/trades/my_offers/`);
   }
 
   createTradeOffer(title: string, items: number[]) {
-    return this.http.post<TradeOffer>(`${this.apiUrl}/api/trades/`, { title, items });
+    return this.http.post<TradeOffer>(`${this.apiUrl}/trades/`, { title, items });
   }
 
   respondToOffer(offerId: number, items: number[]) {

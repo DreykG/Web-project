@@ -1,0 +1,36 @@
+@if (errorMessage) {
+    <p class="error">{{errorMessage}}</p>
+}
+
+<div class="stats">
+    <span>Всего офферов: {{offers.length}}</span>
+    <span>Мои офферы: {{myOffers.length}}</span>
+    <button>Создать оффер</button>
+</div>
+
+<h3>Мои офферы</h3>
+@for (offer of myOffers; track offer.id) {
+    <div class="offer-card">
+        <span>{{offer.title}}</span>
+        <span>{{offer.offer_value}}</span>
+        <span>{{offer.status}}</span>
+        <span>Предметов: {{offer.items.length}}</span>
+        <span>Ответов: {{offer.responses_count}}</span>
+    </div>
+} @empty {
+    <p>У вас нет офферов</p>
+}
+
+<h3>Активные офферы</h3>
+@for (offer of offers; track offer.id) {
+    <div class="offer-card">
+        <span>{{offer.creator_username}}</span>
+        <span>{{offer.title}}</span>
+        <span>{{offer.offer_value}}</span>
+        <span>Предметов: {{offer.items.length}}</span>
+        <span>Ответов: {{offer.responses_count}}</span>
+        <button>Войти</button>
+    </div>
+} @empty {
+    <p>Нет активных офферов</p>
+}
