@@ -19,7 +19,7 @@ class TradeResponseItemSerializer(serializers.ModelSerializer):
     inventory_item_details = InventoryItemSerializer(source="inventory_item", read_only=True)
 
     class Meta:
-        model = TradeOfferItem
+        model = TradeResponseItem
         fields = [
             "id",
             "inventory_item",
