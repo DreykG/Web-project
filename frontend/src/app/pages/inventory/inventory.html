@@ -9,6 +9,7 @@
         {{profile.inventory_value}}
         {{profile.date_joined}}
     </div>
+    <button (click)="logout()">Logout</button>
 }
 
 @for (item of inventoryItems; track item.id) {

@@ -34,7 +34,13 @@ export class Inventory implements OnInit {
       },
       error: () => {
         this.errorMessage = 'Inventory loading error';
+        this.cdr.detectChanges();
       }
     })
+  }
+
+  logout() {
+    localStorage.removeItem('token');
+    window.location.href = '/login';
   }
 }

@@ -20,7 +20,7 @@ export class Login {
     this.authService.login(this.username, this.password).subscribe({
       next: (response: any) => {
         this.authService.saveToken(response.token);
-        this.router.navigate(['/shop']);
+        window.location.href = '/shop'
       },
       error: () => {
         this.errorMessage = 'Invalid username or password';
