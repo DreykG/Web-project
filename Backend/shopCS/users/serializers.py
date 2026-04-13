@@ -36,9 +36,10 @@ class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = Profile
         fields = [
+            'id',
             'username', 
             'balance', 
-            'avatar', 
+            #'avatar', 
             'cases_opened_count', 
             'total_drop_value', 
             'inventory_value', 

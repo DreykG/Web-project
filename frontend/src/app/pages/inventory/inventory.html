@@ -1,4 +1,15 @@
-<p>Inventory</p>
+<p>Profile</p>
+
+@if (profile) {
+    <div class="item-card">
+        {{profile.username}}
+        {{profile.balance}}
+        {{profile.cases_opened_count}}
+        {{profile.total_drop_value}}
+        {{profile.inventory_value}}
+        {{profile.date_joined}}
+    </div>
+}
 
 @for (item of inventoryItems; track item.id) {
     <div class="item-card">

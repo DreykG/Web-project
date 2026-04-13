@@ -63,3 +63,14 @@ export interface CartResponse {
     total_items_count: number;
     total_price: number;
 }
+
+export interface UserProfile {
+    id: number;
+    username: string;
+    balance: number;
+    avatar: string | null;
+    cases_opened_count: number;
+    total_drop_value: number;
+    inventory_value: number;
+    date_joined: string;
+}
