@@ -5,6 +5,7 @@ import { Cart } from "./pages/cart/cart";
 import { Register } from "./pages/register/register";
 import { Inventory } from "./pages/inventory/inventory";
 import { Trades } from './pages/trades/trades';
+import { TradeRoom } from './components/trade-room/trade-room';
 import { authGuard } from './guards/auth-guard';
 
 export const routes: Routes = [
@@ -14,5 +15,6 @@ export const routes: Routes = [
     {path: 'cart', component: Cart, canActivate: [authGuard]},
     {path: 'inventory', component: Inventory, canActivate: [authGuard]},
     {path: 'trades', component: Trades, canActivate: [authGuard]},
+    {path: 'trade-room', component: TradeRoom, canActivate: [authGuard]},
     {path: 'register', component: Register},
 ];

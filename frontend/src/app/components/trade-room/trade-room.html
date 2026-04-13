@@ -1,0 +1,57 @@
+@if (errorMessage) {
+    <p class="error">{{errorMessage}}</p>
+}
+
+@if (offer) {
+    <div class="trade-room">
+        
+        <!-- Левая часть - твой инвентарь -->
+        <div class="inventory-panel">
+            <h3>Ваш инвентарь</h3>
+            @for (item of myInventory; track item.id) {
+                <div class="item-card" [class.selected]="isSelected(item)" (click)="toggleItem(item)">
+                    <img [src]="item.url" [alt]="item.skin_name">
+                    <span>{{item.skin_name}}</span>
+                    <span>{{item.price}}</span>
+                </div>
+            } @empty {
+                <p>Инвентарь пуст</p>
+            }
+        </div>
+
+        <!-- Правая часть - предметы обмена -->
+        <div class="trade-panel">
+            
+            <!-- Твои предложенные предметы -->
+            <div class="your-offer">
+                <h3>Ваши предметы:</h3>
+                @for (item of selectedItems; track item.id) {
+                    <div class="item-card">
+                        <span>{{item.skin_name}}</span>
+                        <span>{{item.price}}</span>
+                    </div>
+                } @empty {
+                    <p>Выберите предметы для обмена</p>
+                }
+            </div>
+
+            <!-- Предметы оппонента -->
+            <div class="their-offer">
+                <h3>Предметы {{offer.creator_username}}:</h3>
+                @for (item of offer.items; track item.id) {
+                    <div class="item-card">
+                        <span>{{item.inventory_item_details.skin_name}}</span>
+                        <span>{{item.inventory_item_details.price}}</span>
+                    </div>
+                } @empty {
+                    <p>Нет предметов</p>
+                }
+            </div>
+
+            <button (click)="respondToOffer()">Предложить обмен</button>
+        </div>
+
+    </div>
+} @else {
+    <p>Загрузка...</p>
+}
