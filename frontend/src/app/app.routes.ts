@@ -16,5 +16,6 @@ export const routes: Routes = [
     {path: 'inventory', component: Inventory, canActivate: [authGuard]},
     {path: 'trades', component: Trades, canActivate: [authGuard]},
     {path: 'trade-room', component: TradeRoom, canActivate: [authGuard]},
+    {path: 'trades/:id', component: TradeRoom, canActivate: [authGuard]},
     {path: 'register', component: Register},
 ];

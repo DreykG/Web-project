@@ -8,34 +8,43 @@
         <!-- Левая часть - твой инвентарь -->
         <div class="inventory-panel">
             <h3>Ваш инвентарь</h3>
-            @for (item of myInventory; track item.id) {
-                <div class="item-card" [class.selected]="isSelected(item)" (click)="toggleItem(item)">
-                    <img [src]="item.url" [alt]="item.skin_name">
-                    <span>{{item.skin_name}}</span>
-                    <span>{{item.price}}</span>
-                </div>
-            } @empty {
-                <p>Инвентарь пуст</p>
-            }
-        </div>
-
-        <!-- Правая часть - предметы обмена -->
-        <div class="trade-panel">
-            
-            <!-- Твои предложенные предметы -->
-            <div class="your-offer">
-                <h3>Ваши предметы:</h3>
-                @for (item of selectedItems; track item.id) {
-                    <div class="item-card">
+            <div cdkDropList 
+                 #inventoryList="cdkDropList"
+                 [cdkDropListData]="myInventory"
+                 [cdkDropListConnectedTo]="[selectedList]"
+                 (cdkDropListDropped)="drop($event)">
+                @for (item of myInventory; track item.id) {
+                    <div class="item-card" cdkDrag>
+                        <img [src]="item.url" [alt]="item.skin_name">
                         <span>{{item.skin_name}}</span>
                         <span>{{item.price}}</span>
                     </div>
                 } @empty {
-                    <p>Выберите предметы для обмена</p>
+                    <p>Инвентарь пуст</p>
                 }
             </div>
+        </div>
 
-            <!-- Предметы оппонента -->
+        <!-- Правая часть - предметы обмена -->
+        <div class="trade-panel">
+            <div class="your-offer">
+                <h3>Ваши предметы:</h3>
+                <div cdkDropList
+                     #selectedList="cdkDropList"
+                     [cdkDropListData]="selectedItems"
+                     [cdkDropListConnectedTo]="[inventoryList]"
+                     (cdkDropListDropped)="drop($event)">
+                    @for (item of selectedItems; track item.id) {
+                        <div class="item-card" cdkDrag>
+                            <span>{{item.skin_name}}</span>
+                            <span>{{item.price}}</span>
+                        </div>
+                    } @empty {
+                        <p>Перетащите предметы сюда</p>
+                    }
+                </div>
+            </div>
+
             <div class="their-offer">
                 <h3>Предметы {{offer.creator_username}}:</h3>
                 @for (item of offer.items; track item.id) {

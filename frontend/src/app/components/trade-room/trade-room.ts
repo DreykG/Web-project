@@ -1,12 +1,13 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
-import { RouterLink, ActivatedRoute } from "@angular/router";
+import { ActivatedRoute } from "@angular/router";
 import { TradeService } from '../../services/trade';
 import { ShopService } from '../../services/shop';
 import { TradeOffer, InventoryItem } from '../../interfaces/models';
+import { CdkDragDrop, moveItemInArray, transferArrayItem, DragDropModule } from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'app-trade-room',
-  imports: [RouterLink],
+  imports: [DragDropModule],
   templateUrl: './trade-room.html',
   styleUrl: './trade-room.css',
 })
@@ -74,4 +75,18 @@ export class TradeRoom implements OnInit {
         }
     });
   }
+
+  drop(event: CdkDragDrop<InventoryItem[]>) {
+    if (event.previousContainer === event.container) {
+        moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+    } else {
+        transferArrayItem(
+            event.previousContainer.data,
+            event.container.data,
+            event.previousIndex,
+            event.currentIndex
+        );
+    }
+    this.cdr.detectChanges();
+}
 }
