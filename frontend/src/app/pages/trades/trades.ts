@@ -80,4 +80,17 @@ export class Trades implements OnInit{
       }
     });
   }
+
+  deleteOffer(offerId: number) {
+    this.tradeService.deleteTradeOffer(offerId).subscribe({
+      next: () => {
+        this.myOffers = this.myOffers.filter(offer => offer.id !== offerId);
+        this.cdr.detectChanges();
+      },
+      error: (err) => {
+        this.errorMessage = 'Failed to delete trade offer';
+        this.cdr.detectChanges();
+      }
+    });
+  }
 }

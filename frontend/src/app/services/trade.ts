@@ -29,4 +29,8 @@ export class TradeService {
   acceptResponse(offerId: number, responseId: number) {
     return this.http.post(`${this.apiUrl}/trades/${offerId}/accept-response/${responseId}/`, {});
   }
+
+  deleteTradeOffer(id: number) {
+    return this,this.http.delete(`${this.apiUrl}/trades/${id}/`);
+  }
 }

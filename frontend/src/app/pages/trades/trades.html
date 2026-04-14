@@ -44,6 +44,7 @@
         <span>{{offer.status}}</span>
         <span>Предметов: {{offer.items.length}}</span>
         <span>Ответов: {{offer.responses_count}}</span>
+        <button (click)="deleteOffer(offer.id)">Delete</button>
     </div>
 } @empty {
     <p>У вас нет офферов</p>
