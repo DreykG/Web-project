@@ -15,6 +15,10 @@
             <h3>Создать оффер</h3>
             
             <input [(ngModel)]="newOfferTitle" placeholder="Название оффера">
+            <label>
+                <input type="checkbox" [(ngModel)]="isPrivate">
+                Privacy
+            </label>
             
             <h4>Выберите предметы:</h4>
             @for (item of myInventory; track item.id) {

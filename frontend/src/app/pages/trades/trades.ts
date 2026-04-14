@@ -19,6 +19,7 @@ export class Trades implements OnInit{
   newOfferTitle = '';
   myInventory: InventoryItem[] = [];
   selectedItems: number[] = [];
+  isPrivate = false;
 
   constructor(private tradeService: TradeService, private shopService: ShopService, private cdr: ChangeDetectorRef) {}
 
@@ -68,7 +69,7 @@ export class Trades implements OnInit{
   }
 
   createOffer() {
-    this.tradeService.createTradeOffer(this.newOfferTitle, this.selectedItems).subscribe({
+    this.tradeService.createTradeOffer(this.newOfferTitle, this.selectedItems, this.isPrivate).subscribe({
       next: (offer: TradeOffer) => {
         this.myOffers.push(offer);
         this.showCreateModal = false;

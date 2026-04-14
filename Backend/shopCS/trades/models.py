@@ -20,6 +20,8 @@ class TradeOffer(models.Model):
         choices=StatusChoices.choices,
         default=StatusChoices.OPEN
     )
+    is_private = models.BooleanField(default=False)
+
     #Sum of all items in each offer
     offer_value = models.DecimalField(max_digits=15, decimal_places=2, default=0.00)
     

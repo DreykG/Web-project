@@ -18,8 +18,8 @@ export class TradeService {
     return this.http.get<TradeOffer[]>(`${this.apiUrl}/trades/my_offers/`);
   }
 
-  createTradeOffer(title: string, items: number[]) {
-    return this.http.post<TradeOffer>(`${this.apiUrl}/trades/`, { title, items });
+  createTradeOffer(title: string, items: number[], isPrivate: boolean = false) {
+    return this.http.post<TradeOffer>(`${this.apiUrl}/trades/`, { title, items, is_private: isPrivate });
   }
 
   respondToOffer(offerId: number, items: number[]) {

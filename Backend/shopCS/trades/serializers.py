@@ -54,7 +54,7 @@ class TradeOfferSerializer(serializers.ModelSerializer):
         fields = [
             "id", "creator", "creator_username", 
             "title", "status", "offer_value", 
-            "items", "responses_count", "responses", "created_at"
+            "items", "responses_count", "responses", "created_at", "is_private"
         ]
 
 

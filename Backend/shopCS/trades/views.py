@@ -22,7 +22,7 @@ class TradeViewSet(viewsets.ModelViewSet):
 
         if self.action == 'list':
 
-            return TradeOffer.objects.filter(status='open').exclude(creator=user)
+            return TradeOffer.objects.filter(status='open', is_private=False).exclude(creator=user)
         
         return super().get_queryset()
 
@@ -49,7 +49,8 @@ class TradeViewSet(viewsets.ModelViewSet):
         offer = TradeOffer.objects.create(
             creator=user,
             title=request.data.get('title', ''),
-            offer_value=total_value
+            offer_value=total_value,
+            is_private=request.data.get('is_private', False)
         )
 
         for item in items:
