@@ -18,8 +18,8 @@ export class TradeService {
     return this.http.get<TradeOffer[]>(`${this.apiUrl}/trades/my_offers/`);
   }
 
-  createTradeOffer(title: string, items: number[], isPrivate: boolean = false) {
-    return this.http.post<TradeOffer>(`${this.apiUrl}/trades/`, { title, items, is_private: isPrivate });
+  createTradeOffer(title: string, items: number[], isPrivate: boolean = false, password: string | null = null) {
+    return this.http.post<TradeOffer>(`${this.apiUrl}/trades/`, { title, items, is_private: isPrivate, password });
   }
 
   respondToOffer(offerId: number, items: number[]) {
@@ -32,5 +32,9 @@ export class TradeService {
 
   deleteTradeOffer(id: number) {
     return this,this.http.delete(`${this.apiUrl}/trades/${id}/`);
+  }
+
+  verify_password(offerId: number, password: string) {
+    return this.http.post(`${this.apiUrl}/trades/${offerId}/verify_password/`, { password });
   }
 }

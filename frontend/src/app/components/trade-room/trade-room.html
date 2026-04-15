@@ -2,7 +2,18 @@
     <p class="error">{{errorMessage}}</p>
 }
 
-@if (offer) {
+@if (offer?.is_private && !passwordVerified) {
+    <div class="password-prompt">
+        <h3>Этот оффер защищён паролем</h3>
+        <input type="password" [(ngModel)]="passwordInput" placeholder="Введите пароль">
+        <button (click)="verifyPassword()">Подтвердить</button>
+        @if (errorMessage) {
+            <p class="error">{{errorMessage}}</p>
+        }
+    </div>
+
+}@else {
+    @if (offer) {
     <div class="trade-room">
         
         <!-- Левая часть - твой инвентарь -->
@@ -64,3 +75,5 @@
 } @else {
     <p>Загрузка...</p>
 }
+}
+

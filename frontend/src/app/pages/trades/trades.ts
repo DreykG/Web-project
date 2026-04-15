@@ -20,6 +20,7 @@ export class Trades implements OnInit{
   myInventory: InventoryItem[] = [];
   selectedItems: number[] = [];
   isPrivate = false;
+  offerPassword = '';
 
   constructor(private tradeService: TradeService, private shopService: ShopService, private cdr: ChangeDetectorRef) {}
 
@@ -69,7 +70,7 @@ export class Trades implements OnInit{
   }
 
   createOffer() {
-    this.tradeService.createTradeOffer(this.newOfferTitle, this.selectedItems, this.isPrivate).subscribe({
+    this.tradeService.createTradeOffer(this.newOfferTitle, this.selectedItems, this.isPrivate, this.isPrivate ? this.offerPassword : null).subscribe({
       next: (offer: TradeOffer) => {
         this.myOffers.push(offer);
         this.showCreateModal = false;

@@ -21,6 +21,7 @@ class TradeOffer(models.Model):
         default=StatusChoices.OPEN
     )
     is_private = models.BooleanField(default=False)
+    password = models.CharField(max_length=255, blank=True, null=True)
 
     #Sum of all items in each offer
     offer_value = models.DecimalField(max_digits=15, decimal_places=2, default=0.00)

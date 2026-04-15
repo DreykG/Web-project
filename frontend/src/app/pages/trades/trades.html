@@ -19,6 +19,10 @@
                 <input type="checkbox" [(ngModel)]="isPrivate">
                 Privacy
             </label>
+
+            @if (isPrivate) {
+                <input type = "password" [(ngModel)]="offerPassword" placeholder="Пароль для оффера">
+            }
             
             <h4>Выберите предметы:</h4>
             @for (item of myInventory; track item.id) {

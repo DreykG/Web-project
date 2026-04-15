@@ -4,10 +4,11 @@ import { TradeService } from '../../services/trade';
 import { ShopService } from '../../services/shop';
 import { TradeOffer, InventoryItem } from '../../interfaces/models';
 import { CdkDragDrop, moveItemInArray, transferArrayItem, DragDropModule } from '@angular/cdk/drag-drop';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-trade-room',
-  imports: [DragDropModule],
+  imports: [DragDropModule, FormsModule],
   templateUrl: './trade-room.html',
   styleUrl: './trade-room.css',
 })
@@ -16,6 +17,8 @@ export class TradeRoom implements OnInit {
   myInventory: InventoryItem[] = [];
   selectedItems: InventoryItem[] = [];
   errorMessage = '';
+  passwordInput = '';
+  passwordVerified = false;
 
   constructor(private route: ActivatedRoute, private tradeService: TradeService, private shopService: ShopService, private cdr: ChangeDetectorRef) {}
 
@@ -88,5 +91,20 @@ export class TradeRoom implements OnInit {
         );
     }
     this.cdr.detectChanges();
-}
+  }
+
+  verifyPassword() {
+    if (!this.offer) return;
+
+    this.tradeService.verify_password(this.offer.id, this.passwordInput).subscribe({
+      next: () => {
+        this.passwordVerified = true;
+        this.cdr.detectChanges();
+      },
+      error: () => {
+        this.errorMessage = 'Incorrect password';
+        this.cdr.detectChanges();
+      }
+    });
+  }
 }

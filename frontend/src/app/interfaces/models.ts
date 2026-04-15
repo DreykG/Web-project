@@ -110,5 +110,6 @@ export interface TradeOffer {
     responses_count: number;
     responses: TradeResponse[];
     created_at: string;
-    is_pravete: boolean;
+    is_private: boolean;
+    password?: string | null;
 }
