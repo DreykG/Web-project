@@ -49,6 +49,11 @@ export class Cart implements OnInit{
         this.errorMessage = 'Purchase error';
       }
     });
+
   }
+
+    totalSum() {
+      return this.cartItems.reduce((sum, item) => sum + Number(item.price), 0);
+    }
 
 }
