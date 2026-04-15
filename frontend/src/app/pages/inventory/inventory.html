@@ -12,15 +12,34 @@
     <button (click)="logout()">Logout</button>
 }
 
-@for (item of inventoryItems; track item.id) {
-    <div class="item-card">
-        {{item.skin_name}}
-        {{item.price}}
-    </div>
-} @empty {
-    <p>Inventory is empty</p>
-}
+<button (click)="activeTab = 'inventory'">Инвентарь</button>
+<button (click)="activeTab = 'sales'">Мои продажи</button>
 
 @if (errorMessage) {
     <p class="error">{{errorMessage}}</p>
+}
+
+@if (activeTab === 'inventory') {
+    @for (item of inventoryItems; track item.id) {
+        <div class="item-card">
+            {{item.skin_name}}
+            {{item.price}}
+            <input type="number" [(ngModel)]="salePrice[item.id]" placeholder="Цена" />
+            <button (click)="putOnSale(item)">Выставить на продажу</button>
+        </div>
+    } @empty {
+        <p>Инвентарь пуст</p>
+    }
+}
+
+@if (activeTab === 'sales') {
+    @for (item of mySales; track item.id) {
+        <div class="item-card">
+            {{item.skin_name}}
+            {{item.price}}
+            <button (click)="cancelSale(item.id)">Отменить продажу</button>
+        </div>
+    } @empty {
+        <p>Нет активных продаж</p>
+    }
 }

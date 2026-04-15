@@ -33,4 +33,16 @@ export class ShopService {
   removeFromCart(itemId: number){
     return this.http.post(`${this.apiUrl}/shop/cart/remove`, {ids: [itemId]});
   }
+
+  saleItem(items: {id: number, price: number}[]){
+    return this.http.post(`${this.apiUrl}/shop/items/sale`, {items});
+  }
+
+  getMySales(){
+    return this.http.get<InventoryItem[]>(`${this.apiUrl}/shop/items/my_sales/`);
+  }
+
+  cancelSale(ids: number[]){
+    return this.http.post(`${this.apiUrl}/shop/items/cancel_sale`, {ids});
+  }
 }

@@ -1,0 +1,5 @@
+<h2>My Sales</h2>
+<div *ngFor="let item of sales">
+  {{ item.skin_name }} — {{ item.price }}
+  <button (click)="cancelSale(item.id)">Отменить</button>
+</div>
