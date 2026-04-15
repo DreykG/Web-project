@@ -92,7 +92,16 @@ class InventoryItem(models.Model):
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
+        null=True,
+        blank=True,
         related_name="inventory_items"
+    )
+    gang = models.ForeignKey(
+        'gangs.Gang',
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='vault_items'
     )
     
     skin = models.ForeignKey(
@@ -135,7 +144,8 @@ class InventoryItem(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"{self.skin.name} ({self.user.username})"
+        owner_name = self.user.username if self.user else "Gang Vault"
+        return f"[{owner_name}] {self.skin.name}"
 
 
 class Cart(models.Model):

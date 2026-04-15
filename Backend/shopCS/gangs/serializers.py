@@ -21,7 +21,7 @@ class GangMessageSerializer(serializers.ModelSerializer):
         fields = ['id', 'user', 'username', 'text', 'formatted_display', 'created_at']
 
     def get_formatted_display(self, obj):
-        return f"<[{obj.user.username}] : {obj.text}>"
+        return f"<[{obj.user.username}] : {obj.text}"
 
 
 class GangJoinRequestSerializer(serializers.ModelSerializer):

@@ -38,16 +38,6 @@ class CaseViewSet(viewsets.ReadOnlyModelViewSet):
         user = request.user
         case = self.get_object()
 
-        # has_pending = InventoryItem.objects.filter(
-        #     user=user, 
-        #     status='pending'
-        # ).exists()
-
-        # if has_pending:
-        #     return Response(
-        #         {"detail": "You have an unresolved issue! Sell it first or accept it!"}, 
-        #         status=status.HTTP_400_BAD_REQUEST
-        #     )
 
         if user.balance < case.price:
             return Response({"detail" : "Not enought balance!"}, status=status.HTTP_400_BAD_REQUEST)
