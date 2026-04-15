@@ -1,5 +1,10 @@
 <h2>My Sales</h2>
-<div *ngFor="let item of sales">
-  {{ item.skin_name }} — {{ item.price }}
-  <button (click)="cancelSale(item.id)">Отменить</button>
-</div>
+
+@for (item of sales; track item.id) {
+    <div>
+        {{ item.skin_name }} {{ item.price }}
+        <button (click)="cancelSale(item.id)">Отменить</button>
+    </div>
+} @empty {
+    <p>Нет активных продаж</p>
+}
