@@ -130,20 +130,51 @@ class TradeViewSet(viewsets.ModelViewSet):
             item.status = 'in_inventory'
             item.save()
 
-        # 3. Закрываем Offer и принимаем Response
-        offer.status = TradeOffer.StatusChoices.CLOSED
-        offer.save()
-        winning_res.status = TradeResponse.StatusChoices.ACCEPTED
-        winning_res.save()
+        offer.delete()
+        winning_res.delete()
 
-        # 4. ОТКЛОНЯЕМ ОСТАЛЬНЫЕ ОТВЕТЫ И ВОЗВРАЩАЕМ ИМ ВЕЩИ
+
         other_responses = offer.responses.filter(status='pending').exclude(id=winning_res.id)
         for other in other_responses:
             other.status = InventoryItem.StatusChoices.IN_INVENTORY
             other.save()
-            # Возвращаем вещи владельцам
+
             other_items = InventoryItem.objects.filter(traderesponseitem__trade_response=other)
             other_items.update(status='in_inventory')
         other_responses.delete()
 
         return Response({"detail": "The exchange has been completed successfully!"})
+    
+
+    @action(detail=True, methods=['post'])
+    @transaction.atomic
+    def cancel_offer(self, request, pk=None):
+        offer = self.get_object()
+        user = request.user
+
+        if offer.creator != user:
+            return Response({"detail": "You can only cancel your own offers."}, status=403)
+
+        if offer.status != TradeOffer.StatusChoices.OPEN:
+            return Response({"detail": "You can only cancel open offers."}, status=400)
+
+
+        offer_items = InventoryItem.objects.filter(tradeofferitem__trade_offer=offer)
+        offer_items.update(status='in_inventory')
+
+
+        responses = offer.responses.filter(status='pending')
+        for resp in responses:
+
+            res_items = InventoryItem.objects.filter(traderesponseitem__trade_response=resp)
+            res_items.update(status='in_inventory')
+        
+
+        responses.delete()
+
+        
+        
+        offer.save()
+        offer.delete()
+
+        return Response({"detail": "Offer cancelled successfully, items returned to inventory."})
