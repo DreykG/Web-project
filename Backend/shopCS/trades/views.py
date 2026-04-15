@@ -49,7 +49,9 @@ class TradeViewSet(viewsets.ModelViewSet):
         offer = TradeOffer.objects.create(
             creator=user,
             title=request.data.get('title', ''),
-            offer_value=total_value
+            offer_value=total_value,
+            is_private=request.data.get('is_private', False),
+            password=request.data.get('password', 'None')
         )
 
         for item in items:
@@ -93,6 +95,16 @@ class TradeViewSet(viewsets.ModelViewSet):
 
         return Response(TradeResponseSerializer(response).data)
     
+    @action(detail=True, methods=['post'])
+    @transaction.atomic
+    def verify_password(self, request, pk=None):
+        offer = self.get_object()
+
+        password = request.data.get('password', '')
+        if password != offer.password:
+            return Response({"detail": "Incorrect password"}, status=400)
+
+        return Response({"detail": "Password verified successfully!"})
 
 
     @action(detail=True, methods=['post'], url_path='accept-response/(?P<response_id>[^/.]+)')

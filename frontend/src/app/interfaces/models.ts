@@ -1,3 +1,5 @@
+import { NumberValueAccessor } from "@angular/forms";
+
 export interface Weapon {
     id: number;
     category: Category;
@@ -62,4 +64,52 @@ export interface CartResponse {
     items: InventoryItem[];
     total_items_count: number;
     total_price: number;
+}
+
+export interface UserProfile {
+    id: number;
+    username: string;
+    balance: number;
+    avatar: string | null;
+    cases_opened_count: number;
+    total_drop_value: number;
+    inventory_value: number;
+    date_joined: string;
+}
+
+export interface TradeOfferItem {
+    id: number;
+    inventory_item: number;
+    inventory_item_details: InventoryItem;
+}
+
+export interface TradeResponseItem {
+    id: number;
+    inventory_item: number;
+    inventory_item_details: InventoryItem;
+}
+
+export interface TradeResponse {
+    id: number;
+    responder: number;
+    responder_username: string;
+    status: 'pending' | 'accepted' | 'rejected';
+    response_value: number;
+    items: TradeResponseItem[];
+    responded_at: string;
+}
+
+export interface TradeOffer {
+    id: number;
+    creator: number;
+    creator_username: string;
+    title: string;
+    status: 'open' | 'closed' | 'cancelled';
+    offer_value: number;
+    items: TradeOfferItem[];
+    responses_count: number;
+    responses: TradeResponse[];
+    created_at: string;
+    is_private: boolean;
+    password?: string | null;
 }
