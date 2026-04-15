@@ -1,0 +1,612 @@
+{
+  "info": {
+    "_postman_id": "0ebb3add-7251-4c76-9281-e49c8d11d212",
+    "name": "GANGS",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "53571336",
+    "_collection_link": "https://go.postman.co/collection/53571336-0ebb3add-7251-4c76-9281-e49c8d11d212?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "CreateGang",
+      "request": {
+        "auth": {
+          "type": "basic",
+          "basic": [
+            {
+              "key": "username",
+              "value": "Tikeey",
+              "type": "string"
+            },
+            {
+              "key": "password",
+              "value": "qwerty123",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"name\" : \"Gang2\",\r\n    \"description\" : \"Gang222\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://127.0.0.1:8000/api/gangs/",
+          "protocol": "http",
+          "host": [
+            "127",
+            "0",
+            "0",
+            "1"
+          ],
+          "port": "8000",
+          "path": [
+            "api",
+            "gangs",
+            ""
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GetAllGangs",
+      "request": {
+        "auth": {
+          "type": "basic",
+          "basic": [
+            {
+              "key": "password",
+              "value": "Qwerty123Q",
+              "type": "string"
+            },
+            {
+              "key": "username",
+              "value": "vlad",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://127.0.0.1:8000/api/gangs/",
+          "protocol": "http",
+          "host": [
+            "127",
+            "0",
+            "0",
+            "1"
+          ],
+          "port": "8000",
+          "path": [
+            "api",
+            "gangs",
+            ""
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "AcceptRequest",
+      "request": {
+        "auth": {
+          "type": "basic",
+          "basic": [
+            {
+              "key": "password",
+              "value": "Qwerty123Q",
+              "type": "string"
+            },
+            {
+              "key": "username",
+              "value": "vlad",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "url": {
+          "raw": "http://127.0.0.1:8000/api/gangs/5/accept-request/8/",
+          "protocol": "http",
+          "host": [
+            "127",
+            "0",
+            "0",
+            "1"
+          ],
+          "port": "8000",
+          "path": [
+            "api",
+            "gangs",
+            "5",
+            "accept-request",
+            "8",
+            ""
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "SendRequestToJoin",
+      "request": {
+        "auth": {
+          "type": "basic",
+          "basic": [
+            {
+              "key": "password",
+              "value": "12345q",
+              "type": "string"
+            },
+            {
+              "key": "username",
+              "value": "seller2",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "url": {
+          "raw": "http://127.0.0.1:8000/api/gangs/6/apply/",
+          "protocol": "http",
+          "host": [
+            "127",
+            "0",
+            "0",
+            "1"
+          ],
+          "port": "8000",
+          "path": [
+            "api",
+            "gangs",
+            "6",
+            "apply",
+            ""
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "ShowRequest",
+      "request": {
+        "auth": {
+          "type": "basic",
+          "basic": [
+            {
+              "key": "password",
+              "value": "Qwerty123Q",
+              "type": "string"
+            },
+            {
+              "key": "username",
+              "value": "vlad",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://127.0.0.1:8000/api/gangs/5/show_requests/",
+          "protocol": "http",
+          "host": [
+            "127",
+            "0",
+            "0",
+            "1"
+          ],
+          "port": "8000",
+          "path": [
+            "api",
+            "gangs",
+            "5",
+            "show_requests",
+            ""
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "AddItemtoGang'sInventory",
+      "request": {
+        "auth": {
+          "type": "basic",
+          "basic": [
+            {
+              "key": "password",
+              "value": "Qwerty123Q",
+              "type": "string"
+            },
+            {
+              "key": "username",
+              "value": "vlad",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "url": {
+          "raw": "http://127.0.0.1:8000/api/gangs/5/deposit_item/51/",
+          "protocol": "http",
+          "host": [
+            "127",
+            "0",
+            "0",
+            "1"
+          ],
+          "port": "8000",
+          "path": [
+            "api",
+            "gangs",
+            "5",
+            "deposit_item",
+            "51",
+            ""
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GetGang'sInventory",
+      "request": {
+        "auth": {
+          "type": "basic",
+          "basic": [
+            {
+              "key": "password",
+              "value": "Qwerty123Q",
+              "type": "string"
+            },
+            {
+              "key": "username",
+              "value": "vlad",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://127.0.0.1:8000/api/gangs/5/vault/",
+          "protocol": "http",
+          "host": [
+            "127",
+            "0",
+            "0",
+            "1"
+          ],
+          "port": "8000",
+          "path": [
+            "api",
+            "gangs",
+            "5",
+            "vault",
+            ""
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "RentItem",
+      "request": {
+        "auth": {
+          "type": "basic",
+          "basic": [
+            {
+              "key": "password",
+              "value": "12345q",
+              "type": "string"
+            },
+            {
+              "key": "username",
+              "value": "seller2",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "url": {
+          "raw": "http://127.0.0.1:8000/api/gangs/5/rent/49/",
+          "protocol": "http",
+          "host": [
+            "127",
+            "0",
+            "0",
+            "1"
+          ],
+          "port": "8000",
+          "path": [
+            "api",
+            "gangs",
+            "5",
+            "rent",
+            "49",
+            ""
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "ReturnItemtoGang",
+      "request": {
+        "auth": {
+          "type": "basic",
+          "basic": [
+            {
+              "key": "password",
+              "value": "Qwerty123Q",
+              "type": "string"
+            },
+            {
+              "key": "username",
+              "value": "vlad",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "url": {
+          "raw": "http://127.0.0.1:8000/api/gangs/5/return_item/51/",
+          "protocol": "http",
+          "host": [
+            "127",
+            "0",
+            "0",
+            "1"
+          ],
+          "port": "8000",
+          "path": [
+            "api",
+            "gangs",
+            "5",
+            "return_item",
+            "51",
+            ""
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Promote",
+      "request": {
+        "auth": {
+          "type": "basic",
+          "basic": [
+            {
+              "key": "password",
+              "value": "Qwerty123Q",
+              "type": "string"
+            },
+            {
+              "key": "username",
+              "value": "vlad",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "url": {
+          "raw": "http://127.0.0.1:8000/api/gangs/5/demote/3/",
+          "protocol": "http",
+          "host": [
+            "127",
+            "0",
+            "0",
+            "1"
+          ],
+          "port": "8000",
+          "path": [
+            "api",
+            "gangs",
+            "5",
+            "demote",
+            "3",
+            ""
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "KickUser",
+      "request": {
+        "method": "GET",
+        "header": []
+      },
+      "response": []
+    },
+    {
+      "name": "LeaveFromGang",
+      "request": {
+        "auth": {
+          "type": "basic",
+          "basic": [
+            {
+              "key": "password",
+              "value": "12345q",
+              "type": "string"
+            },
+            {
+              "key": "username",
+              "value": "seller2",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "url": {
+          "raw": "http://127.0.0.1:8000/api/gangs/5/leave/",
+          "protocol": "http",
+          "host": [
+            "127",
+            "0",
+            "0",
+            "1"
+          ],
+          "port": "8000",
+          "path": [
+            "api",
+            "gangs",
+            "5",
+            "leave",
+            ""
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Bang'sMembers",
+      "request": {
+        "auth": {
+          "type": "basic",
+          "basic": [
+            {
+              "key": "password",
+              "value": "Qwerty123Q",
+              "type": "string"
+            },
+            {
+              "key": "username",
+              "value": "vlad",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://127.0.0.1:8000/api/gangs/5/members/",
+          "protocol": "http",
+          "host": [
+            "127",
+            "0",
+            "0",
+            "1"
+          ],
+          "port": "8000",
+          "path": [
+            "api",
+            "gangs",
+            "5",
+            "members",
+            ""
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "SendMessage",
+      "request": {
+        "auth": {
+          "type": "basic",
+          "basic": [
+            {
+              "key": "password",
+              "value": "Qwerty123Q",
+              "type": "string"
+            },
+            {
+              "key": "username",
+              "value": "vlad",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"text\" : \"Hello123\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://127.0.0.1:8000/api/gangs/5/send_message/",
+          "protocol": "http",
+          "host": [
+            "127",
+            "0",
+            "0",
+            "1"
+          ],
+          "port": "8000",
+          "path": [
+            "api",
+            "gangs",
+            "5",
+            "send_message",
+            ""
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "ChatHistory",
+      "request": {
+        "auth": {
+          "type": "basic",
+          "basic": [
+            {
+              "key": "password",
+              "value": "Qwerty123Q",
+              "type": "string"
+            },
+            {
+              "key": "username",
+              "value": "vlad",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://127.0.0.1:8000/api/gangs/5/chat_history/",
+          "protocol": "http",
+          "host": [
+            "127",
+            "0",
+            "0",
+            "1"
+          ],
+          "port": "8000",
+          "path": [
+            "api",
+            "gangs",
+            "5",
+            "chat_history",
+            ""
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}
