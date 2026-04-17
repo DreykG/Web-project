@@ -63,7 +63,7 @@ class Skin(models.Model):
         default=0.00
     )
     name = models.CharField(max_length=150)
-    url = models.URLField(blank=True, null=True)
+    url = models.TextField(blank=True, null=True)
 
     class Meta:
         unique_together = ("weapon", "name")

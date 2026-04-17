@@ -1,0 +1,157 @@
+*{
+    background-color: #111b28;
+    color: white;
+}
+.searching{
+    display: flex;
+    justify-content: center;
+    margin: 0 auto;
+    width: 30%;
+    height: auto;
+}
+
+.search-bar{
+    display: flex;
+    margin: 10px auto;
+    margin-bottom: 40px;
+    width: 100%;
+    padding: 10px 25px;
+    clip-path: polygon(10px 0%, 100% 0%, calc(100% - 10px) 100%, 0% 100%);
+    background: #0a111a;
+    border: none;
+    border-top: rgb(0, 204, 204) 1px solid;
+    color: white;
+}
+
+.sort-select{
+    margin: 10px auto 40px 0;
+    width: 100px;
+    padding: 10px 15px;
+    background: #0a111a;
+    color: white;
+    border: none;
+    clip-path: polygon(10px 0%, 100% 0%, calc(100% - 10px) 100%, 0% 100%);
+    border-top: rgb(0, 204, 204) 1px solid;
+}
+
+
+
+.skins-container {
+    width: 75%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin: 0 auto;
+    padding: 10px;
+    /* background-color: red; */
+}
+
+.skin-card{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: #0a111a;
+    width: 200px;
+    height: auto;
+    padding: 10px 20px;
+    margin: 10px 5px;
+    clip-path: polygon(20px 0%, 100% 0%, calc(100% - 20px) 100%, 0% 100%);
+}
+
+p{
+    background: transparent;
+}
+
+.skin-user{
+    color: #1abebe;
+}
+
+.skin-card img{
+    width: 100%;
+    height: auto;
+    display: block;
+    background: transparent;
+}
+
+.skin-name{
+    font-size: 18px;
+    font-weight: 600;
+    margin: 5px;
+}
+
+.skin-price{
+    font-size: 18px;
+}
+
+.addBtn{
+    padding: 10px 20px;
+    background: linear-gradient(90deg, #2c4a71, #0a111a);
+    color: white;
+    border: none;
+    cursor: pointer;
+    clip-path: polygon(10px 0%, 100% 0%, calc(100% - 10px) 100%, 0% 100%);
+    margin-top: 10px;
+    
+}
+
+.addBtn:hover{
+    background: linear-gradient(90deg, #0a111a, #2c4a71);
+    transition: background-color 1s ease;
+    transform: scale(1.1);
+    transition: transform 0.1s ease;
+}
+
+
+
+
+
+
+
+
+
+
+
+.error {
+
+    position: fixed;
+    top: 80px;
+    right: 20px;
+    z-index: 9999;
+    clip-path: polygon(10px 0%, 100% 0%, calc(100% - 10px) 100%, 0% 100%);
+    background: linear-gradient(90deg, rgb(140, 0, 0), rgb(22, 0, 0));
+    color: white;
+    padding: 16px 24px;
+    font-weight: 600;
+    box-shadow: 
+        0 0 0 2px rgb(255, 0, 0);
+
+    margin: 5px;
+    min-width: 250px;
+    height: 55px;
+    align-items: center;
+    text-align: center;
+
+    animation: slideIn 0.4s ease-out, fadeOut 0.5s 2.5s forwards;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(120%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+/* @keyframes fadeOut {
+    from {
+        transform: translateX(0);
+        opacity: 1;
+    }
+    to {
+        transform: translateX(120%);
+        opacity: 0;
+    }
+} */

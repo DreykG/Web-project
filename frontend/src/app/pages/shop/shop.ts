@@ -13,7 +13,7 @@ export class Shop implements OnInit{
   sortedSkins: InventoryItem[] = [];
   searchText = '';
   sortBy = 'default';
-  errorMessage = '';
+  errorMessage: string | null = null;
 
   constructor(private shopService: ShopService, private cdr: ChangeDetectorRef) {}
 
@@ -27,6 +27,11 @@ ngOnInit() {
     error: (err) => {
       this.errorMessage = 'Failed to load skins';
       this.cdr.detectChanges();
+
+      setTimeout(() => {
+        this.errorMessage = null;
+        this.cdr.detectChanges();
+      }, 3000);
     }
   });
 }
@@ -38,6 +43,11 @@ ngOnInit() {
       },
       error: () => {
         this.errorMessage = 'Failed to load cart';
+
+        setTimeout(() => {
+        this.errorMessage = null;
+        this.cdr.detectChanges();
+      }, 3000);
       }
     });
   }
