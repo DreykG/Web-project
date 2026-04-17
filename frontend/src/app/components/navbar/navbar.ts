@@ -1,11 +1,11 @@
 import { Component, ChangeDetectorRef, OnInit } from '@angular/core';
-import { RouterLink} from '@angular/router';
+import { RouterLink, RouterModule} from '@angular/router';
 import { ProfileService } from '../../services/profile';
 import { UserProfile } from '../../interfaces/models';
 
 @Component({
   selector: 'app-navbar',
-  imports: [RouterLink],
+  imports: [RouterLink, RouterModule],
   templateUrl: './navbar.html',
   styleUrl: './navbar.css',
 })

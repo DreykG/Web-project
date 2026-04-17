@@ -1,8 +1,27 @@
 @if (isLoggedIn()) {
   <nav>
-    <a routerLink="/shop">Shop</a>
-    <a routerLink="/trades">Trades</a>
-    <a routerLink="/cart">🛒</a>
-    <a routerLink="/inventory">{{profile?.username}}{{profile?.balance}}</a>
+    <div class="chapters">
+      <div class="left-chapters">
+        <span class="nav-item nav-logo" routerLink="/shop">
+          <img src="assets/images/logo.png" alt="logo">
+        </span>
+        <a class="nav-item" routerLink="/shop" routerLinkActive="is-active">Shop</a>
+        <a class="nav-item" routerLink="/trades" routerLinkActive="is-active">Trades</a>
+        <a class="nav-item" routerLink="/a" routerLinkActive="is-active">Cases</a>
+        <a class="nav-item" routerLink="/a" routerLinkActive="is-active">Gangs</a>
+      </div>
+    </div>
+
+      <div class="right-chapters">
+        <span class="nav-item nav-cart" routerLink="/cart" routerLinkActive="is-active">
+          <img src="assets/images/logo.png" alt="cart">
+        </span>
+      </div>
+
+        
+      <div class="user-area">
+        <a routerLink="/inventory">{{profile?.username}}</a>
+        <p>{{profile?.balance}}</p>
+      </div>
   </nav>
 }
