@@ -1,45 +1,113 @@
-<p>Profile</p>
+<div class="profile-page">
 
-@if (profile) {
-    <div class="item-card">
-        {{profile.username}}
-        {{profile.balance}}
-        {{profile.cases_opened_count}}
-        {{profile.total_drop_value}}
-        {{profile.inventory_value}}
-        {{profile.date_joined}}
+  <h1 class="page-title">// PROFILE</h1>
+
+  @if (profile) {
+    <div class="profile-card">
+      <div class="profile-avatar">
+        {{ profile.username[0].toUpperCase() }}
+      </div>
+      <div class="profile-info">
+        <div class="profile-username">{{ profile.username }}</div>
+        <div class="profile-joined">Joined: {{ profile.date_joined | date:'mediumDate' }}</div>
+      </div>
+      <button class="logout-btn" (click)="logout()">⏻ LOGOUT</button>
     </div>
-    <button (click)="logout()">Logout</button>
-}
 
-<button (click)="activeTab = 'inventory'">Инвентарь</button>
-<button (click)="activeTab = 'sales'">Мои продажи</button>
+    <div class="stats-grid">
+      <div class="stat-card">
+        <span class="stat-label">Balance</span>
+        <span class="stat-value cyan">${{ profile.balance }}</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-label">Cases Opened</span>
+        <span class="stat-value purple">{{ profile.cases_opened_count }}</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-label">Total Drops</span>
+        <span class="stat-value cyan">${{ profile.total_drop_value }}</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-label">Inventory Value</span>
+        <span class="stat-value purple">${{ profile.inventory_value }}</span>
+      </div>
+    </div>
+  }
 
-@if (errorMessage) {
-    <p class="error">{{errorMessage}}</p>
-}
+  @if (errorMessage) {
+    <p class="error">⚠ {{ errorMessage }}</p>
+  }
 
-@if (activeTab === 'inventory') {
-    @for (item of inventoryItems; track item.id) {
+  <!-- Tabs -->
+  <div class="tabs">
+    <button
+      class="tab-btn"
+      [class.active]="activeTab === 'inventory'"
+      (click)="activeTab = 'inventory'"
+    >
+      <span class="tab-icon">◈</span> Инвентарь
+    </button>
+    <button
+      class="tab-btn"
+      [class.active]="activeTab === 'sales'"
+      (click)="activeTab = 'sales'"
+    >
+      <span class="tab-icon">◈</span> Мои продажи
+    </button>
+  </div>
+
+  <!-- Inventory -->
+  @if (activeTab === 'inventory') {
+    <div class="items-grid">
+      @for (item of inventoryItems; track item.id) {
         <div class="item-card">
-            {{item.skin_name}}
-            {{item.price}}
-            <input type="number" [(ngModel)]="salePrice[item.id]" placeholder="Цена" />
-            <button (click)="putOnSale(item)">Выставить на продажу</button>
+          <img *ngIf="item.url || item.url"
+            [src]="item.url || item.url"
+            [alt]="item.skin_name"
+            class="item-img"
+          />
+          <div class="item-info">
+            <span class="item-name">{{ item.skin_name }}</span>
+            <span class="item-wear">{{ item.wear_name }}</span>
+            <span class="item-price cyan">${{ item.price }}</span>
+          </div>
+          <div class="item-actions">
+            <input
+              type="number"
+              class="price-input"
+              [(ngModel)]="salePrice[item.id]"
+              placeholder="Цена"
+            />
+            <button class="sell-btn" (click)="putOnSale(item)">Выставить</button>
+          </div>
         </div>
-    } @empty {
-        <p>Инвентарь пуст</p>
-    }
-}
+      } @empty {
+        <p class="empty-state">// ИНВЕНТАРЬ ПУСТ</p>
+      }
+    </div>
+  }
 
-@if (activeTab === 'sales') {
-    @for (item of mySales; track item.id) {
+  <!-- Sales -->
+  @if (activeTab === 'sales') {
+    <div class="items-grid">
+      @for (item of mySales; track item.id) {
         <div class="item-card">
-            {{item.skin_name}}
-            {{item.price}}
-            <button (click)="cancelSale(item.id)">Отменить продажу</button>
+          <img *ngIf="item.url || item.url"
+            [src]="item.url || item.url"
+            [alt]="item.skin_name"
+            class="item-img"
+          />
+          <div class="item-info">
+            <span class="item-name">{{ item.skin_name }}</span>
+            <span class="item-wear">{{ item.wear_name }}</span>
+            <span class="item-price cyan">${{ item.price }}</span>
+          </div>
+          <button class="cancel-btn" (click)="cancelSale(item.id)">✕ Отменить</button>
         </div>
-    } @empty {
-        <p>Нет активных продаж</p>
-    }
-}
+      } @empty {
+        <p class="empty-state">// НЕТ АКТИВНЫХ ПРОДАЖ</p>
+      }
+    </div>
+  }
+
+</div>
