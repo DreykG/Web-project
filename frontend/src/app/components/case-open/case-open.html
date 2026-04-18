@@ -1,1 +1,116 @@
-<p>case-open works!</p>
+<div class="case-open-page">
+
+  @if (isLoading) {
+    <div class="loading-state">
+      <div class="spinner"></div>
+      <span>Loading...</span>
+    </div>
+  }
+
+  @if (error && !isLoading) {
+    <div class="error-state">
+      <span>⚠ {{ error }}</span>
+      <button (click)="goBack()">← Back to Cases</button>
+    </div>
+  }
+
+  @if (!isLoading && !error && case_) {
+
+    <!-- Back -->
+    <button class="back-btn" (click)="goBack()">← CASES</button>
+
+    <!-- Case Header -->
+    <div class="case-header">
+      <img
+        [src]="case_.img_url || 'assets/default-case.png'"
+        [alt]="case_.name"
+        class="case-hero-img"
+      />
+      <div class="case-header-info">
+        <h1 class="case-hero-name">{{ case_.name }}</h1>
+        <p class="case-hero-price">${{ case_.price }}</p>
+      </div>
+    </div>
+
+    <!-- Roulette -->
+    <div class="roulette-section">
+      <div class="roulette-wrapper">
+        <div class="roulette-pointer"></div>
+        <div class="roulette-track">
+          <div
+            class="roulette-strip"
+            [class.spin-animation]="openState === 'spinning'"
+          >
+            @for (item of rouletteItems; track $index) {
+              <div class="roulette-cell">
+                <span class="roulette-skin-name">{{ item.skin_name }}</span>
+                <span class="roulette-wear-name">{{ item.wear_name }}</span>
+              </div>
+            }
+          </div>
+        </div>
+      </div>
+
+      @if (openState === 'idle') {
+        <button class="open-btn" (click)="open()">
+          OPEN FOR ${{ case_.price }}
+        </button>
+      }
+
+      @if (openState === 'spinning') {
+        <div class="spinning-msg">
+          <div class="spinner-sm"></div> Rolling...
+        </div>
+      }
+    </div>
+
+    <!-- Result -->
+    @if (openState === 'result' && resultItem) {
+      <div class="result-panel">
+        <p class="result-label">YOU GOT</p>
+        <h2 class="result-skin-name">{{ resultItem.skin_name }}</h2>
+        <p class="result-wear">{{ resultItem.wear_name }}</p>
+        <p class="result-chance">Drop chance: {{ resultItem.drop_chance }}%</p>
+
+        @if (!actionMessage) {
+          <div class="result-actions">
+            <button class="action-btn accept-btn" (click)="acceptItem()" [disabled]="actionLoading">
+              {{ actionLoading ? 'Processing...' : '✓ TAKE ITEM' }}
+            </button>
+            <button class="action-btn sell-btn" (click)="sellItem()" [disabled]="actionLoading">
+              {{ actionLoading ? 'Processing...' : '$ SELL' }}
+            </button>
+            <button class="action-btn again-btn" (click)="openAgain()">
+              ↺ OPEN AGAIN
+            </button>
+          </div>
+        }
+
+        @if (actionMessage) {
+          <div class="action-message">
+            <p>{{ actionMessage }}</p>
+            <button class="action-btn again-btn" (click)="openAgain()">↺ OPEN AGAIN</button>
+          </div>
+        }
+      </div>
+    }
+
+    <!-- Case Contents -->
+    <div class="items-section">
+      <h2 class="items-title">CASE CONTENTS</h2>
+      <div class="items-grid">
+        @for (item of caseItems; track item.id) {
+          <div class="item-card">
+            <div class="item-names">
+              <span class="item-skin">{{ item.skin_name }}</span>
+              <span class="item-wear">{{ item.wear_name }}</span>
+            </div>
+            <span class="item-chance">{{ item.drop_chance }}%</span>
+          </div>
+        }
+      </div>
+    </div>
+
+  }
+
+</div>
