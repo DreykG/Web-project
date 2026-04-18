@@ -29,7 +29,7 @@ export class MySales implements OnInit {
     this.shopService.cancelSale([itemId]).subscribe({
       next: () => {
         alert('Продажа отменена');
-        this.loadSales(); // обновить список
+        this.loadSales();
       },
       error: () => this.errorMessage = 'Ошибка отмены'
     });

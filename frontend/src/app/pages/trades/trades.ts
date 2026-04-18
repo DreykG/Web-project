@@ -21,6 +21,8 @@ export class Trades implements OnInit{
   selectedItems: number[] = [];
   isPrivate = false;
   offerPassword = '';
+  isDrawerOpen = false;
+  
 
   constructor(private tradeService: TradeService, private shopService: ShopService, private cdr: ChangeDetectorRef) {}
 
@@ -95,4 +97,10 @@ export class Trades implements OnInit{
       }
     });
   }
+
+  toggleDrawer() {
+    this.isDrawerOpen = !this.isDrawerOpen;
+  }
 }
+
+

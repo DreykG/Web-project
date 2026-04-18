@@ -34,7 +34,7 @@ export class Inventory implements OnInit {
 
     this.shopService.getInventory().subscribe({
       next: (data:InventoryItem[]) => {
-        this.inventoryItems = data.filter(item => item.status !== 'for_sale');
+        this.inventoryItems = data.filter(item => item.status !== 'on_sale');
         this.cdr.detectChanges();
       },
       error: () => {
@@ -71,7 +71,7 @@ export class Inventory implements OnInit {
       next: () => {
         alert(`${item.skin_name} выставлен на продажу!`);
         this.shopService.getInventory().subscribe(data => {
-          this.inventoryItems = data.filter(i => i.status !== 'for_sale');
+          this.inventoryItems = data.filter(i => i.status !== 'on_sale');
           this.cdr.detectChanges();
         });
         this.shopService.getMySales().subscribe(data => {

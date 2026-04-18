@@ -16,18 +16,13 @@ export class Navbar implements OnInit {
   constructor(private profileService: ProfileService, private cdr: ChangeDetectorRef) {}
 
   ngOnInit() {
-          console.log('isLoggedIn:', this.isLoggedIn());
     if(this.isLoggedIn()) {
-      this.profileService.getProfile().subscribe({
-        next: (data: UserProfile) => {
+      this.profileService.profile$.subscribe(
+        data => {
           this.profile = data;
           this.cdr.detectChanges();
-        },
-        error: () => {
-          this.errorMessage = 'Profile loading error';
-          this.cdr.detectChanges();
-        }
-      });
+        });
+      this.profileService.loadProfile();
     }
   }
 

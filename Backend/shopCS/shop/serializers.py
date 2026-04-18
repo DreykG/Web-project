@@ -70,10 +70,11 @@ class InventoryItemSelectionSerializer(serializers.ModelSerializer):
     skin_name = serializers.CharField(source="skin.name", read_only=True)
     rarity = serializers.CharField(source="skin.rarity", read_only=True)
     url = serializers.CharField(source="skin.url", read_only=True)
+    wear_name = serializers.CharField(source="wear.name", read_only=True)
 
     class Meta:
         model = InventoryItem
-        fields = ["id", "skin_name", "rarity", "url", "price", "status"]
+        fields = ["id", "skin_name", "rarity", "url", "price", "status", "wear_name"]
 
 class CartItemSerializer(serializers.ModelSerializer):
     inventory_item_detail = InventoryItemSerializer(source="inventory_item", read_only=True)

@@ -159,6 +159,9 @@ def add_to_cart(request, item_id):
         return Response({"detail": "Item already in your cart"}, status=status.HTTP_400_BAD_REQUEST)
         
     CartItem.objects.create(cart=cart, inventory_item=item)
+    item.status = InventoryItem.StatusChoices.IN_CART
+    item.save()
+    
     return Response({"detail": "Item was added to cart"}, status=status.HTTP_201_CREATED)
 
 
@@ -186,6 +189,8 @@ def remove_from_cart(request):
             status=status.HTTP_404_NOT_FOUND
         )
 
+    InventoryItem.objects.filter(id__in=item_ids, cart_items__cart__user=user).update(status="on_sale")
+
     count = cart_items.count()
     cart_items.delete()
     
@@ -208,7 +213,7 @@ def checkout_selected(request):
     items_to_buy = InventoryItem.objects.filter(
         id__in = selected_ids,
         cart_items__cart__user = buyer,
-        status = 'on_sale'
+        status = 'in_cart'
     ).select_related('user')
 
     if not items_to_buy.exists():
@@ -218,6 +223,8 @@ def checkout_selected(request):
 
     if buyer.balance < total_price:
         return Response({"detail" : "Not enough balance!"}, status=status.HTTP_400_BAD_REQUEST)
+    
+    bought_items_ids = list(items_to_buy.values_list('id', flat=True))
     
     with transaction.atomic():
         buyer.balance -= total_price
@@ -236,7 +243,7 @@ def checkout_selected(request):
             item.status = InventoryItem.StatusChoices.IN_INVENTORY
             item.save()
 
-        CartItem.objects.filter(cart__user=buyer, inventory_item__in=items_to_buy).delete()
+        CartItem.objects.filter(cart__user=buyer, inventory_item__in=bought_items_ids).delete()
 
 
     return Response({
@@ -314,7 +321,7 @@ def cancel_sale(request):
             item.price = 0
             item.status = 'in_inventory'
             item.save()
-        CartItem.objects.filter(inventory_item=item).delete()
+            CartItem.objects.filter(inventory_item=item).delete()
 
     return Response({
         "detail": f"Successfully withdrawn from sale of items: {count}",
