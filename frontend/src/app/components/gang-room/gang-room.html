@@ -1,1 +1,159 @@
-<p>gang-room works!</p>
+<div class="gang-room-page">
+
+  @if (isLoading) {
+    <div class="loading-state">
+      <div class="spinner"></div>
+      <span>Loading...</span>
+    </div>
+  }
+
+  @if (error && !isLoading) {
+    <div class="error-state">
+      <span>⚠ {{ error }}</span>
+      <button (click)="goBack()">← Back to Gangs</button>
+    </div>
+  }
+
+  @if (!isLoading && !error && gang) {
+
+    <!-- Header -->
+    <div class="gang-header">
+      <button class="back-btn" (click)="goBack()">← GANGS</button>
+      <div class="gang-header-info">
+        <h1 class="gang-title">{{ gang.name }}</h1>
+        <p class="gang-desc">{{ gang.description }}</p>
+        <div class="gang-meta">
+          <span class="meta-item">👤 {{ gang.owner_username }}</span>
+          <span class="meta-item">👥 {{ gang.members_count }} / 15</span>
+        </div>
+      </div>
+      <div class="gang-actions">
+        @if (!gang.is_member) {
+          <button class="action-btn apply-btn" (click)="apply()">JOIN GANG</button>
+        } @else {
+          <button class="action-btn leave-btn" (click)="leave()">LEAVE</button>
+        }
+      </div>
+    </div>
+
+    @if (actionMessage) {
+      <div class="action-message">{{ actionMessage }}</div>
+    }
+
+    <!-- Tabs -->
+    <div class="tabs">
+      <button class="tab-btn" [class.active]="activeTab === 'members'" (click)="setTab('members')">MEMBERS</button>
+      <button class="tab-btn" [class.active]="activeTab === 'vault'" (click)="setTab('vault')">VAULT</button>
+      <button class="tab-btn" [class.active]="activeTab === 'chat'" (click)="setTab('chat')">CHAT</button>
+      <button class="tab-btn" [class.active]="activeTab === 'requests'" (click)="setTab('requests')">REQUESTS</button>
+    </div>
+
+    <!-- Members Tab -->
+    @if (activeTab === 'members') {
+      <div class="tab-content">
+        @for (member of members; track member.id) {
+          <div class="member-row">
+            <span class="member-username">{{ member.username }}</span>
+            <span class="member-role" [class]="'role-' + member.role">{{ member.role_name }}</span>
+            <span class="member-joined">{{ member.joined_at | date:'mediumDate' }}</span>
+          </div>
+        }
+        @if (members.length === 0) {
+          <p class="empty-msg">No members yet.</p>
+        }
+      </div>
+    }
+
+    <!-- Vault Tab -->
+    @if (activeTab === 'vault') {
+      <div class="tab-content">
+        @for (item of vaultItems; track item.id) {
+          <div class="vault-row">
+            <div class="vault-item-info">
+              @if (item.item_details.image) {
+                <img [src]="item.item_details.image" [alt]="item.item_details.name" class="vault-img" />
+              }
+              <div>
+                <span class="vault-name">{{ item.item_details.name }}</span>
+                <span class="vault-deposit">Deposit: ${{ item.deposit_amount }}</span>
+              </div>
+            </div>
+            <div class="vault-status-wrap">
+              <span class="vault-status" [class]="'status-' + item.status">{{ item.status_display }}</span>
+              @if (item.status === 'active') {
+                <button class="vault-btn return-btn" (click)="returnItem(item.item)">RETURN</button>
+              } @else if (item.status === 'returned') {
+                <button class="vault-btn rent-btn" (click)="rentItem(item.item)">RENT</button>
+              }
+            </div>
+          </div>
+        }
+        @if (vaultItems.length === 0) {
+          <p class="empty-msg">Vault is empty.</p>
+        }
+      </div>
+    }
+
+    <!-- Chat Tab -->
+    @if (activeTab === 'chat') {
+      <div class="tab-content chat-tab">
+        <div class="chat-messages">
+          @for (msg of messages; track msg.id) {
+            <div class="chat-msg">
+              <span class="msg-user">{{ msg.username }}</span>
+              <span class="msg-text">{{ msg.text }}</span>
+              <span class="msg-time">{{ msg.created_at | date:'shortTime' }}</span>
+            </div>
+          }
+          @if (messages.length === 0) {
+            <p class="empty-msg">No messages yet.</p>
+          }
+        </div>
+        <div class="chat-input-row">
+          <input
+            class="chat-input"
+            type="text"
+            placeholder="Type a message..."
+            [(ngModel)]="newMessage"
+            (keyup.enter)="sendMessage()"
+          />
+          <button
+            class="send-btn"
+            (click)="sendMessage()"
+            [disabled]="chatLoading"
+          >
+            {{ chatLoading ? '...' : 'SEND' }}
+          </button>
+        </div>
+      </div>
+    }
+
+    <!-- Requests Tab -->
+    @if (activeTab === 'requests') {
+      <div class="tab-content">
+        @for (req of joinRequests; track req.id) {
+          <div class="request-row">
+            <div class="request-info">
+              <span class="request-user">{{ req.username }}</span>
+              @if (req.message) {
+                <span class="request-msg">"{{ req.message }}"</span>
+              }
+            </div>
+            <div class="request-actions">
+              @if (req.status === 'pending') {
+                <button class="vault-btn rent-btn" (click)="acceptRequest(req.user)">ACCEPT</button>
+              } @else {
+                <span class="request-status">{{ req.status }}</span>
+              }
+            </div>
+          </div>
+        }
+        @if (joinRequests.length === 0) {
+          <p class="empty-msg">No pending requests.</p>
+        }
+      </div>
+    }
+
+  }
+
+</div>

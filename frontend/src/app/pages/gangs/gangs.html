@@ -1,1 +1,87 @@
-<p>gangs works!</p>
+<div class="gangs-page">
+
+  <!-- Header -->
+  <div class="page-header">
+    <div class="header-left">
+      <h1 class="page-title">GANGS</h1>
+      <p class="page-subtitle">Join a gang or create your own</p>
+    </div>
+    <button class="create-btn" (click)="toggleCreateForm()">
+      {{ showCreateForm ? 'CANCEL' : '+ CREATE GANG' }}
+    </button>
+  </div>
+
+  <!-- Create Form -->
+  @if (showCreateForm) {
+    <div class="create-form">
+      <h2 class="form-title">CREATE GANG</h2>
+
+      @if (createError) {
+        <p class="form-error">⚠ {{ createError }}</p>
+      }
+
+      <input
+        class="form-input"
+        type="text"
+        placeholder="Gang name"
+        [(ngModel)]="createName"
+      />
+      <textarea
+        class="form-input form-textarea"
+        placeholder="Description"
+        [(ngModel)]="createDescription"
+      ></textarea>
+
+      <button
+        class="submit-btn"
+        (click)="createGang()"
+        [disabled]="createLoading"
+      >
+        {{ createLoading ? 'Creating...' : 'CREATE' }}
+      </button>
+    </div>
+  }
+
+  <!-- Loading -->
+  @if (isLoading) {
+    <div class="loading-state">
+      <div class="spinner"></div>
+      <span>Loading gangs...</span>
+    </div>
+  }
+
+  <!-- Error -->
+  @if (error && !isLoading) {
+    <div class="error-state">
+      <span>⚠ {{ error }}</span>
+    </div>
+  }
+
+  <!-- Gangs List -->
+  @if (!isLoading && !error) {
+    <div class="gangs-grid">
+      @for (gang of gangs; track gang.id) {
+        <div class="gang-card" (click)="goToGang(gang)">
+          <div class="gang-card-header">
+            <h3 class="gang-name">{{ gang.name }}</h3>
+            @if (gang.is_member) {
+              <span class="member-badge">MEMBER</span>
+            }
+          </div>
+          <p class="gang-description">{{ gang.description }}</p>
+          <div class="gang-footer">
+            <span class="gang-owner">👤 {{ gang.owner_username }}</span>
+            <span class="gang-members">{{ gang.members_count }} / 15 members</span>
+          </div>
+        </div>
+      }
+    </div>
+
+    @if (gangs.length === 0) {
+      <div class="empty-state">
+        <p>No gangs yet. Be the first!</p>
+      </div>
+    }
+  }
+
+</div>
