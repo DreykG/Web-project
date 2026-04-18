@@ -30,8 +30,8 @@ export class TradeService {
     return this.http.post(`${this.apiUrl}/trades/${offerId}/accept-response/${responseId}/`, {});
   }
 
-  deleteTradeOffer(id: number) {
-    return this,this.http.delete(`${this.apiUrl}/trades/${id}/`);
+  deleteTradeOffer(offerId: number) {
+    return this.http.post(`${this.apiUrl}/trades/${offerId}/cancel_offer/`, {});
   }
 
   verify_password(offerId: number, password: string) {

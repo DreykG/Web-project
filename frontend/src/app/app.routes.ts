@@ -6,6 +6,8 @@ import { Register } from "./pages/register/register";
 import { Inventory } from "./pages/inventory/inventory";
 import { Trades } from './pages/trades/trades';
 import { TradeRoom } from './components/trade-room/trade-room';
+import { Cases } from './pages/case/case';
+import { CaseOpen } from './components/case-open/case-open';
 import { authGuard } from './guards/auth-guard';
 
 export const routes: Routes = [
@@ -18,4 +20,6 @@ export const routes: Routes = [
     {path: 'trade-room', component: TradeRoom, canActivate: [authGuard]},
     {path: 'trades/:id', component: TradeRoom, canActivate: [authGuard]},
     {path: 'register', component: Register},
+    {path: 'cases', component: Cases, canActivate: [authGuard]},
+    {path: 'case-open', component: CaseOpen, canActivate: [authGuard]},
 ];
