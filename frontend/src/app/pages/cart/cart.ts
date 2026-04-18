@@ -1,6 +1,7 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { ShopService } from '../../services/shop';
 import { CartResponse, InventoryItem } from '../../interfaces/models';
+import { ProfileService } from '../../services/profile';
 @Component({
   selector: 'app-cart',
   imports: [],
@@ -11,7 +12,7 @@ export class Cart implements OnInit{
   cartItems: InventoryItem[] = [];
   errorMessage = '';
 
-  constructor(private shopService: ShopService, private cdr: ChangeDetectorRef) {}
+  constructor(private shopService: ShopService, private cdr: ChangeDetectorRef, private profileService: ProfileService) {}
 
   ngOnInit() {
     this.shopService.getCartItems().subscribe({
@@ -42,11 +43,21 @@ export class Cart implements OnInit{
     const ids = this.cartItems.map(item => item.id);
     this.shopService.buyCart(ids).subscribe({
       next: () => {
-        this.cartItems = [];
-        alert('Purchase successeful!');
+        //alert('Purchase successeful!');
+
+        this.profileService.loadProfile();
+        this.shopService.getCartItems().subscribe({
+          next: (data: CartResponse) => {
+            console.log('Cart after purchase:', data);
+            this.cartItems = data.items;
+            this.cdr.detectChanges();
+          }
+        });
       },
-      error: () => {
+      error: (err) => {
+        console.log('Purchase error:', err);
         this.errorMessage = 'Purchase error';
+        this.cdr.detectChanges();
       }
     });
 
