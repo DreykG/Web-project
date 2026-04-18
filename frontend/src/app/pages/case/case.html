@@ -1,1 +1,73 @@
-<p>case works!</p>
+<div class="cases-page">
+
+  <!-- Live Drops Ticker -->
+  @if (liveDrops.length > 0) {
+    <div class="live-drops-bar">
+      <span class="live-label">
+        <span class="live-dot"></span> LIVE DROPS
+      </span>
+      <div class="ticker-track">
+        <div class="ticker-inner">
+          @for (drop of liveDrops; track drop.id) {
+            <div class="ticker-item">
+              <span class="ticker-skin">{{ drop.skin_name }}</span>
+              <span class="ticker-sep">—</span>
+              <span class="ticker-user">{{ drop.username }}</span>
+              <span class="ticker-case">{{ drop.case_name }}</span>
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+  }
+
+  <!-- Header -->
+  <div class="page-header">
+    <h1 class="page-title">CASES</h1>
+    <p class="page-subtitle">Open cases and try your luck</p>
+  </div>
+
+  <!-- Loading -->
+  @if (isLoading) {
+    <div class="loading-state">
+      <div class="spinner"></div>
+      <span>Loading cases...</span>
+    </div>
+  }
+
+  <!-- Error -->
+  @if (error && !isLoading) {
+    <div class="error-state">
+      <span>⚠ {{ error }}</span>
+    </div>
+  }
+
+  <!-- Cases Grid -->
+  @if (!isLoading && !error) {
+    <div class="cases-grid">
+      @for (case_ of cases; track case_.id) {
+        <div class="case-card" (click)="goToCase(case_)">
+          <div class="case-img-wrap">
+            <img
+              [src]="case_.img_url || 'assets/default-case.png'"
+              [alt]="case_.name"
+              class="case-img"
+            />
+          </div>
+          <div class="case-info">
+            <h3 class="case-name">{{ case_.name }}</h3>
+            <span class="case-price">${{ case_.price }}</span>
+          </div>
+          <button class="case-open-btn">OPEN CASE</button>
+        </div>
+      }
+    </div>
+
+    @if (cases.length === 0) {
+      <div class="empty-state">
+        <p>No active cases available.</p>
+      </div>
+    }
+  }
+
+</div>
