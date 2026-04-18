@@ -145,7 +145,7 @@ p{
     }
 }
 
-/* @keyframes fadeOut {
+@keyframes fadeOut {
     from {
         transform: translateX(0);
         opacity: 1;
@@ -154,4 +154,4 @@ p{
         transform: translateX(120%);
         opacity: 0;
     }
-} */
+}

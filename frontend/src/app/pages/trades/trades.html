@@ -3,7 +3,7 @@
 }
 <div class="drawer">
     <div class="drawer-tab" (click)="toggleDrawer()" [class.open]="isDrawerOpen">
-        <p>Мои офферы</p>
+        <p>My offers</p>
     </div>
 
     @if (isDrawerOpen) {
@@ -12,7 +12,7 @@
 
     <div class="side-drawer" [class.show]="isDrawerOpen">
         <div class="drawer-header">
-            <h3>Мои офферы</h3>
+            <h3>My offers</h3>
         </div>
     
         <div class="drawer-content">
@@ -33,7 +33,7 @@
                 </div>
             </div>
             } @empty {
-                <p>У вас нет офферов</p>
+                <p class="none-offers-error">You don't have offers</p>
             }
         </div>
 
@@ -51,7 +51,7 @@
     @if (showCreateModal) {
         <div class="modal-overlay" (click)="showCreateModal = false">
             <div class="modal" (click)="$event.stopPropagation()">
-                <h3>Создать оффер</h3>
+                <h3>Create offer</h3>
                 
                 <input type="text" [(ngModel)]="newOfferTitle" placeholder="Title...">
                 <label>
@@ -60,7 +60,7 @@
                 </label>
 
                 @if (isPrivate) {
-                    <input type = "password" [(ngModel)]="offerPassword" placeholder="Пароль для оффера">
+                    <input type = "password" [(ngModel)]="offerPassword" placeholder="password...">
                 }
                 
                 <h4>Выберите предметы:</h4>
@@ -76,13 +76,13 @@
                                 <span>{{item.price}}$</span>
                             </div>
                         } @empty {
-                            <p>Инвентарь пуст</p>
+                            <p>Inventory is empty</p>
                         }
                     </div>
                 </div>
 
-                <button (click)="createOffer()">Создать</button>
-                <button (click)="showCreateModal = false">Отмена</button>
+                <button (click)="createOffer()">Create</button>
+                <button (click)="showCreateModal = false">Cancel</button>
             </div>
         </div>
     }
@@ -106,7 +106,7 @@
                 
         </div>
         } @empty {
-            <p>Нет активных офферов</p>
+            <p>Not active offers</p>
         }
     </div>
 </div>

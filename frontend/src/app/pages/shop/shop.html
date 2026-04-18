@@ -15,7 +15,7 @@
         <div class="skin-card">
         <p class="skin-user">{{skin.user_username}}</p>
         <img [src]="skin.url" alt="{{skin.skin_name}}" class="skin-image">    
-        <p class="skin-name">{{skin.skin_name}}</p>
+        <p class="skin-name">{{skin.skin_name}} | {{skin.wear_name}}</p>
         <p class="skin-price">{{skin.price}}$</p>
         <button class="addBtn" (click)="addToCart(skin.id)">Add to Cart</button>
     </div>
@@ -25,7 +25,5 @@
 
 </div>
 @if (errorMessage) {
-    <div class="error">
-        <p class="error">{{errorMessage}}</p>
-    </div>
+    <p class="error">{{errorMessage}}</p>
 }

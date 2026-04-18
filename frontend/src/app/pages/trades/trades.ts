@@ -14,7 +14,7 @@ import { InventoryItem, TradeOffer } from '../../interfaces/models';
 export class Trades implements OnInit{
   offers: TradeOffer[] = [];
   myOffers: TradeOffer[] = [];
-  errorMessage = '';
+  errorMessage: string | null = null;
   showCreateModal = false;
   newOfferTitle = '';
   myInventory: InventoryItem[] = [];
@@ -47,6 +47,11 @@ export class Trades implements OnInit{
       error: (err) => {
         this.errorMessage = 'Failed to load your trade offers';
         this.cdr.detectChanges();
+
+        setTimeout(() => {
+          this.errorMessage = null;
+          this.cdr.detectChanges();
+        }, 3000);
       }
     });
   }
@@ -72,18 +77,36 @@ export class Trades implements OnInit{
   }
 
   createOffer() {
-    this.tradeService.createTradeOffer(this.newOfferTitle, this.selectedItems, this.isPrivate, this.isPrivate ? this.offerPassword : null).subscribe({
+    this.tradeService.createTradeOffer(
+      this.newOfferTitle, 
+      this.selectedItems, 
+      this.isPrivate, 
+      this.isPrivate ? this.offerPassword : null
+    ).subscribe({
       next: (offer: TradeOffer) => {
         this.myOffers.push(offer);
+        
         this.showCreateModal = false;
+        this.selectedItems = [];
+
+        this.newOfferTitle = '';
+        this.offerPassword = '';
+        this.isPrivate = false;
+
         this.cdr.detectChanges();
       },
       error: (err) => {
         this.errorMessage = 'Failed to create trade offer';
         this.cdr.detectChanges();
+
+        setTimeout(() => {
+          // Убедись, что errorMessage объявлен как string | null
+          this.errorMessage = null;
+          this.cdr.detectChanges();
+        }, 3000);
       }
-    });
-  }
+  });
+}
 
   deleteOffer(offerId: number) {
     this.tradeService.deleteTradeOffer(offerId).subscribe({
@@ -94,6 +117,11 @@ export class Trades implements OnInit{
       error: (err) => {
         this.errorMessage = 'Failed to delete trade offer';
         this.cdr.detectChanges();
+
+        setTimeout(() => {
+          this.errorMessage = null;
+          this.cdr.detectChanges();
+        }, 3000);
       }
     });
   }
