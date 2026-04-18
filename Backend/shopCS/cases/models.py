@@ -32,8 +32,7 @@ class CaseItem(models.Model):
     )
     wear = models.ForeignKey(
         'shop.Wear',
-        on_delete=models.PROTECT,
-        related_name="case_items"
+        on_delete=models.PROTECT
     )
     
     drop_chance = models.DecimalField(

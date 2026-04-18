@@ -16,20 +16,15 @@
 
   @if (!isLoading && !error && case_) {
 
-    <!-- Back -->
     <button class="back-btn" (click)="goBack()">← CASES</button>
 
-    <!-- Case Header -->
     <div class="case-header">
+      <h1 class="case-hero-name">{{ case_.name }}</h1>
       <img
         [src]="case_.img_url || 'assets/default-case.png'"
         [alt]="case_.name"
         class="case-hero-img"
       />
-      <div class="case-header-info">
-        <h1 class="case-hero-name">{{ case_.name }}</h1>
-        <p class="case-hero-price">${{ case_.price }}</p>
-      </div>
     </div>
 
     <!-- Roulette -->
@@ -39,12 +34,16 @@
         <div class="roulette-track">
           <div
             class="roulette-strip"
-            [class.spin-animation]="openState === 'spinning'"
+            #rouletteStrip
           >
             @for (item of rouletteItems; track $index) {
-              <div class="roulette-cell">
-                <span class="roulette-skin-name">{{ item.skin_name }}</span>
-                <span class="roulette-wear-name">{{ item.wear_name }}</span>
+              <div class="roulette-cell" [class.roulette-cell--winner]="$index === winnerIndex && openState === 'result'">
+                <img
+                  *ngIf="item.url || item.url"
+                  [src]="item.url || item.url"
+                  [alt]="item.skin_name"
+                  class="roulette-cell-img"
+                />
               </div>
             }
           </div>
@@ -53,7 +52,7 @@
 
       @if (openState === 'idle') {
         <button class="open-btn" (click)="open()">
-          OPEN FOR ${{ case_.price }}
+          OPEN FOR {{ case_.price }}$
         </button>
       }
 
@@ -68,6 +67,14 @@
     @if (openState === 'result' && resultItem) {
       <div class="result-panel">
         <p class="result-label">YOU GOT</p>
+        @if (resultItem.url || resultItem.url) {
+          <img
+            [src]="resultItem.url || resultItem.url"
+            [alt]="resultItem.skin_name"
+            class="result-img"
+          />
+        }
+        
         <h2 class="result-skin-name">{{ resultItem.skin_name }}</h2>
         <p class="result-wear">{{ resultItem.wear_name }}</p>
         <p class="result-chance">Drop chance: {{ resultItem.drop_chance }}%</p>
@@ -101,10 +108,12 @@
       <div class="items-grid">
         @for (item of caseItems; track item.id) {
           <div class="item-card">
-            <div class="item-names">
-              <span class="item-skin">{{ item.skin_name }}</span>
-              <span class="item-wear">{{ item.wear_name }}</span>
-            </div>
+            <img
+              *ngIf="item.url"
+              [src]="item.url"
+              [alt]="item.skin_name"
+              class="item-card-img"
+            />
             <span class="item-chance">{{ item.drop_chance }}%</span>
           </div>
         }

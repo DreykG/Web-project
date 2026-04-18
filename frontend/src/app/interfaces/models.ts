@@ -124,6 +124,7 @@ export interface Case {
 }
 
 export interface CaseItem {
+  url: any;
   id: number;
   case: number;         // FK → id кейса
   skin: number;         // FK → id скина
@@ -134,16 +135,26 @@ export interface CaseItem {
   created_at: string;
 }
 
-export interface CaseOpening {
+export interface CaseOpeningDrop {
   id: number;
   user: number;
   user_username: string;
-  case: number;
-  case_name: string;
-  case_item: number | null;
-  inventory_item: number | null;
-  spent_balance: string;
-  opened_at: string;
+  skin: number;
+  skin_name: string;
+  price: string;
+  rarity: string;
+  wear: number;
+  wear_name: string;
+  url: string;
+  status: string;
+  created_at: string;
+}
+ 
+export interface CaseOpening {
+  item_id: number;
+  skin_name: string;
+  sell_price: number;
+  drop: CaseOpeningDrop;
 }
 
 export interface LiveDrop {

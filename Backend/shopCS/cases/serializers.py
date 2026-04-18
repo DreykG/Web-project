@@ -11,6 +11,7 @@ class CaseSerializer(serializers.ModelSerializer):
 class CaseItemSerializer(serializers.ModelSerializer):
     skin_name = serializers.CharField(source="skin.name", read_only=True)
     wear_name = serializers.CharField(source="wear.name", read_only=True)
+    url = serializers.CharField(source="skin.url", read_only=True)
 
     class Meta:
         model = CaseItem
@@ -23,6 +24,7 @@ class CaseItemSerializer(serializers.ModelSerializer):
             "wear_name",
             "drop_chance",
             "created_at",
+            "url"
         ]
 
 
