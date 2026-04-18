@@ -422,7 +422,7 @@ class GangViewSet(viewsets.ModelViewSet):
             return Response({"detail": "Access denied."}, status=403)
 
 
-        messages = gang.messages.all().order_by('-created_at')[:20]
+        messages = gang.messages.all().order_by('created_at')[:20]
         
 
         from .serializers import GangMessageSerializer 

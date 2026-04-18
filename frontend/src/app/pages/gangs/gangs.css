@@ -1,0 +1,420 @@
+/* ============================================
+   CYBERPUNK GANGS PAGE
+   Cyan #00e5ff + Purple #bf5af2 — argon neon
+   ============================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Share+Tech+Mono&display=swap');
+
+:host, .gangs-page {
+  --cyan:         #00e5ff;
+  --cyan-dim:     #0097a7;
+  --cyan-glow:    rgba(0, 229, 255, 0.18);
+  --cyan-glow-sm: rgba(0, 229, 255, 0.06);
+  --purple:       #bf5af2;
+  --purple-dim:   #7b2fbe;
+  --purple-glow:  rgba(191, 90, 242, 0.18);
+  --red:          #e05a5a;
+  --bg-deep:      #060b12;
+  --bg-card:      #0a111b;
+  --bg-card2:     #0d1520;
+  --border:       rgba(0, 229, 255, 0.12);
+  --border-purp:  rgba(191, 90, 242, 0.15);
+  --text:         #c8d8e8;
+  --text-dim:     #4a6070;
+  --font-d:       'Rajdhani', sans-serif;
+  --font-m:       'Share Tech Mono', monospace;
+}
+
+/* ===== Page ===== */
+.gangs-page {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 2rem 1rem 3rem;
+  font-family: var(--font-d);
+  color: var(--text);
+  background: var(--bg-deep);
+  min-height: 100vh;
+  position: relative;
+  
+}
+
+
+/* ===== Page Header ===== */
+.page-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--border);
+  position: relative;
+  z-index: 1;
+  flex-wrap: wrap;
+  background: transparent;
+  
+}
+
+.header-left{
+  background: transparent;
+}
+
+.page-title {
+  font-family: var(--font-m);
+  font-size: 22px;
+  font-weight: 400;
+  letter-spacing: 6px;
+  color: var(--cyan);
+  text-shadow: 0 0 14px var(--cyan-glow);
+  line-height: 1;
+  background: transparent;
+
+  &::before {
+    content: '// ';
+    color: var(--text-dim);
+    font-size: 14px;
+    
+  }
+}
+
+.page-subtitle {
+  font-family: var(--font-m);
+  font-size: 10px;
+  color: var(--text-dim);
+  letter-spacing: 2px;
+  margin-top: 6px;
+  background: transparent;
+}
+
+/* ===== Create Button ===== */
+.create-btn {
+  background: transparent;
+  border: 1px solid var(--purple-dim);
+  color: var(--purple);
+  padding: 10px 22px;
+  border-radius: 4px;
+  font-family: var(--font-d);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--purple-glow);
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+
+  &:hover {
+    border-color: var(--purple);
+    box-shadow: 0 0 14px var(--purple-glow);
+    color: #fff;
+
+    &::before { opacity: 1; }
+  }
+}
+
+/* ===== Create Form ===== */
+.create-form {
+  background: var(--bg-card);
+  border: 1px solid var(--border-purp);
+  border-top: 2px solid var(--purple);
+  border-radius: 6px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  position: relative;
+  z-index: 1;
+  animation: slideDown 0.2s ease;
+  box-shadow: 0 0 24px rgba(191, 90, 242, 0.08);
+}
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.form-title {
+  font-family: var(--font-m);
+  font-size: 12px;
+  letter-spacing: 4px;
+  color: var(--purple);
+  margin-bottom: 1.2rem;
+  background: transparent;
+}
+
+.form-error {
+  font-family: var(--font-m);
+  font-size: 11px;
+  color: var(--red);
+  background: rgba(224, 90, 90, 0.07);
+  border: 1px solid rgba(224, 90, 90, 0.2);
+  border-radius: 4px;
+  padding: 8px 12px;
+  margin-bottom: 1rem;
+  background: transparent;
+}
+
+.form-input {
+  display: block;
+  width: 100%;
+  background: var(--bg-deep);
+  border: 1px solid var(--border-purp);
+  border-radius: 4px;
+  color: var(--text);
+  font-family: var(--font-d);
+  font-size: 14px;
+  padding: 10px 14px;
+  margin-bottom: 10px;
+  outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s;
+  resize: none;
+
+  &::placeholder { color: var(--text-dim); }
+
+  &:focus {
+    border-color: var(--purple);
+    box-shadow: 0 0 10px rgba(191, 90, 242, 0.15);
+  }
+}
+
+.form-textarea {
+  min-height: 80px;
+  line-height: 1.5;
+  
+}
+
+.submit-btn {
+  background: linear-gradient(135deg, var(--purple-dim), #5a1a9a);
+  border: 1px solid var(--purple-dim);
+  color: #fff;
+  padding: 10px 32px;
+  border-radius: 4px;
+  font-family: var(--font-d);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  cursor: pointer;
+  transition: all 0.15s;
+
+  &:hover:not(:disabled) {
+    background: linear-gradient(135deg, var(--purple), var(--purple-dim));
+    box-shadow: 0 0 14px var(--purple-glow);
+  }
+
+  &:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+}
+
+/* ===== Loading ===== */
+.loading-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  min-height: 240px;
+  color: var(--text-dim);
+  font-family: var(--font-m);
+  font-size: 12px;
+  letter-spacing: 2px;
+  position: relative;
+  z-index: 1;
+  background: transparent;
+}
+
+.spinner {
+  width: 36px;
+  height: 36px;
+  border: 2px solid var(--border);
+  border-top-color: var(--cyan);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  box-shadow: 0 0 10px var(--cyan-glow);
+  background: transparent;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ===== Error State ===== */
+.error-state {
+  font-family: var(--font-m);
+  color: var(--red);
+  font-size: 12px;
+  background: rgba(224, 90, 90, 0.07);
+  border: 1px solid rgba(224, 90, 90, 0.2);
+  border-radius: 4px;
+  padding: 14px 18px;
+  text-align: center;
+  position: relative;
+  z-index: 1;
+}
+
+/* ===== Gangs Grid ===== */
+.gangs-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 14px;
+  position: relative;
+  z-index: 1;
+  background: transparent;
+}
+
+/* ===== Gang Card ===== */
+.gang-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 1.2rem 1.4rem;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  position: relative;
+  overflow: hidden;
+  transition: border-color 0.2s, box-shadow 0.2s, transform 0.15s;
+  animation: fadeUp 0.25s ease both;
+  
+
+  /* Top accent line */
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--cyan-dim), transparent);
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+
+  /* Bottom purple shimmer */
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--purple-dim), transparent);
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+
+  &:hover {
+    border-color: rgba(0, 229, 255, 0.3);
+    box-shadow: 0 0 22px var(--cyan-glow-sm), 0 6px 24px rgba(0,0,0,0.4);
+    transform: translateY(-3px);
+
+    &::before, &::after { opacity: 1; }
+  }
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Stagger animation for cards */
+.gang-card:nth-child(1) { animation-delay: 0.05s; }
+.gang-card:nth-child(2) { animation-delay: 0.10s; }
+.gang-card:nth-child(3) { animation-delay: 0.15s; }
+.gang-card:nth-child(4) { animation-delay: 0.20s; }
+.gang-card:nth-child(5) { animation-delay: 0.25s; }
+.gang-card:nth-child(6) { animation-delay: 0.30s; }
+
+.gang-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  background: transparent;
+}
+
+.gang-name {
+  font-size: 17px;
+  font-weight: 700;
+  color: #ddeeff;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  line-height: 1.2;
+  background: transparent;
+}
+
+.member-badge {
+  background: rgba(0, 229, 255, 0.1);
+  border: 1px solid rgba(0, 229, 255, 0.3);
+  color: var(--cyan);
+  font-family: var(--font-m);
+  font-size: 9px;
+  letter-spacing: 2px;
+  padding: 3px 8px;
+  border-radius: 3px;
+  white-space: nowrap;
+  text-shadow: 0 0 6px var(--cyan-glow);
+  background: transparent;
+}
+
+.gang-description {
+  font-size: 13px;
+  color: var(--text-dim);
+  line-height: 1.5;
+  flex: 1;
+  /* Clamp to 2 lines */
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  background: transparent;
+}
+
+.gang-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding-top: 10px;
+  border-top: 1px solid var(--border);
+  background: transparent;
+}
+
+.gang-owner {
+  font-family: var(--font-m);
+  font-size: 10px;
+  color: var(--purple);
+  letter-spacing: 1px;
+  background: transparent;
+}
+
+.gang-members {
+  font-family: var(--font-m);
+  font-size: 10px;
+  color: var(--text-dim);
+  letter-spacing: 1px;
+  background: transparent;
+}
+
+/* ===== Empty State ===== */
+.empty-state {
+  text-align: center;
+  padding: 5rem 0;
+  position: relative;
+  z-index: 1;
+  background: transparent;
+
+  p {
+    font-family: var(--font-m);
+    font-size: 13px;
+    color: var(--text-dim);
+    letter-spacing: 3px;
+
+    &::before { content: '// '; color: var(--cyan-dim); }
+  }
+}
