@@ -159,3 +159,57 @@ export interface LiveDrop {
 export interface ItemActionRequest {
   item_id: number;
 }
+
+export interface Gang {
+  id: number;
+  name: string;
+  description: string;
+  owner_username: string;
+  members_count: number;
+  is_member: boolean;
+}
+
+export interface GangMember {
+  id: number;
+  user: number;
+  username: string;
+  role: number;
+  role_name: string;
+  joined_at: string;
+}
+
+export interface GangMessage {
+  id: number;
+  user: number;
+  username: string;
+  text: string;
+  formatted_display: string;
+  created_at: string;
+}
+
+export interface GangJoinRequest {
+  id: number;
+  gang: number;
+  gang_name: string;
+  user: number;
+  username: string;
+  message: string;
+  status: 'pending' | 'accepted' | 'rejected';
+  created_at: string;
+}
+
+export interface GangVaultRental {
+  id: number;
+  user: number;
+  item: number;
+  item_details: {
+    name: string;
+    image: string | null;
+    rarity: string | null;
+  };
+  deposit_amount: string;
+  status: 'active' | 'returned' | 'lost';
+  status_display: string;
+  created_at: string;
+  returned_at: string | null;
+}
