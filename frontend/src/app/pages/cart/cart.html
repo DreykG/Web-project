@@ -1,18 +1,26 @@
-<p>Cart</p>
+<div class="cart-page">
 
-@for (item of cartItems; track item.id) {
+  <p class="cart-title">Cart</p>
+
+  @for (item of cartItems; track item.id) {
     <div class="item-card">
-        {{item.skin_name}}
-        {{item.price}}
-        <button class="removeBtn" (click)="removeFromCart(item.id)">Remove from Cart</button>
-    </div>     
-} @empty {
-    <p>Cart items not found</p>
-}
+      <span class="skin-name">{{ item.skin_name }}</span>
+      <span class="price">${{ item.price }}</span>
+      <button class="removeBtn" (click)="removeFromCart(item.id)">✕ Remove</button>
+    </div>
+  } @empty {
+    <p class="empty">Your cart is empty</p>
+  }
 
-@if (errorMessage) {
-    <p class="error">{{errorMessage}}</p>
-}
+  @if (errorMessage) {
+    <p class="error">⚠ {{ errorMessage }}</p>
+  }
 
-<p>Total: {{totalSum()}}</p>
-<button class="buyBtn" (click)="buyCart()">Buy all Cart Items</button>
+  <div class="cart-footer">
+    <p class="total">Total: <span>${{ totalSum() }}</span></p>
+    <button class="buyBtn" (click)="buyCart()" [disabled]="cartItems.length === 0">
+      Buy All Items
+    </button>
+  </div>
+
+</div>
