@@ -1,3 +1,6 @@
+p{
+    background: transparent;
+}
 
 
 .drawer-tab {
@@ -124,7 +127,7 @@
 
 .offers-container{
     width: 60%;
-    margin: 0 auto;
+    margin: 30px auto;
     display: flex;
     flex-direction: column;
     background: transparent;
@@ -143,6 +146,14 @@
     gap: 16px;
     background: transparent;
     background: #0d151f;
+}
+
+.active-offers p{
+    color: white;
+}
+
+.active-offers b{
+    color: #c28e00;
 }
 
 .active-offers h3 {
@@ -530,6 +541,13 @@
     text-align: center;
 
     animation: slideIn 0.4s ease-out, fadeOut 0.5s 2.5s forwards;
+}
+
+.none-active-offers{
+    margin: 0 auto;
+    color: white;
+    font-size: 1.2rem;
+    background: transparent;
 }
 
 @keyframes slideIn {

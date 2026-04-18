@@ -2,7 +2,7 @@ import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { ActivatedRoute } from "@angular/router";
 import { TradeService } from '../../services/trade';
 import { ShopService } from '../../services/shop';
-import { TradeOffer, InventoryItem } from '../../interfaces/models';
+import { TradeOffer, InventoryItem, TradeOfferItem } from '../../interfaces/models';
 import { CdkDragDrop, moveItemInArray, transferArrayItem, DragDropModule } from '@angular/cdk/drag-drop';
 import { FormsModule } from '@angular/forms';
 
@@ -13,10 +13,16 @@ import { FormsModule } from '@angular/forms';
   styleUrl: './trade-room.css',
 })
 export class TradeRoom implements OnInit {
+calculateTotalFromOffer(arg0: TradeOfferItem[]) {
+throw new Error('Method not implemented.');
+}
+calculateTotal(arg0: InventoryItem[]) {
+throw new Error('Method not implemented.');
+}
   offer: TradeOffer | null = null;
   myInventory: InventoryItem[] = [];
   selectedItems: InventoryItem[] = [];
-  errorMessage = '';
+  errorMessage: string | null = null;
   passwordInput = '';
   passwordVerified = false;
 
@@ -65,19 +71,33 @@ export class TradeRoom implements OnInit {
   respondToOffer() {
     if (!this.offer) return;
 
-    const itemIds = this.selectedItems.map(i => i.id);
+    if (this.selectedItems.length === 0) {
+        this.errorMessage = 'Choose at least one item to exchange.';
+        this.cdr.detectChanges();
+        return;
+    }
+
+
+    const itemIds = this.selectedItems.map(item => item.id);
 
     this.tradeService.respondToOffer(this.offer.id, itemIds).subscribe({
         next: () => {
-            this.errorMessage = '';
+            this.errorMessage = null;
+            this.selectedItems = [];
             this.cdr.detectChanges();
+            alert('The offer has been successfully submitted!');
         },
-        error: () => {
-            this.errorMessage = 'Failed to respond to offer';
+        error: (err) => {
+            this.errorMessage = err.error?.detail || `Failed to respond to offer #${this.offer?.id}`;
             this.cdr.detectChanges();
+
+            setTimeout(() => {
+                this.errorMessage = null;
+                this.cdr.detectChanges();
+            }, 5000);
         }
     });
-  }
+}
 
   drop(event: CdkDragDrop<InventoryItem[]>) {
     if (event.previousContainer === event.container) {

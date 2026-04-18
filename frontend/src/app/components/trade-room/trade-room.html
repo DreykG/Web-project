@@ -1,79 +1,132 @@
+
 @if (errorMessage) {
-    <p class="error">{{errorMessage}}</p>
+    <div class="toast-error">
+        <span>⚠️</span>
+        <p>{{errorMessage}}</p>
+        <button (click)="errorMessage = null">✕</button>
+    </div>
 }
 
+<!-- Защита паролем -->
 @if (offer?.is_private && !passwordVerified) {
-    <div class="password-prompt">
-        <h3>Этот оффер защищён паролем</h3>
-        <input type="password" [(ngModel)]="passwordInput" placeholder="Введите пароль">
-        <button (click)="verifyPassword()">Подтвердить</button>
-        @if (errorMessage) {
-            <p class="error">{{errorMessage}}</p>
-        }
+    <div class="lock-screen">
+        <div class="lock-card">
+            <div class="lock-icon">🔐</div>
+            <h2>Private offer</h2>
+            <p>This trade is password protected</p>
+            <input 
+                type="password" 
+                [(ngModel)]="passwordInput" 
+                placeholder="Enter password"
+                (keyup.enter)="verifyPassword()"
+            >
+            <button (click)="verifyPassword()">Unlock →</button>
+        </div>
     </div>
+}
 
-}@else {
-    @if (offer) {
-    <div class="trade-room">
+<!-- Основной трейд -->
+@if (offer && (!offer.is_private || passwordVerified)) {
+    <div class="trade-layout">
         
-        <!-- Левая часть - твой инвентарь -->
+        <!-- Левая колонка: мой инвентарь -->
         <div class="inventory-panel">
-            <h3>Ваш инвентарь</h3>
-            <div cdkDropList 
-                 #inventoryList="cdkDropList"
-                 [cdkDropListData]="myInventory"
-                 [cdkDropListConnectedTo]="[selectedList]"
-                 (cdkDropListDropped)="drop($event)">
+            <div class="panel-title">
+                <h3>My items</h3>
+                <span class="badge">{{myInventory.length}} items</span>
+            </div>
+            
+            <div 
+                class="drag-grid"
+                cdkDropList
+                #inventoryList="cdkDropList"
+                [cdkDropListData]="myInventory"
+                [cdkDropListConnectedTo]="[selectedList]"
+                (cdkDropListDropped)="drop($event)"
+            >
                 @for (item of myInventory; track item.id) {
                     <div class="item-card" cdkDrag>
                         <img [src]="item.url" [alt]="item.skin_name">
-                        <span>{{item.skin_name}}</span>
-                        <span>{{item.price}}</span>
+                        <div class="item-details">
+                            <strong>{{item.skin_name}} | {{item.wear_name}}</strong>
+                            <span class="price">${{item.price}}</span>
+                        </div>
                     </div>
                 } @empty {
-                    <p>Инвентарь пуст</p>
+                    <div class="empty-zone">Inventory empty</div>
                 }
             </div>
         </div>
 
-        <!-- Правая часть - предметы обмена -->
-        <div class="trade-panel">
-            <div class="your-offer">
-                <h3>Ваши предметы:</h3>
-                <div cdkDropList
-                     #selectedList="cdkDropList"
-                     [cdkDropListData]="selectedItems"
-                     [cdkDropListConnectedTo]="[inventoryList]"
-                     (cdkDropListDropped)="drop($event)">
-                    @for (item of selectedItems; track item.id) {
-                        <div class="item-card" cdkDrag>
-                            <span>{{item.skin_name}}</span>
-                            <span>{{item.price}}</span>
-                        </div>
-                    } @empty {
-                        <p>Перетащите предметы сюда</p>
-                    }
+        <!-- Центральная зона обмена -->
+        <div class="exchange-area">
+            <!-- Мои предметы на обмен -->
+            <div class="drop-zone">
+                <div class="zone-label">
+                    <span>You give</span>
+                </div>
+                <div 
+                    class="drop-container horizontal-scroll"
+                    cdkDropList
+                    #selectedList="cdkDropList"
+                    [cdkDropListData]="selectedItems"
+                    [cdkDropListConnectedTo]="[inventoryList]"
+                    (cdkDropListDropped)="drop($event)"
+                >
+                    <div class="items-row">
+                        @for (item of selectedItems; track item.id) {
+                            <div class="compact-item-card" cdkDrag>
+                                <img [src]="item.url" [alt]="item.skin_name">
+                                <div class="compact-item-info">
+                                    <span class="compact-name">{{item.skin_name}} | {{item.wear_name}}</span>
+                                    <span class="compact-price">${{item.price}}</span>
+                                </div>
+                            </div>
+                        } @empty {
+                            <div class="placeholder-row">⇢ Drag items here</div>
+                        }
+                    </div>
                 </div>
             </div>
 
-            <div class="their-offer">
-                <h3>Предметы {{offer.creator_username}}:</h3>
-                @for (item of offer.items; track item.id) {
-                    <div class="item-card">
-                        <span>{{item.inventory_item_details.skin_name}}</span>
-                        <span>{{item.inventory_item_details.price}}</span>
+            <!-- Разделитель -->
+            <div class="swap-divider">|||</div>
+
+            <!-- Зона "You get" (предметы создателя) -->
+            <div class="drop-zone">
+                <div class="zone-label">
+                    <span>You get</span>
+                    <span class="total">{{offer.items.length}} items</span>
+                </div>
+                <div class="drop-container horizontal-scroll static-container">
+                    <div class="items-row">
+                        @for (item of offer.items; track item.id) {
+                            <div class="compact-item-card static-card">
+                                <img [src]="item.inventory_item_details.url || item.inventory_item_details.url" [alt]="item.inventory_item_details.skin_name">
+                                <div class="compact-item-info">
+                                    <span class="compact-name">{{item.inventory_item_details.skin_name}}</span>
+                                    <span class="compact-price">${{item.inventory_item_details.price}}</span>
+                                </div>
+                            </div>
+                        } @empty {
+                            <div class="placeholder-row">No items from creator</div>
+                        }
                     </div>
-                } @empty {
-                    <p>Нет предметов</p>
-                }
+                </div>
             </div>
 
-            <button (click)="respondToOffer()">Предложить обмен</button>
+            <!-- Кнопка отправки -->
+            <button class="trade-btn" (click)="respondToOffer()">
+                Propose exchange
+            </button>
         </div>
-
     </div>
-} @else {
-    <p>Загрузка...</p>
-}
 }
 
+<!-- Лоадер -->
+@if (!offer) {
+    <div class="loader">
+        <div class="spinner"></div>
+        <p>Loading trade offer...</p>
+    </div>
+}

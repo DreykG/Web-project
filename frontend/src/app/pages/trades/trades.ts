@@ -23,6 +23,7 @@ export class Trades implements OnInit{
   offerPassword = '';
   isDrawerOpen = false;
   
+  
 
   constructor(private tradeService: TradeService, private shopService: ShopService, private cdr: ChangeDetectorRef) {}
 
@@ -100,7 +101,6 @@ export class Trades implements OnInit{
         this.cdr.detectChanges();
 
         setTimeout(() => {
-          // Убедись, что errorMessage объявлен как string | null
           this.errorMessage = null;
           this.cdr.detectChanges();
         }, 3000);

@@ -89,24 +89,25 @@
 
 
     <div class="active-offers">
-        <h3>Активные офферы</h3>
+        <h3>Active offers</h3>
 
         @for (offer of offers; track offer.id) {
-        <div class="cm-offer-card">
-            <div class="cm-offer-main">
-                <h4>{{offer.title}}</h4>
-                <button [routerLink]="['/trades', offer.id]">Войти</button>
-            </div>
+            <div class="cm-offer-card">
+                <p>Created by <b>{{offer.creator_username}}</b></p>
+                <div class="cm-offer-main">
+                    <h4>{{offer.title}}</h4>
+                    <button [routerLink]="['/trades', offer.id]">Enter</button>
+                </div>
 
-            <div class="cm-offer-details">
-                <p>Cost: {{offer.offer_value}}</p>
-                <p>Items: {{offer.items.length}}</p>
-                <p>Status: {{offer.status}}</p>
-            </div>
+                <div class="cm-offer-details">
+                    <p>Cost: {{offer.offer_value}}</p>
+                    <p>Items: {{offer.items.length}}</p>
+                    <p>Status: {{offer.status}}</p>
+                </div>
                 
-        </div>
+            </div>
         } @empty {
-            <p>Not active offers</p>
+            <p class="none-active-offers">Not active offers</p>
         }
     </div>
 </div>
