@@ -113,3 +113,49 @@ export interface TradeOffer {
     is_private: boolean;
     password?: string | null;
 }
+
+export interface Case {
+  id: number;
+  name: string;
+  price: string;        // DecimalField → строка в JSON
+  img_url: string | null;
+  is_active: boolean;
+  created_at: string;   // ISO datetime
+}
+
+export interface CaseItem {
+  id: number;
+  case: number;         // FK → id кейса
+  skin: number;         // FK → id скина
+  skin_name: string;
+  wear: number;         // FK → id wear
+  wear_name: string;
+  drop_chance: string;  // DecimalField → строка
+  created_at: string;
+}
+
+export interface CaseOpening {
+  id: number;
+  user: number;
+  user_username: string;
+  case: number;
+  case_name: string;
+  case_item: number | null;
+  inventory_item: number | null;
+  spent_balance: string;
+  opened_at: string;
+}
+
+export interface LiveDrop {
+  id: number;
+  username: string;
+  skin_name: string;
+  skin_image: string;
+  case_name: string;
+  rarity: string;
+  opened_at: string;
+}
+
+export interface ItemActionRequest {
+  item_id: number;
+}
