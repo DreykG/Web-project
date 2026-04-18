@@ -8,6 +8,8 @@ import { Trades } from './pages/trades/trades';
 import { TradeRoom } from './components/trade-room/trade-room';
 import { Cases } from './pages/case/case';
 import { CaseOpen } from './components/case-open/case-open';
+import { Gangs } from './pages/gangs/gangs';
+import { GangRoom } from './components/gang-room/gang-room';
 import { authGuard } from './guards/auth-guard';
 
 export const routes: Routes = [
@@ -22,4 +24,6 @@ export const routes: Routes = [
     {path: 'register', component: Register},
     {path: 'cases', component: Cases, canActivate: [authGuard]},
     {path: 'cases/:id', component: CaseOpen, canActivate: [authGuard]},
+    {path: 'gangs', component: Gangs, canActivate: [authGuard]},
+    {path: 'gangs/:id', component: GangRoom, canActivate: [authGuard]}
 ];
