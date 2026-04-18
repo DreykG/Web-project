@@ -1,23 +1,29 @@
-img{
+img {
     width: 100%;
     height: 100%;
 }
 
-nav{
+p{
+    background: transparent;
+}
+
+nav {
     display: flex;
     justify-content: space-between;
     background: #0d151f;
     align-items: stretch;
     height: 80px;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
 }
 
-.chapters{
+.chapters {
     display: flex;
     justify-content: space-between;
     background: #0a111a;
     width: 100%;
 }
-
 
 .left-chapters, .right-chapters {
     display: flex;
@@ -36,6 +42,36 @@ nav{
     text-decoration: none;
     clip-path: polygon(20px 0%, 100% 0%, calc(100% - 20px) 100%, 0% 100%);
     margin-left: -20px;
+    transition: all 0.2s ease;
+    position: relative;
+}
+
+/* Легкое свечение при ховере */
+.nav-item:hover:not(.nav-logo) {
+    background: linear-gradient(0deg, #121f30, #0a111a);
+    color: #00e5ff;
+    text-shadow: 0 0 4px rgba(0, 229, 255, 0.3);
+}
+
+/* Активное состояние - плавное подчеркивание вместо резкой границы */
+.nav-item.is-active:not(.nav-logo) {
+    background: linear-gradient(0deg, #18283d, #0a111a);
+    color: #00e5ff;
+}
+
+.nav-item.is-active:not(.nav-logo)::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, #00e5ff, #bf5af2);
+}
+
+/* Первый элемент - корректировка подчеркивания */
+.left-chapters .nav-item:first-child.is-active:not(.nav-logo)::after {
+    left: 0;
 }
 
 .nav-item img {
@@ -45,29 +81,19 @@ nav{
     background: transparent;
 }
 
+.nav-item img:hover{
+    transform: scale(1.2);
+}
+
 .nav-logo {
     background: linear-gradient(90deg, #18283d, #080d14);
 }
+
 
 .left-chapters .nav-item:first-child {
     margin-left: 0;
     clip-path: polygon(0% 0%, 100% 0%, calc(100% - 20px) 100%, 0% 100%);
 }
-
-
-
-.nav-item:hover:not(.nav-logo){
-    background: linear-gradient(0deg, #121f30, #0a111a);
-    transition: background-color 0.3s ease;
-
-}
-
-.nav-item.is-active:not(.nav-logo){
-    border-bottom: rgb(0, 204, 204) 3px solid;
-    background: linear-gradient(0deg, #18283d, #0a111a);
-    
-}
-
 
 .user-area {
     display: flex;
@@ -75,16 +101,34 @@ nav{
     gap: 20px;
     padding: 0 40px;
     color: white;
-    background: linear-gradient(90deg, #2c4a71, #0a111a);
     clip-path: polygon(20px 0%, 100% 0%, 100% 100%, 0% 100%);
     margin-left: -21px;
+    transition: all 0.2s ease;
 }
 
-.nav-item.nav-cart{
-    background:  #2c4a71;
+.nav-item.nav-cart {
+    position: relative;
 }
+
+
 
 .user-area a {
-    color: white;
+    color: cyan;
     text-decoration: none;
+    transition: all 0.2s ease;
+    display: inline-block;
+    padding: 5px 8px;
+    border-radius: 4px;
+}
+
+.user-area a:hover {
+    color: #00e5ff;
+    text-shadow: 0 0 8px rgba(0, 229, 255, 0.5);
+    transform: scale(1.05);
+}
+
+.user-area p{
+    color: #00e5ff;
+    text-shadow: 0 0 8px rgba(0, 229, 255, 0.5);
+    transform: scale(1.05);
 }

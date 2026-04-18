@@ -3,6 +3,34 @@ p{
 }
 
 
+
+.offers-container{
+    width: 60%;
+    margin: 40px auto;
+    display: flex;
+    flex-direction: column;
+    background: transparent;
+    border-radius: 10px;
+    background-color: #0d151f;
+    padding: 15px;
+}
+
+.offers-container::before{
+    content: '';
+    position: fixed;
+    top: 70px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: 
+        linear-gradient(rgba(0, 229, 255, 0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 229, 255, 0.02) 1px, transparent 1px);
+    background-size: 24px 24px;
+    pointer-events: none;
+    z-index: 0;
+}
+
+
 .drawer-tab {
   position: fixed;
   left: 0;
@@ -125,16 +153,7 @@ p{
 
 
 
-.offers-container{
-    width: 60%;
-    margin: 30px auto;
-    display: flex;
-    flex-direction: column;
-    background: transparent;
-    border-radius: 10px;
-    background-color: #0d151f;
-    padding: 15px;
-}
+
 
 
 .active-offers {
@@ -153,7 +172,7 @@ p{
 }
 
 .active-offers b{
-    color: #c28e00;
+    color: rgb(221, 50, 227);
 }
 
 .active-offers h3 {
@@ -236,7 +255,7 @@ p{
 }
 
 .cm-offer-main button {
-    background: #238636;
+    background: #25aeb8;
     color: white;
     border: none;
     padding: 10px 24px;
@@ -249,8 +268,8 @@ p{
 }
 
 .cm-offer-main button:hover {
-    background: #2ea043;
-    box-shadow: 0 0 12px rgba(46, 160, 67, 0.4);
+    background: #26dad1;
+    box-shadow: 0 0 12px rgba(0, 255, 255, 0.4);
 }
 
 .cm-offer-details {
@@ -273,7 +292,7 @@ p{
 
 
 .cm-offer-details p:nth-child(1) {
-    color: #d29922;
+    color: rgb(221, 50, 227);
     font-weight: 600;
 }
 
@@ -302,7 +321,7 @@ p{
 }
 
 .stats button{
-    background: #238636;
+    background: #1c9b95;
     color: white;
     padding: 12px;
     font-weight: 600;
@@ -311,6 +330,11 @@ p{
     border: none;
     transition: 0.2s;
     clip-path: polygon(9px 0%, 100% 0%, calc(100% - 9px) 100%, 0% 100%);
+}
+
+.stats button:hover {
+    background: #26dad1;
+    box-shadow: 0 0 12px rgba(0, 255, 255, 0.4);
 }
 
 .modal-overlay {

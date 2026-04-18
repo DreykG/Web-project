@@ -1,29 +1,32 @@
-<div class="searching">
-    <input class="search-bar" type="text" placeholder="Search..." [(ngModel)]="searchText" (input)="sortSkins()">
-    <select [(ngModel)]="sortBy" (change)="sortSkins()" class="sort-select">
-      <option value="default">Default</option>
-      <option value="price_asc">Price ↑</option>
-      <option value="price_desc">Price ↓</option>
-      <option value="date_asc">Date ↑</option>
-      <option value="date_desc">Date ↓</option>
-    </select>
-</div>
+<div class="shop-container">
 
-
-<div class="skins-container">
-    @for (skin of sortedSkins; track skin.id) {
-        <div class="skin-card">
-        <p class="skin-user">{{skin.user_username}}</p>
-        <img [src]="skin.url" alt="{{skin.skin_name}}" class="skin-image">    
-        <p class="skin-name">{{skin.skin_name}} | {{skin.wear_name}}</p>
-        <p class="skin-price">{{skin.price}}$</p>
-        <button class="addBtn" (click)="addToCart(skin.id)">Add to Cart</button>
+    <div class="searching">
+        <input class="search-bar" type="text" placeholder="Search..." [(ngModel)]="searchText" (input)="sortSkins()">
+        <select [(ngModel)]="sortBy" (change)="sortSkins()" class="sort-select">
+            <option value="default">Default</option>
+            <option value="price_asc">Price ↑</option>
+            <option value="price_desc">Price ↓</option>
+            <option value="date_asc">Date ↑</option>
+            <option value="date_desc">Date ↓</option>
+        </select>
     </div>
+
+
+    <div class="skins-container">
+        @for (skin of sortedSkins; track skin.id) {
+            <div class="skin-card">
+                <p class="skin-user">{{skin.user_username}}</p>
+                <img [src]="skin.url" alt="{{skin.skin_name}}" class="skin-image">    
+            <p class="skin-name">{{skin.skin_name}} | {{skin.wear_name}}</p>
+            <p class="skin-price">{{skin.price}}$</p>
+            <button class="addBtn" (click)="addToCart(skin.id)">Add to Cart</button>
+        </div>
     } @empty {
         <p>Skins not found</p>
     }
+    </div>
 
+    @if (errorMessage) {
+        <p class="error">{{errorMessage}}</p>
+    }
 </div>
-@if (errorMessage) {
-    <p class="error">{{errorMessage}}</p>
-}

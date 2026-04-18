@@ -4,7 +4,8 @@
 
   @for (item of cartItems; track item.id) {
     <div class="item-card">
-      <span class="skin-name">{{ item.skin_name }}</span>
+      <span class="skin-name">{{ item.skin_name }} | {{item.wear_name}}</span>
+      <img [src]="item.url" alt="{{item.skin_name}}" class="skin-image">
       <span class="price">${{ item.price }}</span>
       <button class="removeBtn" (click)="removeFromCart(item.id)">✕ Remove</button>
     </div>

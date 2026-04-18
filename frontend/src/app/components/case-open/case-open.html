@@ -67,7 +67,7 @@
     @if (openState === 'result' && resultItem) {
       <div class="result-panel">
         <p class="result-label">YOU GOT</p>
-        @if (resultItem.url || resultItem.url) {
+        @if (resultItem.url) {
           <img
             [src]="resultItem.url || resultItem.url"
             [alt]="resultItem.skin_name"
@@ -77,7 +77,6 @@
         
         <h2 class="result-skin-name">{{ resultItem.skin_name }}</h2>
         <p class="result-wear">{{ resultItem.wear_name }}</p>
-        <p class="result-chance">Drop chance: {{ resultItem.drop_chance }}%</p>
 
         @if (!actionMessage) {
           <div class="result-actions">

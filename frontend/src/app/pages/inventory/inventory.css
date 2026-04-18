@@ -37,21 +37,6 @@
   position: relative;
 }
 
-/* Subtle scanline overlay */
-.profile-page::before {
-  content: '';
-  position: fixed;
-  inset: 0;
-  background: repeating-linear-gradient(
-    0deg,
-    transparent,
-    transparent 2px,
-    rgba(0, 229, 255, 0.013) 2px,
-    rgba(0, 229, 255, 0.013) 4px
-  );
-  pointer-events: none;
-  z-index: 0;
-}
 
 /* ===== Page Title ===== */
 .page-title {
