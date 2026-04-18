@@ -152,29 +152,39 @@ class TradeViewSet(viewsets.ModelViewSet):
         offer = self.get_object()
         user = request.user
 
+
         if offer.creator != user:
             return Response({"detail": "You can only cancel your own offers."}, status=403)
 
         if offer.status != TradeOffer.StatusChoices.OPEN:
             return Response({"detail": "You can only cancel open offers."}, status=400)
 
-
-        offer_items = InventoryItem.objects.filter(tradeofferitem__trade_offer=offer)
-        offer_items.update(status='in_inventory')
+        offer_relations = TradeOfferItem.objects.filter(trade_offer=offer).select_related('inventory_item')
+        
+        for relation in offer_relations:
+            item = relation.inventory_item
+            item.status = 'in_inventory'
+            item.save()
 
 
         responses = offer.responses.filter(status='pending')
         for resp in responses:
 
-            res_items = InventoryItem.objects.filter(traderesponseitem__trade_response=resp)
-            res_items.update(status='in_inventory')
-        
+            resp_relations = TradeResponseItem.objects.filter(trade_response=resp).select_related('inventory_item')
+            
+            for rel in resp_relations:
+                item = rel.inventory_item
+                item.status = 'in_inventory'
+                item.save()
+            
+            resp.delete()
+            resp.save()
 
-        responses.delete()
 
-        
-        
+
         offer.save()
         offer.delete()
+        
 
-        return Response({"detail": "Offer cancelled successfully, items returned to inventory."})
+
+        return Response({"detail": "Offer cancelled. All items (yours and from bidders) are back in inventory."})
