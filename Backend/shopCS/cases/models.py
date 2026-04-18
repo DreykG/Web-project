@@ -11,7 +11,7 @@ class Case(models.Model):
         max_digits=12,
         decimal_places=2
     )
-    img_url = models.URLField(blank=True, null=True)
+    img_url = models.TextField(blank=True, null=True)
     is_active = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
