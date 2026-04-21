@@ -9,7 +9,7 @@ class GangMemberSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = GangMember
-        fields = ['id', 'user', 'username', 'role', 'role_name', 'joined_at']
+        fields = ['id', 'user_id', 'username', 'role', 'role_name', 'joined_at']
 
 
 class GangMessageSerializer(serializers.ModelSerializer):

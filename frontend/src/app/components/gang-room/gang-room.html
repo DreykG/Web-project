@@ -58,6 +58,20 @@
             <span class="member-username">{{ member.username }}</span>
             <span class="member-role" [class]="'role-' + member.role">{{ member.role_name }}</span>
             <span class="member-joined">{{ member.joined_at | date:'mediumDate' }}</span>
+
+            @if (myRole === 3 && member.role !== 3) {
+              <div class="member-actions">
+                <button class="vault-btn rent-btn" (click)="promoteMember(member.user_id)">▲ PROMOTE</button>
+                <button class="vault-btn" (click)="demoteMember(member.user_id)" [disabled]="member.role === 1">▼ DEMOTE</button>
+                @if (member.role === 1) {
+                  <button class="vault-btn leave-btn" (click)="kickMember(member.user_id)">KICK</button>
+                }
+              </div>
+            } @else if (myRole === 2 && member.role === 1) {
+              <div class="member-actions">
+                <button class="vault-btn leave-btn" (click)="kickMember(member.user_id)">KICK</button>
+              </div>
+            }
           </div>
         }
         @if (members.length === 0) {

@@ -182,7 +182,7 @@ export interface Gang {
 
 export interface GangMember {
   id: number;
-  user: number;
+  user_id: number;
   username: string;
   role: number;
   role_name: string;

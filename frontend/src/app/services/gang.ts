@@ -38,8 +38,16 @@ export class GangService {
     return this.http.post<any>(`${this.apiUrl}/${gangId}/leave/`, {});
   }
 
+  promoteMember(gangId: number, userId: number) {
+    return this.http.post<any>(`${this.apiUrl}/${gangId}/promote/${userId}/`, {});
+  }
+
   demoteMember(gangId: number, userId: number) {
     return this.http.post<any>(`${this.apiUrl}/${gangId}/demote/${userId}/`, {});
+  }
+
+  kickMember(gangId: number, userId: number) {
+    return this.http.post<any>(`${this.apiUrl}/${gangId}/kick/${userId}/`, {});
   }
 
   getVault(gangId: number) {

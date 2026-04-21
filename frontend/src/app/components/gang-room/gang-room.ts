@@ -1,6 +1,7 @@
 import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GangService } from '../../services/gang';
+import { ProfileService } from '../../services/profile';
 import { FormsModule } from '@angular/forms';
 import { DatePipe } from '@angular/common';
 import { Gang, GangMember, GangMessage, GangJoinRequest, GangVaultRental } from '../../interfaces/models';
@@ -39,11 +40,13 @@ export class GangRoom implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private router: Router,
     private gangService: GangService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private profileService: ProfileService,
   ) {}
 
   ngOnInit() {
     this.gangId = Number(this.route.snapshot.paramMap.get('id'));
+    this.profileService.loadProfile();
     this.loadGang();
     this.loadMembers();
   }
@@ -79,6 +82,13 @@ export class GangRoom implements OnInit, OnDestroy {
     this.gangService.getMembers(this.gangId).subscribe({
       next: (data) => {
         this.members = data;
+        this.profileService.profile$.subscribe(profile => {
+          if (profile) {
+            const me = data.find(m => m.username === profile.username);
+            this.myRole = me?.role ?? 0;
+            this.cdr.detectChanges();
+          }
+        });
         this.cdr.detectChanges();
       },
       error: () => {}
@@ -214,5 +224,49 @@ export class GangRoom implements OnInit, OnDestroy {
 
   goBack() {
     this.router.navigate(['/gangs']);
+  }
+
+  promoteMember(userId: number) {
+    this.gangService.promoteMember(this.gangId, userId).subscribe({
+      next: (res) => {
+        this.actionMessage = res.detail;
+        this.loadMembers();
+        this.loadGang();
+        this.cdr.detectChanges();
+      },
+      error: (err) => {
+        this.actionMessage = err?.error?.detail || 'Failed to promote member';
+        this.cdr.detectChanges();
+      }
+    });
+  }
+
+  demoteMember(userId: number) {
+    this.gangService.demoteMember(this.gangId, userId).subscribe({
+      next: (res) => {
+        this.actionMessage = res.detail;
+        this.loadMembers();
+        this.cdr.detectChanges();
+      },
+      error: (err) => {
+        this.actionMessage = err?.error?.detail || 'Failed to demote member';
+        this.cdr.detectChanges();
+      }
+    });
+  }
+
+  kickMember(userId: number) {
+    this.gangService.kickMember(this.gangId, userId).subscribe({
+      next: (res) => {
+        this.actionMessage = res.detail;
+        this.loadMembers();
+        this.loadGang();
+        this.cdr.detectChanges();
+      },
+      error: (err) => {
+        this.actionMessage = err?.error?.detail || 'Failed to kick';
+        this.cdr.detectChanges();
+      }
+    });
   }
 }
