@@ -703,3 +703,32 @@
     justify-content: space-between;
   }
 }
+
+.treasury-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(0, 255, 200, 0.05);
+  border: 1px solid rgba(0, 255, 200, 0.15);
+  border-radius: 8px;
+  padding: 12px 20px;
+  margin-bottom: 24px;
+}
+
+.treasury-label { color: #aaa; font-size: 12px; letter-spacing: 2px; }
+.treasury-amount { color: #00ffc8; font-size: 20px; font-weight: 700; }
+
+.vault-section-label {
+  color: #555;
+  font-size: 11px;
+  letter-spacing: 2px;
+  margin-bottom: 12px;
+}
+
+.vault-deposit-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 32px;
+  margin-bottom: 12px;
+}

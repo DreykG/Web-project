@@ -178,6 +178,7 @@ export interface Gang {
   owner_username: string;
   members_count: number;
   is_member: boolean;
+  treasury: number;
 }
 
 export interface GangMember {

@@ -58,12 +58,12 @@ class GangVaultRentalSerializer(serializers.ModelSerializer):
 class GangSerializer(serializers.ModelSerializer):
     owner_username = serializers.CharField(source='owner.username', read_only=True)
     members_count = serializers.IntegerField(source='members.count', read_only=True)
-
     is_member = serializers.SerializerMethodField()
+    treasury = serializers.DecimalField(max_digits=12, decimal_places=2, read_only=True)
 
     class Meta:
         model = Gang
-        fields = ['id', 'name', 'description', 'owner_username', 'members_count', 'is_member']
+        fields = ['id', 'name', 'description', 'owner_username', 'members_count', 'is_member', 'treasury']
 
         extra_kwargs = {
             'name': {'required': True},

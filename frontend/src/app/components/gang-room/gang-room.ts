@@ -2,9 +2,10 @@ import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GangService } from '../../services/gang';
 import { ProfileService } from '../../services/profile';
+import { ShopService } from '../../services/shop';
 import { FormsModule } from '@angular/forms';
 import { DatePipe } from '@angular/common';
-import { Gang, GangMember, GangMessage, GangJoinRequest, GangVaultRental } from '../../interfaces/models';
+import { Gang, GangMember, GangMessage, GangJoinRequest, GangVaultRental, InventoryItem } from '../../interfaces/models';
 
 type ActiveTab = 'members' | 'vault' | 'chat' | 'requests';
 
@@ -21,6 +22,8 @@ export class GangRoom implements OnInit, OnDestroy {
   messages: GangMessage[] = [];
   joinRequests: GangJoinRequest[] = [];
   vaultItems: GangVaultRental[] = [];
+  myInventory: InventoryItem[] = [];
+  showDepositPanel = false;
 
   activeTab: ActiveTab = 'members';
   isLoading = true;
@@ -42,6 +45,7 @@ export class GangRoom implements OnInit, OnDestroy {
     private gangService: GangService,
     private cdr: ChangeDetectorRef,
     private profileService: ProfileService,
+    private shopService: ShopService,
   ) {}
 
   ngOnInit() {
@@ -125,6 +129,32 @@ export class GangRoom implements OnInit, OnDestroy {
     });
   }
 
+  loadMyInventory() {
+    this.shopService.getInventory().subscribe({
+      next: (data) => {
+        this.myInventory = data.filter(item => item.status === 'in_inventory');
+        this.cdr.detectChanges();
+      },
+      error: () => {}
+    });
+  }
+
+  depositItem(itemId: number) {
+    this.gangService.depositItem(this.gangId, itemId).subscribe({
+      next: (res) => {
+        this.actionMessage = res.detail || '✓ Item deposited!';
+        this.showDepositPanel = false;
+        this.loadVault();
+        this.loadMyInventory();
+        this.loadGang();
+      },
+      error: (err) => {
+        this.actionMessage = err?.error?.detail || 'Failed to deposit';
+        this.cdr.detectChanges();
+      }
+    });
+  }
+
   setTab(tab: ActiveTab) {
     this.activeTab = tab;
     this.actionMessage = null;
@@ -132,7 +162,10 @@ export class GangRoom implements OnInit, OnDestroy {
     if(tab != 'members' && !this.gang?.is_member) return;
 
     if (tab === 'requests') this.loadRequests();
-    if (tab === 'vault') this.loadVault();
+    if (tab === 'vault') {
+      this.loadVault();
+      this.loadMyInventory();
+    }
     if (tab === 'chat') {
       this.loadChat();
       this.chatInterval = setInterval(() => this.loadChat(), 5000);
