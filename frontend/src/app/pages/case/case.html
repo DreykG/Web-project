@@ -25,7 +25,45 @@
   <div class="page-header">
     <h1 class="page-title">CASES</h1>
     <p class="page-subtitle">Open cases and try your luck</p>
+    @if (pendingItems.length > 0) {
+      <button class="pending-modal-btn" (click)="showPendingModal = true">
+        ⏳ PENDING ({{ pendingItems.length }})
+      </button>
+    }
   </div>
+
+  <!-- Pending Modal -->
+  @if (showPendingModal) {
+    <div class="modal-overlay" (click)="showPendingModal = false">
+      <div class="modal-box" (click)="$event.stopPropagation()">
+        <div class="modal-header">
+          <h2 class="modal-title">⏳ PENDING ITEMS</h2>
+          <div class="modal-header-actions">
+            <button class="sell-all-btn" (click)="sellAll()">SELL ALL</button>
+            <button class="modal-close" (click)="showPendingModal = false">✕</button>
+          </div>
+        </div>
+        <div class="modal-grid">
+          @for (item of pendingItems; track item.id) {
+            <div class="case-card pending-card">
+              <div class="case-img-wrap">
+                <img [src]="item.url" [alt]="item.skin_name" class="case-img" />
+              </div>
+              <div class="case-info">
+                <h3 class="case-name">{{ item.skin_name }}</h3>
+                <span class="pending-wear">{{ item.wear_name }}</span>
+                <span class="case-price">{{ item.price }}</span>
+              </div>
+              <div class="pending-actions">
+                <button class="action-btn accept-btn" (click)="acceptPending(item.id)">✓ TAKE</button>
+                <button class="action-btn sell-btn" (click)="sellPending(item.id)">$ SELL</button>
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+  }
 
   <!-- Loading -->
   @if (isLoading) {
@@ -39,33 +77,6 @@
   @if (error && !isLoading) {
     <div class="error-state">
       <span>⚠ {{ error }}</span>
-    </div>
-  }
-
-  @if (pendingItems.length > 0) {
-    <div class="pending-section">
-      <div class="pending-header">
-        <h2 class="pending-title">⏳ PENDING ITEMS</h2>
-        <button class="sell-all-btn" (click)="sellAll()">SELL ALL</button>
-      </div>
-      <div class="cases-grid">
-        @for (item of pendingItems; track item.id) {
-          <div class="case-card pending-card">
-            <div class="case-img-wrap">
-              <img [src]="item.url" [alt]="item.skin_name" class="case-img" />
-            </div>
-            <div class="case-info">
-              <h3 class="case-name">{{ item.skin_name }}</h3>
-              <span class="pending-wear">{{ item.wear_name }}</span>
-              <span class="case-price">${{ item.price }}</span>
-            </div>
-            <div class="pending-actions">
-              <button class="action-btn accept-btn" (click)="acceptPending(item.id)">✓ TAKE</button>
-              <button class="action-btn sell-btn" (click)="sellPending(item.id)">$ SELL</button>
-            </div>
-          </div>
-        }
-      </div>
     </div>
   }
 
@@ -83,7 +94,7 @@
           </div>
           <div class="case-info">
             <h3 class="case-name">{{ case_.name }}</h3>
-            <span class="case-price">${{ case_.price }}</span>
+            <span class="case-price">{{ case_.price }}</span>
           </div>
         </div>
       }

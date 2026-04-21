@@ -16,6 +16,7 @@ export class Cases implements OnInit {
   error: string | null = null;
   pendingItems: InventoryItem[] = [];
   pendingLoading = false;
+  showPendingModal = false;
 
   constructor(
     private caseService: CaseService,
