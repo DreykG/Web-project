@@ -46,7 +46,13 @@
   @if (gang.is_member) {
     <button class="tab-btn" [class.active]="activeTab === 'vault'" (click)="setTab('vault')">VAULT</button>
     <button class="tab-btn" [class.active]="activeTab === 'chat'" (click)="setTab('chat')">CHAT</button>
-    <button class="tab-btn" [class.active]="activeTab === 'requests'" (click)="setTab('requests')">REQUESTS</button>
+    <button class="tab-btn" [class.active]="activeTab === 'requests'" (click)="setTab('requests')">
+      @if (joinRequests.length > 0) {
+        ⚠️ REQUESTS ({{ joinRequests.length }})
+      } @else {
+        REQUESTS
+      }
+    </button>
   }
 </div>
 
@@ -200,6 +206,7 @@
             <div class="request-actions">
               @if (req.status === 'pending') {
                 <button class="vault-btn rent-btn" (click)="acceptRequest(req.id)">ACCEPT</button>
+                <button class="vault-btn leave-btn" (click)="declineRequest(req.id)">DECLINE</button>
               } @else {
                 <span class="request-status">{{ req.status }}</span>
               }

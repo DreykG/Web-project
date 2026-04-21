@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Gang, GangMember, GangMessage, GangJoinRequest, GangVaultRental } from '../interfaces/models';
+import { R } from '@angular/cdk/keycodes';
 
 @Injectable({
   providedIn: 'root',
@@ -24,6 +25,10 @@ export class GangService {
 
   applyToGang(gangId: number) {
     return this.http.post<any>(`${this.apiUrl}/${gangId}/apply/`, {});
+  }
+
+  declineRequest(gangId: number, requestId: number) {
+    return this.http.post<any>(`${this.apiUrl}/${gangId}/decline-request/${requestId}/`, {});
   }
 
   getJoinRequests(gangId: number) {

@@ -53,6 +53,7 @@ export class GangRoom implements OnInit, OnDestroy {
     this.profileService.loadProfile();
     this.loadGang();
     this.loadMembers();
+    this.loadRequests();
   }
 
   ngOnDestroy() {
@@ -182,6 +183,19 @@ export class GangRoom implements OnInit, OnDestroy {
       },
       error: (err) => {
         this.actionMessage = err?.error?.detail || 'Failed to send request';
+        this.cdr.detectChanges();
+      }
+    });
+  }
+
+  declineRequest(requestId: number) {
+    this.gangService.declineRequest(this.gangId, requestId).subscribe({
+      next: (res) => {
+        this.actionMessage = res.detail;
+        this.loadRequests();
+      },
+      error: (err) => {
+        this.actionMessage = err?.error?.detail || 'Failed to decline';
         this.cdr.detectChanges();
       }
     });

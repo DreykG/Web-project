@@ -93,6 +93,24 @@ class GangViewSet(viewsets.ModelViewSet):
 
         return Response({"detail": f"User {target_user.username} accepted and other requests cleared."})
     
+    @action(detail=True, methods=(['post']), url_path='decline-request/(?P<request_id>[^/.]+)')
+    def decline_request(self, request, pk=None, request_id=None):
+        gang = self.get_object()
+
+        try:
+            current_member = GangMember.objects.get(gang=gang, user=request.user)
+            if current_member.role < 2:
+                return Response({"detail": "No permission."}, status=403)
+        except GangMember.DoesNotExist:
+            return Response({"detail": "You are not a member."}, status=403)
+
+        try:
+            join_request = GangJoinRequest.objects.get(id=request_id, gang=gang, status='pending')
+        except GangJoinRequest.DoesNotExist:
+            return Response({"detail": "Request not found."}, status=404)
+
+        join_request.delete()
+        return Response({"detail": "Request declined."})
     
     @action(detail=True, methods=(['get']))
     def show_requests(self, request, pk=None):
