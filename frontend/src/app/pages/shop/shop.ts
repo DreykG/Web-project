@@ -16,6 +16,8 @@ export class Shop implements OnInit{
   errorMessage: string | null = null;
   categories: any[] = [];
   selectedCategory: number | null = null;
+  weapons: any[] = [];
+  selectedWeapon: number | null = null;
 
   constructor(private shopService: ShopService, private cdr: ChangeDetectorRef) {}
 
@@ -27,7 +29,7 @@ ngOnInit() {
 }
 
 loadSkins() {
-  this.shopService.getSkins(this.selectedCategory ?? undefined).subscribe({
+  this.shopService.getSkins(this.selectedCategory ?? undefined, this.selectedWeapon ?? undefined).subscribe({
     next: (data: InventoryItem[]) => {
       this.skins = data;
       this.sortSkins();
@@ -38,6 +40,18 @@ loadSkins() {
 }
 
 onCategoryChange() {
+  this.selectedWeapon = null;
+  this.weapons = [];
+
+  if (this.selectedCategory) {
+    this.shopService.getWeapons(this.selectedCategory).subscribe({
+      next: (data) => {
+        this.weapons = data;
+        this.cdr.detectChanges();
+      }
+    });
+  }
+
   this.loadSkins();
 }
 
@@ -80,4 +94,8 @@ onCategoryChange() {
 
   this.sortedSkins = result;
   };
+
+  onWeaponChange() {
+  this.loadSkins();
+  }
 }

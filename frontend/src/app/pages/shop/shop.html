@@ -9,12 +9,24 @@
             <option value="date_asc">Date ↑</option>
             <option value="date_desc">Date ↓</option>
         </select>
+
         <select [(ngModel)]="selectedCategory" (change)="onCategoryChange()" class="sort-select">
             <option [ngValue]="null">All</option>
-            @for (cat of categories; track cat.id) {
-                <option [ngValue]="cat.id">{{ cat.name }}</option>
-            }
+                @for (cat of categories; track cat.id) {
+                    <option [ngValue]="cat.id">{{ cat.name }}</option>
+                }
         </select>
+
+        @if (selectedCategory && weapons.length > 0) {
+        <select [(ngModel)]="selectedWeapon" (change)="onWeaponChange()" class="sort-select">
+            <option [ngValue]="null">All weapons</option>
+                @for (w of weapons; track w.id) {
+                    <option [ngValue]="w.id">{{ w.name }}</option>
+                }
+        </select>
+}
+
+        
     </div>
 
 

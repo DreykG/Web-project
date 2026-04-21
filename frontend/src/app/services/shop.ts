@@ -10,13 +10,24 @@ export class ShopService {
 
   constructor(private http: HttpClient) {}
 
-  getSkins(categoryId?: number) {
-    const params = categoryId ? `?category=${categoryId}` : '';
-    return this.http.get<InventoryItem[]>(`${this.apiUrl}/shop/items/${params}`);
+  getSkins(categoryId?: number, weaponId?: number) {
+    const params = new URLSearchParams();
+    if (categoryId !== undefined) {
+      params.set('category', categoryId.toString());
+    }
+    if (weaponId !== undefined) {
+      params.set('weapon', weaponId.toString());
+    }
+    const query = params.toString() ? `?${params.toString()}` : '';
+    return this.http.get<InventoryItem[]>(`${this.apiUrl}/shop/items/${query}`);
   }
 
   getCategories() {
     return this.http.get<any[]>(`${this.apiUrl}/shop/categories/`);
+  }
+
+  getWeapons(categoryId: number) {
+    return this.http.get<any[]>(`${this.apiUrl}/shop/categories/${categoryId}/weapons/`);
   }
 
   getCartItems() {
