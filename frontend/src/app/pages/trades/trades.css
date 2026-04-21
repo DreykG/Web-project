@@ -595,3 +595,87 @@ p{
         opacity: 0;
     }
 }
+
+.responses-btn {
+  background: transparent;
+  border: 1px solid #00ffc8;
+  color: #00ffc8;
+  padding: 4px 12px;
+  font-size: 11px;
+  letter-spacing: 1px;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: all 0.2s;
+}
+
+.responses-btn:hover {
+  background: rgba(0, 255, 200, 0.1);
+}
+
+.response-card {
+  background: #1a1f2e;
+  border: 1px solid #2a2f3e;
+  border-radius: 8px;
+  padding: 12px;
+  margin-bottom: 12px;
+}
+
+.response-header {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.response-user { color: #00ffc8; font-weight: 600; }
+.response-value { color: #aaa; }
+.response-status { 
+  font-size: 11px; 
+  padding: 2px 8px; 
+  border-radius: 4px;
+  background: rgba(255,255,255,0.05);
+  color: #777;
+}
+
+.response-items {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.response-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: #111b28;
+  border-radius: 6px;
+  padding: 6px;
+  width: 80px;
+  font-size: 11px;
+  color: #aaa;
+  text-align: center;
+}
+
+.response-item img {
+  width: 60px;
+  height: 45px;
+  object-fit: contain;
+  margin-bottom: 4px;
+}
+
+.accept-response-btn {
+  background: #00897b;
+  border: none;
+  color: #fff;
+  padding: 6px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+  letter-spacing: 1px;
+  transition: background 0.2s;
+}
+
+.accept-response-btn:hover {
+  background: #00a693;
+}

@@ -107,43 +107,42 @@ class TradeViewSet(viewsets.ModelViewSet):
         return Response({"detail": "Password verified successfully!"})
 
 
-    @action(detail=True, methods=['post'], url_path='accept-response/(?P<response_id>[^/.]+)')
-    @transaction.atomic
-    def accept_trade(self, request, pk=None, response_id=None):
-        offer = self.get_object()
-        user = request.user
-        
-        if offer.creator != user:
-            return Response({"detail": "Only creator can accept the trade"}, status=403)
+@action(detail=True, methods=['post'], url_path='accept-response/(?P<response_id>[^/.]+)')
+@transaction.atomic
+def accept_trade(self, request, pk=None, response_id=None):
+    offer = self.get_object()
+    user = request.user
+    
+    if offer.creator != user:
+        return Response({"detail": "Only creator can accept the trade"}, status=403)
 
-        winning_res = get_object_or_404(TradeResponse, id=response_id, trade_offer=offer, status='pending')
+    winning_res = get_object_or_404(TradeResponse, id=response_id, trade_offer=offer, status='pending')
 
-        offer_items = InventoryItem.objects.filter(tradeofferitem__trade_offer=offer)
-        for item in offer_items:
-            item.user = winning_res.responder
-            item.status = 'in_inventory'
-            item.save()
+    # Сначала обрабатываем остальные ответы
+    other_responses = offer.responses.filter(status='pending').exclude(id=winning_res.id)
+    for other in other_responses:
+        other_items = InventoryItem.objects.filter(traderesponseitem__trade_response=other)
+        other_items.update(status='in_inventory')
+    other_responses.delete()
 
-        res_items = InventoryItem.objects.filter(traderesponseitem__trade_response=winning_res)
-        for item in res_items:
-            item.user = offer.creator
-            item.status = 'in_inventory'
-            item.save()
+    # Меняем владельцев предметов
+    offer_items = InventoryItem.objects.filter(tradeofferitem__trade_offer=offer)
+    for item in offer_items:
+        item.user = winning_res.responder
+        item.status = 'in_inventory'
+        item.save()
 
-        offer.delete()
-        winning_res.delete()
+    res_items = InventoryItem.objects.filter(traderesponseitem__trade_response=winning_res)
+    for item in res_items:
+        item.user = offer.creator
+        item.status = 'in_inventory'
+        item.save()
 
+    # Удаляем в конце
+    winning_res.delete()
+    offer.delete()
 
-        other_responses = offer.responses.filter(status='pending').exclude(id=winning_res.id)
-        for other in other_responses:
-            other.status = InventoryItem.StatusChoices.IN_INVENTORY
-            other.save()
-
-            other_items = InventoryItem.objects.filter(traderesponseitem__trade_response=other)
-            other_items.update(status='in_inventory')
-        other_responses.delete()
-
-        return Response({"detail": "The exchange has been completed successfully!"})
+    return Response({"detail": "The exchange has been completed successfully!"})
     
 
     @action(detail=True, methods=['post'])

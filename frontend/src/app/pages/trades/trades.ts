@@ -3,7 +3,8 @@ import { RouterLink } from "@angular/router";
 import { FormsModule } from '@angular/forms';
 import { TradeService } from '../../services/trade';
 import { ShopService } from '../../services/shop';
-import { InventoryItem, TradeOffer } from '../../interfaces/models';
+import { InventoryItem, TradeOffer, TradeResponse } from '../../interfaces/models';
+import { RouterUpgradeInitializer } from '@angular/router/upgrade';
 
 @Component({
   selector: 'app-trades',
@@ -22,8 +23,9 @@ export class Trades implements OnInit{
   isPrivate = false;
   offerPassword = '';
   isDrawerOpen = false;
-  
-  
+  showResponsesModal = false;
+  selectedOfferResponses: TradeResponse[] = [];
+  selectedOfferId: number | null = null;
 
   constructor(private tradeService: TradeService, private shopService: ShopService, private cdr: ChangeDetectorRef) {}
 
@@ -75,6 +77,31 @@ export class Trades implements OnInit{
     }else {
       this.selectedItems.splice(idx, 1);
     }
+  }
+
+  openResponsesModal(offer: TradeOffer) {
+    this.selectedOfferResponses = offer.responses;
+    this.selectedOfferId = offer.id;
+    this.showResponsesModal = true;
+  }
+
+  acceptResponse(responseId: number) {
+    if (!this.selectedOfferId) return;
+    this.tradeService.acceptResponse(this.selectedOfferId, responseId).subscribe({
+      next: () => {
+        this.showResponsesModal = false;
+        this.tradeService.getMyTradeOffers().subscribe({
+          next: (data: TradeOffer[]) => {
+            this.myOffers = data;
+            this.cdr.detectChanges(); 
+          }
+        });
+      },
+      error: (err) => {
+        this.errorMessage = err?.error?.detail || 'Failed to accept response';
+        this.cdr.detectChanges();
+      }
+    });
   }
 
   createOffer() {

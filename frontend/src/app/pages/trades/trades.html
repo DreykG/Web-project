@@ -23,6 +23,9 @@
                 <div class="offer-main">
                     <h4>{{offer.title}}</h4>
                     <button (click)="deleteOffer(offer.id)" class="delete-offer">Delete</button>
+                    <button (click)="openResponsesModal(offer)" class="responses-btn">
+                        Responses ({{ offer.responses_count }})
+                    </button>
                 </div>
 
                 <div class="offer-details">
@@ -39,6 +42,42 @@
 
     </div>
 </div>
+
+@if (showResponsesModal) {
+  <div class="modal-overlay" (click)="showResponsesModal = false">
+    <div class="modal" (click)="$event.stopPropagation()">
+      <h3>Responses</h3>
+
+      @for (resp of selectedOfferResponses; track resp.id) {
+        <div class="response-card">
+          <div class="response-header">
+            <span class="response-user">{{ resp.responder_username }}</span>
+            <span class="response-value">${{ resp.response_value }}</span>
+            <span class="response-status">{{ resp.status }}</span>
+          </div>
+          <div class="response-items">
+            @for (item of resp.items; track item.id) {
+              <div class="response-item">
+                @if (item.inventory_item_details.url) {
+                  <img [src]="item.inventory_item_details.url" [alt]="item.inventory_item_details.skin_name" />
+                }
+                <span>{{ item.inventory_item_details.skin_name }}</span>
+                <span>${{ item.inventory_item_details.price }}</span>
+              </div>
+            }
+          </div>
+          @if (resp.status === 'pending') {
+            <button class="accept-response-btn" (click)="acceptResponse(resp.id)">✓ ACCEPT</button>
+          }
+        </div>
+      } @empty {
+        <p>No responses yet.</p>
+      }
+
+      <button (click)="showResponsesModal = false">Close</button>
+    </div>
+  </div>
+}
 
 <div class="offers-container">
 
