@@ -59,6 +59,11 @@ export class GangRoom implements OnInit, OnDestroy {
         if (!this.gang) {
           this.error = 'Gang not found';
         }
+
+        if(!this.gang?.is_member) {
+          this.activeTab = 'members';
+        }
+
         this.isLoading = false;
         this.cdr.detectChanges();
       },
@@ -113,6 +118,8 @@ export class GangRoom implements OnInit, OnDestroy {
   setTab(tab: ActiveTab) {
     this.activeTab = tab;
     this.actionMessage = null;
+
+    if(tab != 'members' && !this.gang?.is_member) return;
 
     if (tab === 'requests') this.loadRequests();
     if (tab === 'vault') this.loadVault();

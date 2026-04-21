@@ -41,12 +41,14 @@
     }
 
     <!-- Tabs -->
-    <div class="tabs">
-      <button class="tab-btn" [class.active]="activeTab === 'members'" (click)="setTab('members')">MEMBERS</button>
-      <button class="tab-btn" [class.active]="activeTab === 'vault'" (click)="setTab('vault')">VAULT</button>
-      <button class="tab-btn" [class.active]="activeTab === 'chat'" (click)="setTab('chat')">CHAT</button>
-      <button class="tab-btn" [class.active]="activeTab === 'requests'" (click)="setTab('requests')">REQUESTS</button>
-    </div>
+<div class="tabs">
+  <button class="tab-btn" [class.active]="activeTab === 'members'" (click)="setTab('members')">MEMBERS</button>
+  @if (gang.is_member) {
+    <button class="tab-btn" [class.active]="activeTab === 'vault'" (click)="setTab('vault')">VAULT</button>
+    <button class="tab-btn" [class.active]="activeTab === 'chat'" (click)="setTab('chat')">CHAT</button>
+    <button class="tab-btn" [class.active]="activeTab === 'requests'" (click)="setTab('requests')">REQUESTS</button>
+  }
+</div>
 
     <!-- Members Tab -->
     @if (activeTab === 'members') {
@@ -65,7 +67,7 @@
     }
 
     <!-- Vault Tab -->
-    @if (activeTab === 'vault') {
+    @if (activeTab === 'vault' && gang.is_member) {
       <div class="tab-content">
         @for (item of vaultItems; track item.id) {
           <div class="vault-row">
@@ -95,7 +97,7 @@
     }
 
     <!-- Chat Tab -->
-    @if (activeTab === 'chat') {
+    @if (activeTab === 'chat' && gang.is_member) {
       <div class="tab-content chat-tab">
         <div class="chat-messages">
           @for (msg of messages; track msg.id) {
@@ -129,7 +131,7 @@
     }
 
     <!-- Requests Tab -->
-    @if (activeTab === 'requests') {
+    @if (activeTab === 'requests' && gang.is_member) {
       <div class="tab-content">
         @for (req of joinRequests; track req.id) {
           <div class="request-row">
