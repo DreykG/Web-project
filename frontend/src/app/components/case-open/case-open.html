@@ -39,8 +39,8 @@
             @for (item of rouletteItems; track $index) {
               <div class="roulette-cell" [class.roulette-cell--winner]="$index === winnerIndex && openState === 'result'">
                 <img
-                  *ngIf="item.url || item.url"
-                  [src]="item.url || item.url"
+                  *ngIf="item.img_url || item.img_url"
+                  [src]="item.img_url || item.img_url"
                   [alt]="item.skin_name"
                   class="roulette-cell-img"
                 />
@@ -67,9 +67,9 @@
     @if (openState === 'result' && resultItem) {
       <div class="result-panel">
         <p class="result-label">YOU GOT</p>
-        @if (resultItem.url) {
+        @if (resultItem.img_url) {
           <img
-            [src]="resultItem.url || resultItem.url"
+            [src]="resultItem.img_url || resultItem.img_url"
             [alt]="resultItem.skin_name"
             class="result-img"
           />
@@ -108,8 +108,8 @@
         @for (item of caseItems; track item.id) {
           <div class="item-card">
             <img
-              *ngIf="item.url"
-              [src]="item.url"
+              *ngIf="item.img_url"
+              [src]="item.img_url"
               [alt]="item.skin_name"
               class="item-card-img"
             />

@@ -124,7 +124,7 @@ export interface Case {
 }
 
 export interface CaseItem {
-  url: any;
+  img_url: any;
   id: number;
   case: number;         // FK → id кейса
   skin: number;         // FK → id скина
