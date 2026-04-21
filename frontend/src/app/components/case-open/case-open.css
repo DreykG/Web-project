@@ -96,10 +96,11 @@
 }
 
 .case-hero-img {
-  width: 30%;
+  width: 35%;
   max-width: 100%;
   display: block;
   margin: 0 auto;
+  border-radius: 15px;
 }
 
 /* ===== Roulette ===== */
@@ -288,6 +289,14 @@
 .result-skin-name {
   font-size: 22px;
   color: #fff;
+  font-weight: 600;
+  margin-bottom: 6px;
+  background: transparent;
+}
+
+.result-skin-price{
+  font-size: 22px;
+  color: #ff7700;
   font-weight: 600;
   margin-bottom: 6px;
   background: transparent;

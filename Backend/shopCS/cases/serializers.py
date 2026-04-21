@@ -12,6 +12,12 @@ class CaseItemSerializer(serializers.ModelSerializer):
     skin_name = serializers.CharField(source="skin.name", read_only=True)
     wear_name = serializers.CharField(source="wear.name", read_only=True)
     img_url = serializers.CharField(source="skin.url", read_only=True)
+    price = serializers.DecimalField(
+        source="skin.base_price", 
+        max_digits=10, 
+        decimal_places=2, 
+        read_only=True
+    )
 
     class Meta:
         model = CaseItem
@@ -20,6 +26,7 @@ class CaseItemSerializer(serializers.ModelSerializer):
             "case",
             "skin",
             "skin_name",
+            "price",
             "wear",
             "wear_name",
             "drop_chance",
@@ -31,6 +38,12 @@ class CaseItemSerializer(serializers.ModelSerializer):
 class CaseOpeningSerializer(serializers.ModelSerializer):
     case_name = serializers.CharField(source="case.name", read_only=True)
     user_username = serializers.CharField(source="user.username", read_only=True)
+    price = serializers.DecimalField(
+        source="skin.base_price", 
+        max_digits=10, 
+        decimal_places=2, 
+        read_only=True
+    )
 
     class Meta:
         model = CaseOpening
@@ -41,6 +54,7 @@ class CaseOpeningSerializer(serializers.ModelSerializer):
             "case",
             "case_name",
             "case_item",
+            "price",
             "inventory_item",
             "spent_balance",
             "opened_at",

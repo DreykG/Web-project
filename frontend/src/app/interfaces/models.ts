@@ -129,6 +129,7 @@ export interface CaseItem {
   case: number;         // FK → id кейса
   skin: number;         // FK → id скина
   skin_name: string;
+  price: number;
   wear: number;         // FK → id wear
   wear_name: string;
   drop_chance: string;  // DecimalField → строка
@@ -141,7 +142,7 @@ export interface CaseOpeningDrop {
   user_username: string;
   skin: number;
   skin_name: string;
-  price: string;
+  price: number;
   rarity: string;
   wear: number;
   wear_name: string;

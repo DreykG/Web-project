@@ -434,6 +434,7 @@
 
 .vault-btn {
   background: transparent;
+  color: purple;
   border: 1px solid;
   padding: 5px 12px;
   border-radius: 3px;
@@ -732,3 +733,4 @@
   margin-top: 32px;
   margin-bottom: 12px;
 }
+

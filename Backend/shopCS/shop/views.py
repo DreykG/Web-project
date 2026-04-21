@@ -248,6 +248,7 @@ def checkout_selected(request):
                 seller.save()
 
             item.user = buyer
+            item.price = item.skin.base_price
             item.status = InventoryItem.StatusChoices.IN_INVENTORY
             item.save()
 
@@ -326,7 +327,7 @@ def cancel_sale(request):
 
     with transaction.atomic():
         for item in items_to_cancel:
-            item.price = 0
+            item.price = item.skin.base_price
             item.status = 'in_inventory'
             item.save()
             CartItem.objects.filter(inventory_item=item).delete()

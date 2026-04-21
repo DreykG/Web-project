@@ -10,9 +10,9 @@
         <div class="ticker-inner">
           @for (drop of liveDrops; track drop.id) {
             <div class="ticker-item">
-              <span class="ticker-skin">{{ drop.skin_name }}</span>
-              <span class="ticker-sep">—</span>
               <span class="ticker-user">{{ drop.username }}</span>
+              <span class="ticker-sep">got</span>
+              <span class="ticker-skin">{{ drop.skin_name }}</span>
               <span class="ticker-case">{{ drop.case_name }}</span>
             </div>
           }
