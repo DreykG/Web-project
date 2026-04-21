@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Case, CaseItem, CaseOpening, LiveDrop, ItemActionRequest } from '../interfaces/models';
+import { Case, CaseItem, CaseOpening, LiveDrop, ItemActionRequest, InventoryItem } from '../interfaces/models';
 
 @Injectable({
   providedIn: 'root',
@@ -31,7 +31,7 @@ export class CaseService {
   }
 
   getPendingItems() {
-    return this.http.get<CaseOpening[]>(`${this.apiUrl}/cases/list/pending_items`);
+    return this.http.get<InventoryItem[]>(`${this.apiUrl}/cases/list/pending_items/`);
   }
 
   sellAllPending() {

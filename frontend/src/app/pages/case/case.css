@@ -391,3 +391,73 @@
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(0, 229, 255, 0.3);
 }
+
+.pending-section {
+  margin-bottom: 40px;
+}
+
+.pending-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.pending-title {
+  color: #e0a000;
+  font-size: 14px;
+  letter-spacing: 2px;
+}
+
+.sell-all-btn {
+  background: transparent;
+  border: 1px solid #555;
+  color: #aaa;
+  padding: 6px 16px;
+  font-size: 11px;
+  letter-spacing: 1px;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: all 0.2s;
+}
+
+.sell-all-btn:hover {
+  border-color: #00ffc8;
+  color: #00ffc8;
+}
+
+.pending-card {
+  cursor: default;
+}
+
+.pending-wear {
+  color: #aaa !important;
+  font-size: 11px;
+}
+
+.pending-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+  padding: 0 8px 8px;
+}
+
+.pending-actions .action-btn {
+  flex: 1;
+  padding: 6px;
+  font-size: 11px;
+  letter-spacing: 1px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.pending-actions .accept-btn {
+  background: #00897b;
+  color: #fff;
+}
+
+.pending-actions .sell-btn {
+  background: #2e7d32;
+  color: #fff;
+}

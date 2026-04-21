@@ -42,6 +42,33 @@
     </div>
   }
 
+  @if (pendingItems.length > 0) {
+    <div class="pending-section">
+      <div class="pending-header">
+        <h2 class="pending-title">⏳ PENDING ITEMS</h2>
+        <button class="sell-all-btn" (click)="sellAll()">SELL ALL</button>
+      </div>
+      <div class="cases-grid">
+        @for (item of pendingItems; track item.id) {
+          <div class="case-card pending-card">
+            <div class="case-img-wrap">
+              <img [src]="item.url" [alt]="item.skin_name" class="case-img" />
+            </div>
+            <div class="case-info">
+              <h3 class="case-name">{{ item.skin_name }}</h3>
+              <span class="pending-wear">{{ item.wear_name }}</span>
+              <span class="case-price">${{ item.price }}</span>
+            </div>
+            <div class="pending-actions">
+              <button class="action-btn accept-btn" (click)="acceptPending(item.id)">✓ TAKE</button>
+              <button class="action-btn sell-btn" (click)="sellPending(item.id)">$ SELL</button>
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+  }
+
   <!-- Cases Grid -->
   @if (!isLoading && !error) {
     <div class="cases-grid">
