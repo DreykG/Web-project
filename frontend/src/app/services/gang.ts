@@ -30,8 +30,8 @@ export class GangService {
     return this.http.get<GangJoinRequest[]>(`${this.apiUrl}/${gangId}/show_requests/`);
   }
 
-  acceptRequest(gangId: number, userId: number) {
-    return this.http.post<any>(`${this.apiUrl}/${gangId}/accept-request/${userId}/`, {});
+  acceptRequest(gangId: number, requestId: number) {
+    return this.http.post<any>(`${this.apiUrl}/${gangId}/accept-request/${requestId}/`, {});
   }
 
   leaveGang(gangId: number) {

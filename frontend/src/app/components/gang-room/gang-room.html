@@ -143,7 +143,7 @@
             </div>
             <div class="request-actions">
               @if (req.status === 'pending') {
-                <button class="vault-btn rent-btn" (click)="acceptRequest(req.user)">ACCEPT</button>
+                <button class="vault-btn rent-btn" (click)="acceptRequest(req.id)">ACCEPT</button>
               } @else {
                 <span class="request-status">{{ req.status }}</span>
               }

@@ -156,8 +156,8 @@ export class GangRoom implements OnInit, OnDestroy {
     });
   }
 
-  acceptRequest(userId: number) {
-    this.gangService.acceptRequest(this.gangId, userId).subscribe({
+  acceptRequest(requestId: number) {
+    this.gangService.acceptRequest(this.gangId, requestId).subscribe({
       next: () => {
         this.loadRequests();
         this.loadMembers();
