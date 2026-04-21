@@ -47,11 +47,10 @@ class GangVaultRentalSerializer(serializers.ModelSerializer):
         read_only_fields = ['deposit_amount', 'status', 'returned_at']
 
     def get_item_details(self, obj):
-        # Инфа о скине для фронта
         return {
             "name": obj.item.skin.name,
-            "image": obj.item.skin.image.url if obj.item.skin.image else None,
-            "rarity": getattr(obj.item.skin, 'rarity', None)
+            "image": obj.item.skin.url,
+            "rarity": obj.item.skin.rarity.name if obj.item.skin.rarity else None
         }
 
 

@@ -138,9 +138,14 @@ class GangViewSet(viewsets.ModelViewSet):
         
         if not gang.members.filter(user=request.user).exists():
             return Response({"detail": "You are not a member of this gang."}, status=403)
-        items = gang.vault_items.filter(status='in_gang')
-        from shop.serializers import InventoryItemSerializer
-        serializer = InventoryItemSerializer(items, many=True)
+
+        rentals = GangVaultRental.objects.filter(
+            gang=gang,
+            status__in=['active', 'returned']
+        ).select_related('item__skin', 'user')
+        
+        from .serializers import GangVaultRentalSerializer
+        serializer = GangVaultRentalSerializer(rentals, many=True)
         
         return Response(serializer.data)
 
@@ -156,11 +161,19 @@ class GangViewSet(viewsets.ModelViewSet):
             return Response({"detail": "Item not found."}, status=404)
 
         with transaction.atomic():
-            item.user = None 
+            item.user = None
             item.status = 'in_gang'
             item.gang = gang
-
             item.save()
+
+            # ✅ Создаём rental запись со статусом 'returned' (лежит в сейфе, не арендован)
+            GangVaultRental.objects.create(
+                gang=gang,
+                user=user,          # кто задепозитил
+                item=item,
+                deposit_amount=item.price,
+                status='returned'   # в сейфе = returned (свободен для аренды)
+            )
 
         return Response({"detail": f"{item.skin.name} added to vault. Pledge value: ${item.price}"})
     
@@ -236,6 +249,14 @@ class GangViewSet(viewsets.ModelViewSet):
             item.save()
 
             rental.delete()
+
+            GangVaultRental.objects.create(
+                gang=gang,
+                user=rental.user,   # оригинальный депозитор
+                item=item,
+                deposit_amount=item.price,
+                status='returned'
+            )
 
             GangMessage.objects.create(
                 gang=gang,
