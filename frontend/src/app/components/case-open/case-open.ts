@@ -39,7 +39,7 @@ export class CaseOpen implements OnInit, OnDestroy {
   actionMessage: string | null = null;
   actionLoading = false;
 
-  private result: CaseOpening | null = null;
+  result: CaseOpening | null = null;
   private spinTimeout: any;
 
   @ViewChild('rouletteStrip') rouletteStripRef!: ElementRef<HTMLElement>;

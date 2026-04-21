@@ -76,7 +76,7 @@
         }
         
         <h2 class="result-skin-name">{{ resultItem.skin_name }} | {{resultItem.wear_name}} </h2>
-        <h1 class="result-skin-price">{{ resultItem.price }}$ </h1>
+        <h1 class="result-skin-price">{{ result?.sell_price }}$ </h1>
 
         @if (!actionMessage) {
           <div class="result-actions">
