@@ -97,6 +97,10 @@ class InventoryItemViewSet(viewsets.ReadOnlyModelViewSet):
         if weapon_pk:
             queryset = queryset.filter(skin__weapon_id=weapon_pk)
             
+        category_id = self.request.query_params.get('category')
+        if category_id:
+            queryset = queryset.filter(skin__weapon__category_id=category_id)
+
         return queryset
 
     @action(detail=False, methods=['get'], permission_classes=[permissions.IsAuthenticated])

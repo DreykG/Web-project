@@ -10,8 +10,13 @@ export class ShopService {
 
   constructor(private http: HttpClient) {}
 
-  getSkins() {
-    return this.http.get<InventoryItem[]>(`${this.apiUrl}/shop/items/`);
+  getSkins(categoryId?: number) {
+    const params = categoryId ? `?category=${categoryId}` : '';
+    return this.http.get<InventoryItem[]>(`${this.apiUrl}/shop/items/${params}`);
+  }
+
+  getCategories() {
+    return this.http.get<any[]>(`${this.apiUrl}/shop/categories/`);
   }
 
   getCartItems() {

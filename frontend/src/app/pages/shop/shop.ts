@@ -14,26 +14,31 @@ export class Shop implements OnInit{
   searchText = '';
   sortBy = 'default';
   errorMessage: string | null = null;
+  categories: any[] = [];
+  selectedCategory: number | null = null;
 
   constructor(private shopService: ShopService, private cdr: ChangeDetectorRef) {}
 
 ngOnInit() {
-  this.shopService.getSkins().subscribe({
+  this.shopService.getCategories().subscribe({
+    next: (data) => this.categories = data
+  });
+  this.loadSkins();
+}
+
+loadSkins() {
+  this.shopService.getSkins(this.selectedCategory ?? undefined).subscribe({
     next: (data: InventoryItem[]) => {
       this.skins = data;
-      this.sortedSkins = [...data]; 
+      this.sortSkins();
       this.cdr.detectChanges();
     },
-    error: (err) => {
-      this.errorMessage = 'Failed to load skins';
-      this.cdr.detectChanges();
-
-      setTimeout(() => {
-        this.errorMessage = null;
-        this.cdr.detectChanges();
-      }, 3000);
-    }
+    error: () => { this.errorMessage = 'Failed to load skins'; }
   });
+}
+
+onCategoryChange() {
+  this.loadSkins();
 }
 
   addToCart(skinId: number) {
