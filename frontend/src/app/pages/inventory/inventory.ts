@@ -17,6 +17,7 @@ export class Inventory implements OnInit {
   salePrice: { [id: number]: number } = {};
   activeTab: 'inventory' | 'sales' = 'inventory';
   errorMessage = '';
+  successMessage = '';
 
   constructor(private shopService: ShopService, private cdr: ChangeDetectorRef, private profileService: ProfileService) {}
 
@@ -69,7 +70,8 @@ export class Inventory implements OnInit {
     }
     this.shopService.saleItem([{ id: item.id, price }]).subscribe({
       next: () => {
-        alert(`${item.skin_name} выставлен на продажу!`);
+        this.successMessage = `✓ ${item.skin_name} выставлен на продажу!`;
+        setTimeout(() => { this.successMessage = ''; this.cdr.detectChanges(); }, 3000);
         this.shopService.getInventory().subscribe(data => {
           this.inventoryItems = data.filter(i => i.status !== 'on_sale');
           this.cdr.detectChanges();
@@ -84,26 +86,26 @@ export class Inventory implements OnInit {
         this.cdr.detectChanges();
       }
     });
-
   }
 
   cancelSale(itemId: number) {
-  this.shopService.cancelSale([itemId]).subscribe({
-    next: () => {
-      alert('Продажа отменена');
-      this.shopService.getInventory().subscribe(data => {
-        this.inventoryItems = data.filter(i => i.status !== 'for_sale');
+    this.shopService.cancelSale([itemId]).subscribe({
+      next: () => {
+        this.successMessage = '✓ Продажа отменена';
+        setTimeout(() => { this.successMessage = ''; this.cdr.detectChanges(); }, 3000);
+        this.shopService.getInventory().subscribe(data => {
+          this.inventoryItems = data.filter(i => i.status !== 'for_sale');
+          this.cdr.detectChanges();
+        });
+        this.shopService.getMySales().subscribe(data => {
+          this.mySales = data;
+          this.cdr.detectChanges();
+        });
+      },
+      error: () => {
+        this.errorMessage = 'Ошибка при отмене продажи';
         this.cdr.detectChanges();
-      });
-      this.shopService.getMySales().subscribe(data => {
-        this.mySales = data;
-        this.cdr.detectChanges();
-      });
-    },
-    error: () => {
-      this.errorMessage = 'Ошибка при отмене продажи';
-      this.cdr.detectChanges();
-    }
-  });
-}
+      }
+    });
+  }
 }
