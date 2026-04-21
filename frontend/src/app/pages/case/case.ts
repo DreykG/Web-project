@@ -1,6 +1,7 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { CaseService } from '../../services/case';
+import { ProfileService } from '../../services/profile';
 import { Case, LiveDrop, InventoryItem } from '../../interfaces/models';
 
 @Component({
@@ -21,7 +22,8 @@ export class Cases implements OnInit {
   constructor(
     private caseService: CaseService,
     private router: Router,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private profileService: ProfileService
   ) {}
 
   ngOnInit() {
@@ -78,6 +80,7 @@ export class Cases implements OnInit {
   acceptPending(itemId: number) {
     this.caseService.accessDroppedItem(itemId).subscribe({
       next: () => {
+        this.profileService.refreshProfile();
         this.loadPendingItems();
         this.cdr.detectChanges();
       },
@@ -88,6 +91,7 @@ export class Cases implements OnInit {
   sellPending(itemId: number) {
     this.caseService.sellDroppedItem(itemId).subscribe({
       next: () => {
+        this.profileService.refreshProfile();
         this.loadPendingItems();
         this.cdr.detectChanges();
       },
@@ -98,6 +102,7 @@ export class Cases implements OnInit {
   sellAll() {
     this.caseService.sellAllPending().subscribe({
       next: () => {
+        this.profileService.refreshProfile();
         this.loadPendingItems();
         this.cdr.detectChanges();
       },

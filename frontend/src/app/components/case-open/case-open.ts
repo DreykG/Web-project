@@ -10,6 +10,7 @@ import {
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { CaseService } from '../../services/case';
+import { ProfileService } from '../../services/profile';
 import { Case, CaseItem, CaseOpening } from '../../interfaces/models';
 
 type OpenState = 'idle' | 'spinning' | 'result';
@@ -48,7 +49,8 @@ export class CaseOpen implements OnInit, OnDestroy {
     private router: Router,
     private caseService: CaseService,
     private cdr: ChangeDetectorRef,
-    private ngZone: NgZone
+    private ngZone: NgZone,
+    private profileService: ProfileService
   ) {}
 
   ngOnInit() {
@@ -110,6 +112,7 @@ export class CaseOpen implements OnInit, OnDestroy {
     this.caseService.openCase(this.case_.id).subscribe({
       next: (opening) => {
         this.result = opening;
+        this.profileService.refreshProfile();
 
         // Ищем скин в caseItems по item_id
         let winner = this.caseItems.find((ci) => ci.id === opening.item_id) || null;
@@ -192,6 +195,7 @@ export class CaseOpen implements OnInit, OnDestroy {
       next: () => {
         this.actionMessage = '✓ Item added to your inventory!';
         this.actionLoading = false;
+        this.profileService.refreshProfile();
         this.cdr.detectChanges();
       },
       error: (err) => {
@@ -209,6 +213,7 @@ export class CaseOpen implements OnInit, OnDestroy {
       next: () => {
         this.actionMessage = `✓ Sold for $${this.result!.sell_price}! Balance updated.`;
         this.actionLoading = false;
+        this.profileService.refreshProfile();
         this.cdr.detectChanges();
       },
       error: (err) => {
