@@ -91,6 +91,7 @@ export class GangRoom implements OnInit, OnDestroy {
           if (profile) {
             const me = data.find(m => m.username === profile.username);
             this.myRole = me?.role ?? 0;
+            this.myUserId = profile.id;
             this.cdr.detectChanges();
           }
         });
@@ -154,6 +155,12 @@ export class GangRoom implements OnInit, OnDestroy {
         this.cdr.detectChanges();
       }
     });
+  }
+
+  onBackdropClick(event: MouseEvent) {
+    if ((event.target as HTMLElement).classList.contains('modal-backdrop')) {
+      this.showDepositPanel = false;
+    }
   }
 
   setTab(tab: ActiveTab) {
@@ -231,6 +238,7 @@ export class GangRoom implements OnInit, OnDestroy {
     this.gangService.rentItem(this.gangId, itemId).subscribe({
       next: () => {
         this.actionMessage = '✓ Item rented!';
+        this.profileService.refreshProfile();
         this.loadVault();
       },
       error: (err) => {
@@ -244,7 +252,9 @@ export class GangRoom implements OnInit, OnDestroy {
     this.gangService.returnItem(this.gangId, itemId).subscribe({
       next: () => {
         this.actionMessage = '✓ Item returned!';
+        this.profileService.refreshProfile();
         this.loadVault();
+        this.loadGang();
       },
       error: (err) => {
         this.actionMessage = err?.error?.detail || 'Failed to return item';

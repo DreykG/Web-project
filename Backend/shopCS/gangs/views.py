@@ -200,6 +200,8 @@ class GangViewSet(viewsets.ModelViewSet):
             user.balance -= pledge_amount
             user.save()
 
+            GangVaultRental.objects.filter(item=item, gang=gang, status='returned').delete()
+
             rental = GangVaultRental.objects.create(
                 gang=gang,
                 user=user,
@@ -244,6 +246,7 @@ class GangViewSet(viewsets.ModelViewSet):
             gang.save()
 
             item = rental.item
+            original_depositor = rental.user
             item.status = 'in_gang'
             item.user = None
             item.save()
@@ -252,7 +255,7 @@ class GangViewSet(viewsets.ModelViewSet):
 
             GangVaultRental.objects.create(
                 gang=gang,
-                user=rental.user,   # оригинальный депозитор
+                user=original_depositor,   # оригинальный депозитор
                 item=item,
                 deposit_amount=item.price,
                 status='returned'
@@ -414,7 +417,7 @@ class GangViewSet(viewsets.ModelViewSet):
                 total_confiscated += rental.deposit_amount
                 
                 item = rental.item
-                item.status = 'owned' 
+                item.status = 'in_inventory' 
                 item.user = user
                 item.save()
 

@@ -110,10 +110,12 @@ class InventoryItemViewSet(viewsets.ReadOnlyModelViewSet):
     @action(detail=False, methods=['get'], permission_classes=[permissions.IsAuthenticated])
     def my_items(self, request):
         user_items = InventoryItem.objects.filter(
-            user=request.user, 
-            status=InventoryItem.StatusChoices.IN_INVENTORY
+            user=request.user,
+            status__in=[
+                InventoryItem.StatusChoices.IN_INVENTORY,
+                InventoryItem.StatusChoices.RENTED_FROM_GANG,
+            ]
         )
-        
         serializer = InventoryItemSelectionSerializer(user_items, many=True)
         return Response(serializer.data)
 

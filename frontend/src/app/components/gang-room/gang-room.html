@@ -41,20 +41,20 @@
     }
 
     <!-- Tabs -->
-<div class="tabs">
-  <button class="tab-btn" [class.active]="activeTab === 'members'" (click)="setTab('members')">MEMBERS</button>
-  @if (gang.is_member) {
-    <button class="tab-btn" [class.active]="activeTab === 'vault'" (click)="setTab('vault')">VAULT</button>
-    <button class="tab-btn" [class.active]="activeTab === 'chat'" (click)="setTab('chat')">CHAT</button>
-    <button class="tab-btn" [class.active]="activeTab === 'requests'" (click)="setTab('requests')">
-      @if (joinRequests.length > 0) {
-        ⚠️ REQUESTS ({{ joinRequests.length }})
-      } @else {
-        REQUESTS
+    <div class="tabs">
+      <button class="tab-btn" [class.active]="activeTab === 'members'" (click)="setTab('members')">MEMBERS</button>
+      @if (gang.is_member) {
+        <button class="tab-btn" [class.active]="activeTab === 'vault'" (click)="setTab('vault')">VAULT</button>
+        <button class="tab-btn" [class.active]="activeTab === 'chat'" (click)="setTab('chat')">CHAT</button>
+        <button class="tab-btn" [class.active]="activeTab === 'requests'" (click)="setTab('requests')">
+          @if (joinRequests.length > 0) {
+            ⚠️ REQUESTS ({{ joinRequests.length }})
+          } @else {
+            REQUESTS
+          }
+        </button>
       }
-    </button>
-  }
-</div>
+    </div>
 
     <!-- Members Tab -->
     @if (activeTab === 'members') {
@@ -64,7 +64,6 @@
             <span class="member-username">{{ member.username }}</span>
             <span class="member-role" [class]="'role-' + member.role">{{ member.role_name }}</span>
             <span class="member-joined">{{ member.joined_at | date:'mediumDate' }}</span>
-
             @if (myRole === 3 && member.role !== 3) {
               <div class="member-actions">
                 <button class="vault-btn rent-btn" (click)="promoteMember(member.user_id)">▲ PROMOTE</button>
@@ -88,7 +87,7 @@
 
     <!-- Vault Tab -->
     @if (activeTab === 'vault' && gang.is_member) {
-      <div class="tab-content"> 
+      <div class="tab-content">
 
         <!-- Treasury -->
         <div class="treasury-bar">
@@ -124,36 +123,11 @@
           }
         </div>
 
-        <!-- Deposit Panel -->
+        <!-- Deposit Button -->
         <div class="vault-deposit-header">
-          <p class="vault-section-label">ADD FROM YOUR INVENTORY</p>
-          <button class="tab-btn" (click)="showDepositPanel = !showDepositPanel">
-            {{ showDepositPanel ? '▲ HIDE' : '▼ SHOW' }}
-          </button>
+          <p class="vault-section-label">VAULT DEPOSIT</p>
+          <button class="action-btn apply-btn" (click)="showDepositPanel = true">+ ADD ITEMS</button>
         </div>
-
-        @if (showDepositPanel) {
-          <div class="items-grid">
-            @for (item of myInventory; track item.id) {
-              <div class="item-card">
-                @if (item.url) {
-                  <img [src]="item.url" [alt]="item.skin_name" class="item-img" />
-                }
-                <div class="item-info">
-                  <span class="item-name">{{ item.skin_name }}</span>
-                  <span class="item-wear">{{ item.wear_name }}</span>
-                  <span class="item-price cyan">${{ item.price }}</span>
-                </div>
-                <div class="item-actions">
-                  <button class="sell-btn" (click)="depositItem(item.id)">DEPOSIT</button>
-                </div>
-              </div>
-            }
-            @if (myInventory.length === 0) {
-              <p class="empty-state">// INVENTORY IS EMPTY</p>
-            }
-          </div>
-        }
 
       </div>
     }
@@ -181,11 +155,7 @@
             [(ngModel)]="newMessage"
             (keyup.enter)="sendMessage()"
           />
-          <button
-            class="send-btn"
-            (click)="sendMessage()"
-            [disabled]="chatLoading"
-          >
+          <button class="send-btn" (click)="sendMessage()" [disabled]="chatLoading">
             {{ chatLoading ? '...' : 'SEND' }}
           </button>
         </div>
@@ -219,6 +189,37 @@
       </div>
     }
 
+  }
+
+  <!-- Deposit Modal — вне всех табов, на уровне страницы -->
+  @if (showDepositPanel) {
+    <div class="modal-backdrop" (click)="onBackdropClick($event)">
+      <div class="modal-panel">
+        <div class="modal-header">
+          <span class="modal-title">// DEPOSIT TO VAULT</span>
+          <button class="modal-close" (click)="showDepositPanel = false">✕</button>
+        </div>
+        @if (myInventory.length === 0) {
+          <p class="modal-empty">// INVENTORY IS EMPTY</p>
+        } @else {
+          <div class="modal-grid">
+            @for (item of myInventory; track item.id) {
+              <div class="modal-item-card">
+                @if (item.url) {
+                  <img [src]="item.url" [alt]="item.skin_name" class="modal-item-img" />
+                }
+                <div class="modal-item-info">
+                  <span class="modal-item-name">{{ item.skin_name }}</span>
+                  <span class="modal-item-wear">{{ item.wear_name }}</span>
+                  <span class="modal-item-price">${{ item.price }}</span>
+                </div>
+                <button class="modal-deposit-btn" (click)="depositItem(item.id)">DEPOSIT</button>
+              </div>
+            }
+          </div>
+        }
+      </div>
+    </div>
   }
 
 </div>

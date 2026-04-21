@@ -49,14 +49,14 @@
       [class.active]="activeTab === 'inventory'"
       (click)="activeTab = 'inventory'"
     >
-      <span class="tab-icon">◈</span> Инвентарь
+      <span class="tab-icon">◈</span> Inventory
     </button>
     <button
       class="tab-btn"
       [class.active]="activeTab === 'sales'"
       (click)="activeTab = 'sales'"
     >
-      <span class="tab-icon">◈</span> Мои продажи
+      <span class="tab-icon">◈</span> My Sales
     </button>
   </div>
 
@@ -76,17 +76,21 @@
             <span class="item-price cyan">${{ item.price }}</span>
           </div>
           <div class="item-actions">
-            <input
-              type="number"
-              class="price-input"
-              [(ngModel)]="salePrice[item.id]"
-              placeholder="Цена"
-            />
-            <button class="sell-btn" (click)="putOnSale(item)">Выставить</button>
+            @if (item.status === 'rented_from_gang') {
+              <span class="item-rented">🔒 RENTED</span>
+            } @else {
+              <input
+                type="number"
+                class="price-input"
+                [(ngModel)]="salePrice[item.id]"
+                placeholder="Cost"
+              />
+              <button class="sell-btn" (click)="putOnSale(item)">Sale</button>
+            }
           </div>
         </div>
       } @empty {
-        <p class="empty-state">// ИНВЕНТАРЬ ПУСТ</p>
+        <p class="empty-state">// THE INVENTORY IS EMPTY</p>
       }
     </div>
   }
@@ -106,10 +110,10 @@
             <span class="item-wear">{{ item.wear_name }}</span>
             <span class="item-price cyan">${{ item.price }}</span>
           </div>
-          <button class="cancel-btn" (click)="cancelSale(item.id)">✕ Отменить</button>
+          <button class="cancel-btn" (click)="cancelSale(item.id)">✕ Cancel</button>
         </div>
       } @empty {
-        <p class="empty-state">// НЕТ АКТИВНЫХ ПРОДАЖ</p>
+        <p class="empty-state">// THERE ARE NO ACTIVE SALES</p>
       }
     </div>
   }
