@@ -1,0 +1,279 @@
+{
+  "info": {
+    "_postman_id": "3deeec70-89eb-423f-9e0e-68d2639320c8",
+    "name": "TRADES",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "53571336",
+    "_collection_link": "https://go.postman.co/collection/53571336-3deeec70-89eb-423f-9e0e-68d2639320c8?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "GetAllOffers",
+      "request": {
+        "auth": {
+          "type": "basic",
+          "basic": [
+            {
+              "key": "password",
+              "value": "12345w",
+              "type": "string"
+            },
+            {
+              "key": "username",
+              "value": "seller",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://127.0.0.1:8000/api/trades/",
+          "protocol": "http",
+          "host": [
+            "127",
+            "0",
+            "0",
+            "1"
+          ],
+          "port": "8000",
+          "path": [
+            "api",
+            "trades",
+            ""
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GetUser'sOffer",
+      "request": {
+        "auth": {
+          "type": "basic",
+          "basic": [
+            {
+              "key": "password",
+              "value": "Qwerty123Q",
+              "type": "string"
+            },
+            {
+              "key": "username",
+              "value": "vlad",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://127.0.0.1:8000/api/trades/my_offers/",
+          "protocol": "http",
+          "host": [
+            "127",
+            "0",
+            "0",
+            "1"
+          ],
+          "port": "8000",
+          "path": [
+            "api",
+            "trades",
+            "my_offers",
+            ""
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "CreateOffer",
+      "request": {
+        "auth": {
+          "type": "basic",
+          "basic": [
+            {
+              "key": "password",
+              "value": "Qwerty123Q",
+              "type": "string"
+            },
+            {
+              "key": "username",
+              "value": "vlad",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"title\" : \"ONLY AWP ASIMOV\",\r\n    \"items\" : [44]\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://127.0.0.1:8000/api/trades/",
+          "protocol": "http",
+          "host": [
+            "127",
+            "0",
+            "0",
+            "1"
+          ],
+          "port": "8000",
+          "path": [
+            "api",
+            "trades",
+            ""
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "ResponseOnOffer",
+      "request": {
+        "auth": {
+          "type": "basic",
+          "basic": [
+            {
+              "key": "password",
+              "value": "12345w",
+              "type": "string"
+            },
+            {
+              "key": "username",
+              "value": "seller",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"items\" : [44,47]\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://127.0.0.1:8000/api/trades/12/respond/",
+          "protocol": "http",
+          "host": [
+            "127",
+            "0",
+            "0",
+            "1"
+          ],
+          "port": "8000",
+          "path": [
+            "api",
+            "trades",
+            "12",
+            "respond",
+            ""
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "AcceptResponseOnTrade",
+      "request": {
+        "auth": {
+          "type": "basic",
+          "basic": [
+            {
+              "key": "password",
+              "value": "Qwerty123Q",
+              "type": "string"
+            },
+            {
+              "key": "username",
+              "value": "vlad",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"items\" : [44]\r\n}"
+        },
+        "url": {
+          "raw": "http://127.0.0.1:8000/api/trades/11/accept-response/5/",
+          "protocol": "http",
+          "host": [
+            "127",
+            "0",
+            "0",
+            "1"
+          ],
+          "port": "8000",
+          "path": [
+            "api",
+            "trades",
+            "11",
+            "accept-response",
+            "5",
+            ""
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "CancelOffer",
+      "request": {
+        "auth": {
+          "type": "basic",
+          "basic": [
+            {
+              "key": "password",
+              "value": "Qwerty123Q",
+              "type": "string"
+            },
+            {
+              "key": "username",
+              "value": "vlad",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"title\" : \"ONLY AWP ASIMOV\",\r\n    \"items\" : [45]\r\n}"
+        },
+        "url": {
+          "raw": "http://127.0.0.1:8000/api/trades/27/cancel_offer/",
+          "protocol": "http",
+          "host": [
+            "127",
+            "0",
+            "0",
+            "1"
+          ],
+          "port": "8000",
+          "path": [
+            "api",
+            "trades",
+            "27",
+            "cancel_offer",
+            ""
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}
