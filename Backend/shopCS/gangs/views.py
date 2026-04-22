@@ -275,6 +275,33 @@ class GangViewSet(viewsets.ModelViewSet):
             "fee_taken": fee
         })
     
+    @action(detail=True, methods=(['post']), url_path='withdraw_item/(?P<item_id>[^/.]+)')
+    def withdraw_item(self, request, pk=None, item_id=None):
+        gang = self.get_object()
+        current_user = request.user
+
+        try:
+            rental = GangVaultRental.objects.get(
+                item_id=item_id,
+                gang=gang,
+                status='returned',
+                user=current_user
+            )
+        except GangVaultRental.DoesNotExist:
+            return Response({"detail": "Item not found or currently rented out."}, status=404)
+        
+        with transaction.atomic():
+            item = rental.item
+            item.status = 'in_inventory'
+            item.user = current_user
+            item.gang = None
+            item.save()
+
+            rental.delete()
+
+        return Response({"detail": f"{item.skin.name} returned to your inventory."})
+
+    
     @action(detail=True, methods=['post'], url_path='promote/(?P<target_user_id>[^/.]+)')
     def promote(self, request, pk=None, target_user_id=None):
         gang = self.get_object()

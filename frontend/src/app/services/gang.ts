@@ -71,6 +71,10 @@ export class GangService {
     return this.http.post<any>(`${this.apiUrl}/${gangId}/return_item/${itemId}/`, {});
   }
 
+  withdrawItem(gangId: number, itemId: number) {
+    return this.http.post<any>(`${this.apiUrl}/${gangId}/withdraw_item/${itemId}/`, {});
+  }
+
   getChatHistory(gangId: number) {
     return this.http.get<GangMessage[]>(`${this.apiUrl}/${gangId}/chat_history/`);
   }

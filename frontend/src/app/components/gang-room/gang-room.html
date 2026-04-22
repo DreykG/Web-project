@@ -111,6 +111,9 @@
               <div class="item-actions">
                 @if (item.status === 'returned') {
                   <button class="sell-btn" (click)="rentItem(item.item)">RENT</button>
+                  @if (item.user === myUserId) {
+                    <button class="cancel-btn" (click)="withdrawItem(item.item)">↩ WITHDRAW</button>
+                  }
                 }
                 @if (item.status === 'active' && item.user === myUserId) {
                   <button class="cancel-btn" (click)="returnItem(item.item)">RETURN (-3%)</button>

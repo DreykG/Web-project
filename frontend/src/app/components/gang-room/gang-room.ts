@@ -263,6 +263,20 @@ export class GangRoom implements OnInit, OnDestroy {
     });
   }
 
+  withdrawItem(itemId: number) {
+    this.gangService.withdrawItem(this.gangId, itemId).subscribe({
+      next: (res) => {
+        this.actionMessage = res.detail || '✓ Item withdrawn!';
+        this.loadVault();
+        this.loadGang();
+      },
+      error: (err) => {
+        this.actionMessage = err?.error?.detail || 'Failed to withdraw item';
+        this.cdr.detectChanges();
+      }
+    });
+  }
+
   sendMessage() {
     if (!this.newMessage.trim()) return;
     this.chatLoading = true;
