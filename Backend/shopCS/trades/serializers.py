@@ -30,6 +30,8 @@ class TradeResponseItemSerializer(serializers.ModelSerializer):
 class TradeResponseSerializer(serializers.ModelSerializer):
     responder_username = serializers.CharField(source='responder.username', read_only=True)
     items = TradeResponseItemSerializer(many=True, source='response_items')
+    offer_items = TradeOfferItemSerializer(many=True, source='trade_offer.offer_items', read_only=True)
+    offer_title = serializers.CharField(source='trade_offer.title', read_only=True)
 
     class Meta:
         model = TradeResponse
@@ -40,6 +42,8 @@ class TradeResponseSerializer(serializers.ModelSerializer):
             "status", 
             "response_value", 
             "items", 
+            "offer_items",
+            "offer_title",
             "responded_at"
             ]
         

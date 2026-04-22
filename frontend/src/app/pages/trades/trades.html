@@ -52,19 +52,39 @@
             @for (resp of myRequests; track resp.id) {
                 <div class="offer-card">
                     <div class="offer-main">
-                        <span style="color: #6ffff3; font-weight: 600;">${{ resp.response_value }}</span>
+                        <span style="color: #6ffff3; font-weight: 600;">{{ resp.offer_title }}</span>
                         <span class="response-status">{{ resp.status }}</span>
                     </div>
-                    <div class="response-items">
-                        @for (item of resp.items; track item.id) {
-                            <div class="response-item">
-                                @if (item.inventory_item_details.url) {
-                                    <img [src]="item.inventory_item_details.url" [alt]="item.inventory_item_details.skin_name" />
+                    <div class="trade-exchange">
+                        <div class="trade-side">
+                            <p class="trade-side-label">Your offer</p>
+                            <div class="response-items">
+                                @for (item of resp.items; track item.id) {
+                                    <div class="response-item">
+                                        @if (item.inventory_item_details.url) {
+                                            <img [src]="item.inventory_item_details.url" [alt]="item.inventory_item_details.skin_name" />
+                                        }
+                                        <span>{{ item.inventory_item_details.skin_name }}</span>
+                                        <span>${{ item.inventory_item_details.price }}</span>
+                                    </div>
                                 }
-                                <span>{{ item.inventory_item_details.skin_name }}</span>
-                                <span>${{ item.inventory_item_details.price }}</span>
                             </div>
-                        }
+                        </div>
+                        <div class="trade-arrows">⇄</div>
+                        <div class="trade-side">
+                            <p class="trade-side-label">You receive</p>
+                            <div class="response-items">
+                                @for (item of resp.offer_items; track item.id) {
+                                    <div class="response-item">
+                                        @if (item.inventory_item_details.url) {
+                                            <img [src]="item.inventory_item_details.url" [alt]="item.inventory_item_details.skin_name" />
+                                        }
+                                        <span>{{ item.inventory_item_details.skin_name }}</span>
+                                        <span>${{ item.inventory_item_details.price }}</span>
+                                    </div>
+                                }
+                            </div>
+                        </div>
                     </div>
                     <button class="reject-response-btn" (click)="cancelResponse(resp.id)">✕ CANCEL</button>
                 </div>
@@ -86,16 +106,36 @@
             <span class="response-value">${{ resp.response_value }}</span>
             <span class="response-status">{{ resp.status }}</span>
           </div>
-          <div class="response-items">
-            @for (item of resp.items; track item.id) {
-              <div class="response-item">
-                @if (item.inventory_item_details.url) {
-                  <img [src]="item.inventory_item_details.url" [alt]="item.inventory_item_details.skin_name" />
+          <div class="trade-exchange">
+            <div class="trade-side">
+              <p class="trade-side-label">They offer</p>
+              <div class="response-items">
+                @for (item of resp.items; track item.id) {
+                  <div class="response-item">
+                    @if (item.inventory_item_details.url) {
+                      <img [src]="item.inventory_item_details.url" [alt]="item.inventory_item_details.skin_name" />
+                    }
+                    <span>{{ item.inventory_item_details.skin_name }}</span>
+                    <span>${{ item.inventory_item_details.price }}</span>
+                  </div>
                 }
-                <span>{{ item.inventory_item_details.skin_name }}</span>
-                <span>${{ item.inventory_item_details.price }}</span>
               </div>
-            }
+            </div>
+            <div class="trade-arrows">⇄</div>
+            <div class="trade-side">
+              <p class="trade-side-label">You give</p>
+              <div class="response-items">
+                @for (item of selectedOfferItems; track item.id) {
+                  <div class="response-item">
+                    @if (item.inventory_item_details.url) {
+                      <img [src]="item.inventory_item_details.url" [alt]="item.inventory_item_details.skin_name" />
+                    }
+                    <span>{{ item.inventory_item_details.skin_name }}</span>
+                    <span>${{ item.inventory_item_details.price }}</span>
+                  </div>
+                }
+              </div>
+            </div>
           </div>
           @if (resp.status === 'pending') {
             <button class="accept-response-btn" (click)="acceptResponse(resp.id)">✓ ACCEPT</button>

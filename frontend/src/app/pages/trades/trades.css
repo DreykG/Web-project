@@ -700,3 +700,32 @@ p{
 .reject-response-btn:hover {
   background: rgba(248, 81, 73, 0.1);
 }
+
+.trade-exchange {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 8px 0;
+    background: transparent;
+}
+
+.trade-side {
+    flex: 1;
+    background: transparent;
+}
+
+.trade-side-label {
+    font-size: 11px;
+    color: #777;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 6px;
+    background: transparent;
+}
+
+.trade-arrows {
+    font-size: 24px;
+    color: #00ffc8;
+    background: transparent;
+    flex-shrink: 0;
+}

@@ -3,7 +3,7 @@ import { RouterLink } from "@angular/router";
 import { FormsModule } from '@angular/forms';
 import { TradeService } from '../../services/trade';
 import { ShopService } from '../../services/shop';
-import { InventoryItem, TradeOffer, TradeResponse } from '../../interfaces/models';
+import { InventoryItem, TradeOffer, TradeOfferItem, TradeResponse } from '../../interfaces/models';
 import { RouterUpgradeInitializer } from '@angular/router/upgrade';
 
 @Component({
@@ -29,6 +29,7 @@ export class Trades implements OnInit{
   selectedOfferResponses: TradeResponse[] = [];
   selectedOfferId: number | null = null;
   myRequests: TradeResponse[] = [];
+  selectedOfferItems: TradeOfferItem[] = [];
 
   constructor(private tradeService: TradeService, private shopService: ShopService, private cdr: ChangeDetectorRef) {}
 
@@ -109,6 +110,7 @@ export class Trades implements OnInit{
 
   openResponsesModal(offer: TradeOffer) {
     this.selectedOfferResponses = offer.responses;
+    this.selectedOfferItems = offer.items;
     this.selectedOfferId = offer.id;
     this.showResponsesModal = true;
   }

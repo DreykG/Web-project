@@ -96,6 +96,8 @@ export interface TradeResponse {
     status: 'pending' | 'accepted' | 'rejected';
     response_value: number;
     items: TradeResponseItem[];
+    offer_items: TradeOfferItem[];
+    offer_title: string;
     responded_at: string;
 }
 
