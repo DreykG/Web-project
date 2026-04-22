@@ -606,6 +606,7 @@ p{
   cursor: pointer;
   border-radius: 4px;
   transition: all 0.2s;
+  
 }
 
 .responses-btn:hover {
@@ -618,6 +619,7 @@ p{
   border-radius: 8px;
   padding: 12px;
   margin-bottom: 12px;
+  
 }
 
 .response-header {
@@ -625,16 +627,18 @@ p{
   gap: 16px;
   align-items: center;
   margin-bottom: 8px;
+  background: transparent;
 }
 
-.response-user { color: #00ffc8; font-weight: 600; }
-.response-value { color: #aaa; }
+.response-user { color: #00ffc8; font-weight: 600; background: transparent;}
+.response-value { color: #aaa; background: transparent;}
 .response-status { 
   font-size: 11px; 
   padding: 2px 8px; 
   border-radius: 4px;
   background: rgba(255,255,255,0.05);
   color: #777;
+  
 }
 
 .response-items {
@@ -642,6 +646,7 @@ p{
   flex-wrap: wrap;
   gap: 8px;
   margin-bottom: 10px;
+  background: transparent;
 }
 
 .response-item {
@@ -662,6 +667,15 @@ p{
   height: 45px;
   object-fit: contain;
   margin-bottom: 4px;
+  background: transparent;
+}
+
+.response-btn{
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    background: transparent;
+    width: 500px;
 }
 
 .accept-response-btn {
@@ -674,6 +688,7 @@ p{
   font-size: 12px;
   letter-spacing: 1px;
   transition: background 0.2s;
+  width: 50%;
 }
 
 .accept-response-btn:hover {
@@ -695,6 +710,7 @@ p{
   letter-spacing: 1px;
   transition: all 0.2s;
   margin-left: 8px;
+  width: 50%;
 }
 
 .reject-response-btn:hover {
