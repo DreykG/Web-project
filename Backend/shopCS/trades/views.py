@@ -144,6 +144,27 @@ class TradeViewSet(viewsets.ModelViewSet):
 
         return Response({"detail": "The exchange has been completed successfully!"})
     
+    @action(detail=True, methods=['post'], url_path='reject-response/(?P<response_id>[^/.]+)')
+    @transaction.atomic
+    def reject_trade(self, request, pk=None, response_id=None):
+        offer = self.get_object()
+        user = request.user
+        
+        if offer.creator != user:
+            return Response({"detail": "Only creator can reject the trade"}, status=403)
+
+        reject_res = get_object_or_404(TradeResponse, id=response_id, trade_offer=offer, status='pending')
+
+        res_items = InventoryItem.objects.filter(traderesponseitem__trade_response=reject_res)
+        for item in res_items:
+            item.status = 'in_inventory'
+            item.save()
+
+        # Удаляем в конце
+        reject_res.delete()
+
+        return Response({"detail": "The response has been rejected. Items returned to the responder's inventory."})
+    
 
     @action(detail=True, methods=['post'])
     @transaction.atomic

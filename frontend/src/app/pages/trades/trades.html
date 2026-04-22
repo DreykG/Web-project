@@ -66,9 +66,10 @@
               </div>
             }
           </div>
-          @if (resp.status === 'pending') {
+            @if (resp.status === 'pending') {
             <button class="accept-response-btn" (click)="acceptResponse(resp.id)">✓ ACCEPT</button>
-          }
+            <button class="reject-response-btn" (click)="rejectResponse(resp.id)">✕ REJECT</button>
+            }
         </div>
       } @empty {
         <p>No responses yet.</p>

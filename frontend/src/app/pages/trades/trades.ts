@@ -104,6 +104,26 @@ export class Trades implements OnInit{
     });
   }
 
+  rejectResponse(responseId: number) {
+    if(!this.selectedOfferId) return;
+      this.tradeService.rejectResponse(this.selectedOfferId, responseId).subscribe({
+        next: () => {
+          this.selectedOfferResponses = this.selectedOfferResponses.filter(r => r.id !== responseId);
+          const offer = this.myOffers.find(o => o.id === this.selectedOfferId);
+
+          if(offer) {
+            offer.responses_count--;
+            offer.responses = offer.responses.filter(r => r.id !== responseId);
+          }
+          this.cdr.detectChanges();
+        },
+      error: (err) => {
+          this.errorMessage = err?.error?.detail || 'Failed to reject response';
+          this.cdr.detectChanges();
+      }
+    });
+  }
+
   createOffer() {
     this.tradeService.createTradeOffer(
       this.newOfferTitle, 

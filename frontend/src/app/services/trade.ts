@@ -30,6 +30,10 @@ export class TradeService {
     return this.http.post(`${this.apiUrl}/trades/${offerId}/accept-response/${responseId}/`, {});
   }
 
+  rejectResponse(offerId: number, responseId: number) {
+    return this.http.post(`${this.apiUrl}/trades/${offerId}/reject-response/${responseId}/`, {});
+  }
+
   deleteTradeOffer(offerId: number) {
     return this.http.post(`${this.apiUrl}/trades/${offerId}/cancel_offer/`, {});
   }
