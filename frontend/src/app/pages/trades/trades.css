@@ -679,3 +679,24 @@ p{
 .accept-response-btn:hover {
   background: #00a693;
 }
+
+.requests-tab {
+    top: calc(30% + 60px);
+}
+
+.reject-response-btn {
+  background: transparent;
+  border: 1px solid #f85149;
+  color: #f85149;
+  padding: 6px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+  letter-spacing: 1px;
+  transition: all 0.2s;
+  margin-left: 8px;
+}
+
+.reject-response-btn:hover {
+  background: rgba(248, 81, 73, 0.1);
+}

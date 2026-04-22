@@ -33,6 +33,26 @@ class TradeViewSet(viewsets.ModelViewSet):
         serializer = self.get_serializer(offers, many=True)
         return Response(serializer.data)
     
+    @action(detail=False, methods=['get'])
+    def my_requests(self, request):
+        user = request.user
+        responses = TradeResponse.objects.filter(responder=user, status='pending')
+        serializer = TradeResponseSerializer(responses, many=True)
+        return Response(serializer.data)
+    
+    @action(detail=True, methods=['post'])
+    @transaction.atomic
+    def cancel_response(self, request, pk=None):
+        user = request.user
+        response = get_object_or_404(TradeResponse, id=pk, responder=user, status='pending')
+
+        res_items = InventoryItem.objects.filter(traderesponseitem__trade_response=response)
+        for item in res_items:
+            item.status = 'in_inventory'
+            item.save()
+
+        response.delete()
+        return Response({"detail": "Response cancelled. Items returned to your inventory."})
 
     @transaction.atomic
     def create(self, request, *args, **kwargs):

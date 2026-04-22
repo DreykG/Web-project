@@ -8,6 +8,5 @@ router = DefaultRouter()
 router.register(r'', TradeViewSet, basename='trades')
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
     path('', include(router.urls)),
 ]

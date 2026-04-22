@@ -18,6 +18,14 @@ export class TradeService {
     return this.http.get<TradeOffer[]>(`${this.apiUrl}/trades/my_offers/`);
   }
 
+  getMyRequests() {
+    return this.http.get<TradeResponse[]>(`${this.apiUrl}/trades/my_requests/`);
+  }
+
+  cancelResponse(responseId: number) {
+    return this.http.post(`${this.apiUrl}/trades/${responseId}/cancel_response/`, {});
+  }
+
   createTradeOffer(title: string, items: number[], isPrivate: boolean = false, password: string | null = null) {
     return this.http.post<TradeOffer>(`${this.apiUrl}/trades/`, { title, items, is_private: isPrivate, password });
   }

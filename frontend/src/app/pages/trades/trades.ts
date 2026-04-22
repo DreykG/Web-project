@@ -23,9 +23,12 @@ export class Trades implements OnInit{
   isPrivate = false;
   offerPassword = '';
   isDrawerOpen = false;
+  isRequestsDrawerOpen = false;
   showResponsesModal = false;
+  showMyRequestsModal = false;
   selectedOfferResponses: TradeResponse[] = [];
   selectedOfferId: number | null = null;
+  myRequests: TradeResponse[] = [];
 
   constructor(private tradeService: TradeService, private shopService: ShopService, private cdr: ChangeDetectorRef) {}
 
@@ -69,6 +72,19 @@ export class Trades implements OnInit{
     });
   }
 
+  cancelResponse(responseId: number) {
+    this.tradeService.cancelResponse(responseId).subscribe({
+      next: () => {
+        this.myRequests = this.myRequests.filter(r => r.id !== responseId);
+        this.cdr.detectChanges();
+      },
+      error: (err) => {
+        this.errorMessage = err?.error?.detail || 'Failed to cancel response';
+        this.cdr.detectChanges();
+      }
+    });
+  }
+
   toggleItem(itemId: number) {
     const idx = this.selectedItems.indexOf(itemId);
     
@@ -76,6 +92,18 @@ export class Trades implements OnInit{
       this.selectedItems.push(itemId);
     }else {
       this.selectedItems.splice(idx, 1);
+    }
+  }
+
+  toggleRequestsDrawer() {
+    this.isRequestsDrawerOpen = !this.isRequestsDrawerOpen;
+    if (this.isRequestsDrawerOpen) {
+        this.tradeService.getMyRequests().subscribe({
+            next: (data: TradeResponse[]) => {
+                this.myRequests = data;
+                this.cdr.detectChanges();
+            }
+        });
     }
   }
 
